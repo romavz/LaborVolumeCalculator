@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaborVolumeCalculator", "LaborVolumeCalculator\LaborVolumeCalculator.csproj", "{78CAD98E-65BB-4CCF-B2E3-D553AE66233F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78CAD98E-65BB-4CCF-B2E3-D553AE66233F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78CAD98E-65BB-4CCF-B2E3-D553AE66233F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78CAD98E-65BB-4CCF-B2E3-D553AE66233F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78CAD98E-65BB-4CCF-B2E3-D553AE66233F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BD8790AA-51D8-482D-8E12-A9B89C74DA1B}
+	EndGlobalSection
+EndGlobal
