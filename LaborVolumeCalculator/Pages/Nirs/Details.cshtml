@@ -2,13 +2,11 @@
 @model LaborVolumeCalculator.Pages.Nirs.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детали";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Nir</h4>
+    <h4>НИР</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -32,6 +30,6 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Nir.ID">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Nir.ID">Изменить</a> |
+    <a asp-page="./Index">Вернуться к списку</a>
 </div>

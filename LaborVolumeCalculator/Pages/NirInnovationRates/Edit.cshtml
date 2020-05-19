@@ -2,12 +2,12 @@
 @model LaborVolumeCalculator.Pages.NirInnovationRates.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Изменить";
 }
 
-<h1>Edit</h1>
+<h1>Изменить</h1>
 
-<h4>NirInnovationRate</h4>
+<h4>Коэффициент новизны НИР</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -26,14 +26,14 @@
                 <span asp-validation-for="NirInnovationRate.CreateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index">Вернуться к списку</a>
 </div>
 
 @section Scripts {
