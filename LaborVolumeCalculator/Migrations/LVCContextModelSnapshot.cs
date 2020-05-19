@@ -67,34 +67,38 @@ namespace LaborVolumeCalculator.Migrations
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.NirInnovationRate", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
                     b.Property<int>("NirID")
                         .HasColumnType("int");
 
                     b.Property<int>("NirInnovationPropertyID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdateTime")
+                    b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Value")
-                        .HasColumnType("DECIMAL(6, 4)");
+                        .HasColumnType("DECIMAL(8, 4)");
 
-                    b.HasKey("ID");
+                    b.HasKey("NirID", "NirInnovationPropertyID");
+
+                    b.HasIndex("NirInnovationPropertyID");
 
                     b.ToTable("NirInnovationRate");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.NirInnovationRate", b =>
+                {
+                    b.HasOne("LaborVolumeCalculator.Models.Nir", "Nir")
+                        .WithMany()
+                        .HasForeignKey("NirID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LaborVolumeCalculator.Models.NirInnovationProperty", "NirInnovationProperty")
+                        .WithMany()
+                        .HasForeignKey("NirInnovationPropertyID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

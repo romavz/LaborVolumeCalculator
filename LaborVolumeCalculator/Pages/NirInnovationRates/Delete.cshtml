@@ -1,0 +1,47 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.NirInnovationRates.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>NirInnovationRate</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirInnovationRate.Nir)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirInnovationRate.Nir.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirInnovationRate.NirInnovationProperty)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirInnovationRate.NirInnovationProperty.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirInnovationRate.Value)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirInnovationRate.Value)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirInnovationRate.CreateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirInnovationRate.CreateTime)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="NirInnovationRate.NirID" />
+        <input type="hidden" asp-for="NirInnovationRate.NirInnovationPropertyID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

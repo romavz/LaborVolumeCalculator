@@ -7,9 +7,20 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200515193405_InitialCreate.cs" />
     <Compile Remove="Migrations\20200515193405_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200516170932_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200516170932_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200519094112_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200519094112_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200519095612_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200519095612_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200519104011_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200519104011_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200519104417_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200519104417_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="bootstrap" Version="4.5.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">

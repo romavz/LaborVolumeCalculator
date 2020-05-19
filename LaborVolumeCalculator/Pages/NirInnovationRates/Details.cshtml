@@ -1,0 +1,43 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.NirInnovationRates.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>NirInnovationRate</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirInnovationRate.Nir)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirInnovationRate.Nir.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirInnovationRate.NirInnovationProperty)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirInnovationRate.NirInnovationProperty.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirInnovationRate.Value)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirInnovationRate.Value)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirInnovationRate.CreateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirInnovationRate.CreateTime)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-page="./Index">Back to List</a>
+</div>

@@ -1,0 +1,54 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.NirInnovationRates.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NirInnovationRate[0].Nir)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NirInnovationRate[0].NirInnovationProperty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NirInnovationRate[0].Value)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NirInnovationRate[0].CreateTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.NirInnovationRate) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nir.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NirInnovationProperty.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateTime)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

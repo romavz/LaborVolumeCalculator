@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models;
 
-namespace LaborVolumeCalculator.Pages
+namespace LaborVolumeCalculator.Pages.NirInnovationRates
 {
     public class IndexModel : PageModel
     {

@@ -8,47 +8,63 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Калькулятор Трудозатрат</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid pl-0">
+            <a class="navbar-brand" asp-area="" asp-page="/Index">Калькулятор Трудозатрат</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/About">О проекте</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow-1 flex-shrink-1 d-flex">
+        <div class="container-fluid px-0">
+            <div class="row">
+                <div class="col-auto">
+                    <div class="d-none col-sm-2 col-xs-1"> dd </div>
+
+                    <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Главная</a>
+                            <a class="nav-link" asp-area="" asp-page="/Nirs/Index">НИРы</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/About">О проекте</a>
+                            <a class="nav-link" asp-area="" asp-page="/NirInnovationProperties/Index">Свойства новизны НИР</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Nirs/Index">НИРы</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/NirInnovationProperties/Index">Свойства новизны НИР</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/NirInnovationRates/Index">Коэффициенты новизны НИР</a>
+                            <a class="nav-link" asp-area="" asp-page="/NirInnovationRates/Index">Коэффициенты новизны НИР</a>
                         </li>
                     </ul>
                 </div>
+                <div class="col">
+                    @RenderBody()
+                </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+        </div>
+    </main>
+
+    @*<main class="content-wrapper pb-3">
+        <div class="container-fluid">
             @RenderBody()
-        </main>
-    </div>
+        </div>
+    </main>*@
 
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - Калькулятор Трудозатрат - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
+    
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

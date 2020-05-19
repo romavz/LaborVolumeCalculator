@@ -1,18 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Models
 {
-    public class NirInnovationRate : BasicModel
+    [Description("Коэффициенты новизны НИР")]
+    public class NirInnovationRate
     {
         public int NirID { get; set; }
+
+        [DisplayName("НИР")]
+        public Nir Nir { get; set; }
+
         public int NirInnovationPropertyID { get; set; }
+
+        [DisplayName("Свойство новизны НИР")]
+        public NirInnovationProperty NirInnovationProperty { get; set; }
+        
         [DisplayName("Значение")]
-        [Column(TypeName = "DECIMAL(6, 4)")]
+        [Column(TypeName = "DECIMAL(8, 4)")]
         public decimal Value { get; set; }
+     
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+        [DisplayName("Дата создания")]
+        public DateTime CreateTime { get; set; }
     }
+        
 }

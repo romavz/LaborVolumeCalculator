@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models;
 
-namespace LaborVolumeCalculator.Pages.Nirs
+namespace LaborVolumeCalculator.Pages.NirInnovationRates
 {
     public class CreateModel : PageModel
     {
@@ -21,11 +21,13 @@ namespace LaborVolumeCalculator.Pages.Nirs
 
         public IActionResult OnGet()
         {
+        ViewData["NirID"] = new SelectList(_context.Nirs, "ID", "Name");
+        ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
             return Page();
         }
 
         [BindProperty]
-        public Nir Nir { get; set; }
+        public NirInnovationRate NirInnovationRate { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -36,8 +38,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 return Page();
             }
 
-            _context.Nirs.Add(Nir);
-
+            _context.NirInnovationRates.Add(NirInnovationRate);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

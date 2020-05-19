@@ -21,8 +21,11 @@ namespace LaborVolumeCalculator.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Nir>().ToTable("Nir");
-            modelBuilder.Entity<NirInnovationRate>().ToTable("NirInnovationRate");
             modelBuilder.Entity<NirInnovationProperty>().ToTable("NirInnovationProperty");
+            modelBuilder
+                .Entity<NirInnovationRate>()
+                .ToTable("NirInnovationRate")
+                .HasKey(key => new { key.NirID, key.NirInnovationPropertyID });
         }
     }
 }

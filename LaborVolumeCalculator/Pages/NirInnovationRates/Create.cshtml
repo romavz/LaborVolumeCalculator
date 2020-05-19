@@ -1,0 +1,47 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.NirInnovationRates.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>NirInnovationRate</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NirInnovationRate.NirID" class="control-label"></label>
+                <select asp-for="NirInnovationRate.NirID" class ="form-control" asp-items="ViewBag.NirID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="NirInnovationRate.NirInnovationPropertyID" class="control-label"></label>
+                <select asp-for="NirInnovationRate.NirInnovationPropertyID" class ="form-control" asp-items="ViewBag.NirInnovationPropertyID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="NirInnovationRate.Value" class="control-label"></label>
+                <input asp-for="NirInnovationRate.Value" class="form-control" />
+                <span asp-validation-for="NirInnovationRate.Value" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NirInnovationRate.CreateTime" class="control-label"></label>
+                <input asp-for="NirInnovationRate.CreateTime" class="form-control" />
+                <span asp-validation-for="NirInnovationRate.CreateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
