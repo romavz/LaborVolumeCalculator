@@ -21,8 +21,8 @@ namespace LaborVolumeCalculator.Pages.NirInnovationRates
 
         public IActionResult OnGet()
         {
-        ViewData["NirID"] = new SelectList(_context.Nirs, "ID", "Name");
-        ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
+            ViewData["NirID"] = new SelectList(_context.Nirs, "ID", "Name");
+            ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
             return Page();
         }
 
