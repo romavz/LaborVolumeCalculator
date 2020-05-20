@@ -44,9 +44,9 @@
                 @Html.DisplayFor(modelItem => item.CreateTime)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Изменить", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Открыть", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Удалить", new { /* id=item.PrimaryKey */ })
+                <a asp-page="./Edit" asp-route-nirID="@item.NirID" asp-route-NirInnovationPropertyID="@item.NirInnovationPropertyID">Изменить</a> |
+                <a asp-page="./Details" asp-route-nirID="@item.NirID" asp-route-NirInnovationPropertyID="@item.NirInnovationPropertyID">Открыть</a> |
+                <a asp-page="./Delete" asp-route-nirID="@item.NirID" asp-route-NirInnovationPropertyID="@item.NirInnovationPropertyID">Удалить</a>
             </td>
         </tr>
 }

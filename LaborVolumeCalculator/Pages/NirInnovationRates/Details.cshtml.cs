@@ -21,16 +21,17 @@ namespace LaborVolumeCalculator.Pages.NirInnovationRates
 
         public NirInnovationRate NirInnovationRate { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? nirID, int? nirInnovationPropertyID)
         {
-            if (id == null)
+            if (nirID == null || nirInnovationPropertyID == null)
             {
                 return NotFound();
             }
 
             NirInnovationRate = await _context.NirInnovationRates
                 .Include(n => n.Nir)
-                .Include(n => n.NirInnovationProperty).FirstOrDefaultAsync(m => m.NirID == id);
+                .Include(n => n.NirInnovationProperty)
+                .FirstOrDefaultAsync(m => m.NirID == nirID && m.NirInnovationPropertyID == nirInnovationPropertyID);
 
             if (NirInnovationRate == null)
             {

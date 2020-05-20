@@ -36,6 +36,6 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Изменить", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-page="./Edit" asp-route-nirID="@Model.NirInnovationRate.NirID" asp-route-NirInnovationPropertyID="@Model.NirInnovationRate.NirInnovationPropertyID">Изменить</a> |
     <a asp-page="./Index">Вернуться к списку</a>
 </div>

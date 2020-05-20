@@ -23,23 +23,24 @@ namespace LaborVolumeCalculator.Pages.NirInnovationRates
         [BindProperty]
         public NirInnovationRate NirInnovationRate { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? nirID, int? nirInnovationPropertyID)
         {
-            if (id == null)
+            if (nirID == null || nirInnovationPropertyID == null)
             {
                 return NotFound();
             }
 
             NirInnovationRate = await _context.NirInnovationRates
                 .Include(n => n.Nir)
-                .Include(n => n.NirInnovationProperty).FirstOrDefaultAsync(m => m.NirID == id);
+                .Include(n => n.NirInnovationProperty)
+                .FirstOrDefaultAsync(m => m.NirID == nirID && m.NirInnovationPropertyID == nirInnovationPropertyID);
 
             if (NirInnovationRate == null)
             {
                 return NotFound();
             }
-           ViewData["NirID"] = new SelectList(_context.Nirs, "ID", "Name");
-           ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
+            ViewData["NirID"] = new SelectList(_context.Nirs, "ID", "Name");
+            ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
             return Page();
         }
 
@@ -60,7 +61,7 @@ namespace LaborVolumeCalculator.Pages.NirInnovationRates
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NirInnovationRateExists(NirInnovationRate.NirID))
+                if (!NirInnovationRateExists(NirInnovationRate.NirID, NirInnovationRate.NirInnovationPropertyID))
                 {
                     return NotFound();
                 }
@@ -73,9 +74,9 @@ namespace LaborVolumeCalculator.Pages.NirInnovationRates
             return RedirectToPage("./Index");
         }
 
-        private bool NirInnovationRateExists(int id)
+        private bool NirInnovationRateExists(int nirID, int nirInnovationPropertyID)
         {
-            return _context.NirInnovationRates.Any(e => e.NirID == id);
+            return _context.NirInnovationRates.Any(e => e.NirID == nirID && e.NirInnovationPropertyID == nirInnovationPropertyID);
         }
     }
 }
