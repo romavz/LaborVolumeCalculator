@@ -9,6 +9,13 @@ namespace LaborVolumeCalculator.Models
 {
     public class BasicModel
     {
+        public BasicModel()
+        {
+            DateTime currentTime = DateTime.Now;
+            CreateTime = currentTime;
+            UpdateTime = currentTime;
+        }
+
         public int ID { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Название должно содержать символы")]

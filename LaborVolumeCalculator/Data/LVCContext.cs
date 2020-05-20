@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Models;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace LaborVolumeCalculator.Data
 {
@@ -12,6 +14,7 @@ namespace LaborVolumeCalculator.Data
         public LVCContext (DbContextOptions<LVCContext> options)
             : base(options)
         {
+            new TimeUpdateService(this.ChangeTracker);
         }
 
         public DbSet<Nir> Nirs { get; set; }
@@ -26,6 +29,29 @@ namespace LaborVolumeCalculator.Data
                 .Entity<NirInnovationRate>()
                 .ToTable("NirInnovationRate")
                 .HasKey(key => new { key.NirID, key.NirInnovationPropertyID });
+        }
+    
+        private class TimeUpdateService
+        {
+            public TimeUpdateService(ChangeTracker changeTracker)
+            {
+                changeTracker.StateChanged += ChangeTracker_StateChanged;
+            }
+            public void ChangeTracker_StateChanged(object sender, EntityStateChangedEventArgs e)
+            {
+                if (e.NewState == EntityState.Modified)
+                {
+                    UpdateTimeStampField(e.Entry, "UpdateTime", DateTime.Now);
+                }
+            }
+
+            private void UpdateTimeStampField(EntityEntry entityEntry, string fieldName, DateTime newTime)
+            {
+                IProperty timeProperty = entityEntry.Metadata.FindProperty(fieldName);
+                if (timeProperty == null) return;
+
+                entityEntry.Property(fieldName).CurrentValue = newTime;
+            }
         }
     }
 }
