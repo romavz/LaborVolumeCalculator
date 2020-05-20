@@ -11,11 +11,18 @@ namespace LaborVolumeCalculator.Models
     [Description("Коэффициенты новизны НИР")]
     public class NirInnovationRate
     {
+        public NirInnovationRate()
+        {
+            CreateTime = DateTime.Now;
+        }
+
+        [DisplayName("НИР")]
         public int NirID { get; set; }
 
         [DisplayName("НИР")]
         public Nir Nir { get; set; }
 
+        [DisplayName("Свойство новизны НИР")]
         public int NirInnovationPropertyID { get; set; }
 
         [DisplayName("Свойство новизны НИР")]
