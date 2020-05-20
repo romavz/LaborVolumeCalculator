@@ -9,28 +9,43 @@
 
 <h4>Коэффициент новизны НИР</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="NirInnovationRate.NirID" />
-            <input type="hidden" asp-for="NirInnovationRate.NirInnovationPropertyID" />
-            <div class="form-group">
-                <label asp-for="NirInnovationRate.Value" class="control-label"></label>
-                <input asp-for="NirInnovationRate.Value" class="form-control" />
-                <span asp-validation-for="NirInnovationRate.Value" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Сохранить" class="btn btn-primary" />
-            </div>
-        </form>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirInnovationRate.Nir)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirInnovationRate.Nir.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirInnovationRate.NirInnovationProperty)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirInnovationRate.NirInnovationProperty.Name)
+        </dd>
+    </dl>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="NirInnovationRate.NirID" />
+                <input type="hidden" asp-for="NirInnovationRate.NirInnovationPropertyID" />
+                <div class="form-group">
+                    <label asp-for="NirInnovationRate.Value" class="control-label"></label>
+                    <input asp-for="NirInnovationRate.Value" class="form-control" />
+                    <span asp-validation-for="NirInnovationRate.Value" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Сохранить" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-page="./Index">Вернуться к списку</a>
-</div>
+    <div>
+        <a asp-page="./Index">Вернуться к списку</a>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
