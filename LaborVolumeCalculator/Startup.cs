@@ -28,6 +28,7 @@ namespace LaborVolumeCalculator
 
             services.AddDbContext<LVCContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("LVCContext")));
+            services.AddScoped<DbSeed>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

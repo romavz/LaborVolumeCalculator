@@ -11,9 +11,13 @@ namespace LaborVolumeCalculator.Models
     {
         public BasicModel()
         {
-            DateTime currentTime = DateTime.Now;
-            CreateTime = currentTime;
-            UpdateTime = currentTime;
+            CreateTime = DateTime.Now;
+            UpdateTime = CreateTime;
+        }
+
+        public BasicModel(string name):this()
+        {
+            Name = name;
         }
 
         public int ID { get; set; }

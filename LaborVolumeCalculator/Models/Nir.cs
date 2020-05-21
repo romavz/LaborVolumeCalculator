@@ -11,5 +11,6 @@ namespace LaborVolumeCalculator.Models
     [Description("НИР")]
     public class Nir : BasicModel
     {
+        public Nir(string name) : base(name) { }
     }
 }

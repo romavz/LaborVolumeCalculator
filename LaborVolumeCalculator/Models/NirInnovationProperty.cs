@@ -9,6 +9,6 @@ namespace LaborVolumeCalculator.Models
     [Description("Свойства новизны НИР")]
     public class NirInnovationProperty : BasicModel
     {
-
+        public NirInnovationProperty(string name) : base(name) { }
     }
 }
