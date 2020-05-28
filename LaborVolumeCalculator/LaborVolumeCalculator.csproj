@@ -17,6 +17,12 @@
     <Compile Remove="Migrations\20200519104011_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20200519104417_InitialCreate.cs" />
     <Compile Remove="Migrations\20200519104417_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200528114253_Add_OKR_Entities.cs" />
+    <Compile Remove="Migrations\20200528114253_Add_OKR_Entities.Designer.cs" />
+    <Compile Remove="Migrations\20200528135126_Add_OKR_Entities.cs" />
+    <Compile Remove="Migrations\20200528135126_Add_OKR_Entities.Designer.cs" />
+    <Compile Remove="Migrations\20200528135908_Add_OKR_Entities.cs" />
+    <Compile Remove="Migrations\20200528135908_Add_OKR_Entities.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -20,6 +20,10 @@ namespace LaborVolumeCalculator.Data
         public DbSet<Nir> Nirs { get; set; }
         public DbSet<NirInnovationRate> NirInnovationRates { get; set; }
         public DbSet<NirInnovationProperty> NirInnovationProperties { get; set; }
+        public DbSet<DeviceComposition> DeviceCompositions { get; set; }
+        public DbSet<OkrInnovationProperty> OkrInnovationProperties { get; set; }
+        public DbSet<OkrMultiFunctionRate> OkrComplexityRates { get; set; }
+        public DbSet<OkrInnovationRate> OkrInnovationRates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +33,19 @@ namespace LaborVolumeCalculator.Data
                 .Entity<NirInnovationRate>()
                 .ToTable("NirInnovationRate")
                 .HasKey(key => new { key.NirID, key.NirInnovationPropertyID });
+            
+            modelBuilder.Entity<DeviceComposition>().ToTable("DeviceComposition");
+            modelBuilder.Entity<OkrInnovationProperty>().ToTable("OkrInnovationProperty");
+            
+            modelBuilder.Entity<OkrInnovationRate>().ToTable("OkrInnovationRate")
+                .HasKey(key => new { key.OkrInnovationPropertyID, key.DeviceCompositionID });
+            modelBuilder.Entity<OkrInnovationRate>()
+                .Property("Value").HasColumnType("DECIMAL(8, 4)");
+
+            modelBuilder.Entity<OkrMultiFunctionRate>().ToTable("OkrComplexityRate")
+                .HasKey(key => new { key.DeviceCompositionID, key.MinDeviceCount, key.MaxDeviceCount });
+            modelBuilder.Entity<OkrMultiFunctionRate>()
+                .Property("Value").HasColumnType("DECIMAL(8, 4)");
         }
     
         private class TimeUpdateService
