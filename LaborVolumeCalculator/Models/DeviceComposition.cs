@@ -8,6 +8,7 @@ namespace LaborVolumeCalculator.Models
     [Display(Name = "Компоновка устройства")]
     public class DeviceComposition
     {
+        public DeviceComposition() { }
         public DeviceComposition(string name)
         {
             Name = name;
