@@ -5,12 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LaborVolumeCalculator.Models
 {
-    [Display(Name = "Коэффициент новизны ОКР")]
+    [Display(Name = "Коэффициент новизны ОКР", GroupName = "Коэффициенты новозны ОКР")]
     public class OkrInnovationRate
     {
         public OkrInnovationRate() { }
 
-        public OkrInnovationRate(OkrInnovationProperty okrInnovationProperty, DeviceComposition deviceComposition, decimal value)
+        public OkrInnovationRate(OkrInnovationProperty okrInnovationProperty, DeviceComposition deviceComposition, decimal value): this()
         {
             OkrInnovationProperty = okrInnovationProperty;
             OkrInnovationPropertyID = okrInnovationProperty.ID;

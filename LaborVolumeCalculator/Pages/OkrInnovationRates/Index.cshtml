@@ -1,0 +1,51 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.OkrInnovationRates.IndexModel
+
+@{
+    string title = Html.DisplayGroupNameFor(model => model.OkrInnovationRates[0]);
+
+    ViewData["Title"] = title;
+}
+
+<h1>@title</h1>
+
+<p>
+    <a asp-page="Create">Создать</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OkrInnovationRates[0].OkrInnovationProperty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OkrInnovationRates[0].DeviceComposition)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OkrInnovationRates[0].Value)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OkrInnovationRates)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OkrInnovationProperty.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeviceComposition.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-OkrInnovationPropertyID="@item.OkrInnovationPropertyID" asp-route-DeviceCompositionID="@item.DeviceCompositionID">Изменить</a> |
+                    <a asp-page="./Details" asp-route-OkrInnovationPropertyID="@item.OkrInnovationPropertyID" asp-route-DeviceCompositionID="@item.DeviceCompositionID">Открыть</a> |
+                    <a asp-page="./Delete" asp-route-OkrInnovationPropertyID="@item.OkrInnovationPropertyID" asp-route-DeviceCompositionID="@item.DeviceCompositionID">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
