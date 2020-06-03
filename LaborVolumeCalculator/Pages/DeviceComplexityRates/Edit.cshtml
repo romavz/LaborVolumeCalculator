@@ -30,6 +30,8 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="DeviceComplexityRate.ID" />
+            <input type="hidden" asp-for="DeviceComplexityRate.DeviceCompositionID" />
+            <input type="hidden" asp-for="DeviceComplexityRate.DeviceCountRangeID" />
             <div class="form-group">
                 <label asp-for="DeviceComplexityRate.Value" class="control-label"></label>
                 <input asp-for="DeviceComplexityRate.Value" class="form-control" />

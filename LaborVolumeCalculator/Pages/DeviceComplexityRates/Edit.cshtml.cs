@@ -38,8 +38,8 @@ namespace LaborVolumeCalculator.Pages.DeviceComplexityRates
             {
                 return NotFound();
             }
-           ViewData["DeviceCompositionID"] = new SelectList(_context.DeviceCompositions, "ID", "Name");
-           ViewData["DeviceCountRangeID"] = new SelectList(_context.Set<DeviceCountRange>(), "ID", "Name");
+            ViewData["DeviceCompositionID"] = new SelectList(_context.DeviceCompositions, "ID", "Name");
+            ViewData["DeviceCountRangeID"] = new SelectList(_context.Set<DeviceCountRange>(), "ID", "Name");
             return Page();
         }
 
