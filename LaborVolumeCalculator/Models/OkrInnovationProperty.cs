@@ -8,7 +8,10 @@ namespace LaborVolumeCalculator.Models
     [Display(Name = "Свойство новизны ОКР", GroupName = "Свойства новизны ОКР")]
     public class OkrInnovationProperty
     {
-        public OkrInnovationProperty(string name)
+
+        public OkrInnovationProperty() { }
+        
+        public OkrInnovationProperty(string name): this()
         {
             Name = name;
         }
