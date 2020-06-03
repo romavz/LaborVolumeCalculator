@@ -24,6 +24,7 @@ namespace LaborVolumeCalculator.Data
         public DbSet<OkrInnovationProperty> OkrInnovationProperties { get; set; }
         public DbSet<DeviceComplexityRate> DeviceComplexityRates { get; set; }
         public DbSet<OkrInnovationRate> OkrInnovationRates { get; set; }
+        public DbSet<DeviceCountRange> DeviceCountRange { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +42,8 @@ namespace LaborVolumeCalculator.Data
                 .HasKey(key => new { key.OkrInnovationPropertyID, key.DeviceCompositionID });
             modelBuilder.Entity<OkrInnovationRate>()
                 .Property("Value").HasColumnType("DECIMAL(8, 4)");
+
+            modelBuilder.Entity<DeviceCountRange>().ToTable("DeviceCountRange");
 
             modelBuilder.Entity<DeviceComplexityRate>().ToTable("DeviceComplexityRate")
                 .HasIndex(key => new { key.DeviceCompositionID, key.DeviceCountRangeID })
