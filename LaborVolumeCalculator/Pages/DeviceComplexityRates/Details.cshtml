@@ -1,0 +1,36 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.DeviceComplexityRates.DetailsModel
+
+@{
+
+    ViewData["Title"] = "Детали";
+}
+
+<div>
+    <h4> @Html.DisplayNameFor(model => model.DeviceComplexityRate)</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DeviceComplexityRate.DeviceComposition)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DeviceComplexityRate.DeviceComposition.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DeviceComplexityRate.DeviceCountRange)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DeviceComplexityRate.DeviceCountRange.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DeviceComplexityRate.Value)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DeviceComplexityRate.Value)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.DeviceComplexityRate.ID">Изменить</a> |
+    <a asp-page="./Index">Вернуться к списку</a>
+</div>
