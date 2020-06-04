@@ -1,0 +1,35 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.OkrInnovationProperties.EditModel
+
+@{
+    ViewData["Title"] = "Изменить";
+}
+
+<h1>Изменить</h1>
+
+<h4> @Html.DisplayNameFor(model => model.OkrInnovationProperty)</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="OkrInnovationProperty.ID" />
+            <div class="form-group">
+                <label asp-for="OkrInnovationProperty.Name" class="control-label"></label>
+                <input asp-for="OkrInnovationProperty.Name" class="form-control" />
+                <span asp-validation-for="OkrInnovationProperty.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Вернуться к списку</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

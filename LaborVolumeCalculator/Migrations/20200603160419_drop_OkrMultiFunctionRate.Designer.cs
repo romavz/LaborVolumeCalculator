@@ -4,46 +4,22 @@ using LaborVolumeCalculator.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaborVolumeCalculator.Migrations
 {
     [DbContext(typeof(LVCContext))]
-    partial class LVCContextModelSnapshot : ModelSnapshot
+    [Migration("20200603160419_drop_OkrMultiFunctionRate")]
+    partial class drop_OkrMultiFunctionRate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.DeviceComplexityRate", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("DeviceCompositionID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DeviceCountRangeID")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Value")
-                        .HasColumnType("DECIMAL(8, 4)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("DeviceCountRangeID");
-
-                    b.HasIndex("DeviceCompositionID", "DeviceCountRangeID")
-                        .IsUnique();
-
-                    b.ToTable("DeviceComplexityRate");
-                });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.DeviceComposition", b =>
                 {
@@ -58,22 +34,6 @@ namespace LaborVolumeCalculator.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("DeviceComposition");
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.DeviceCountRange", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("DeviceCountRange");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Nir", b =>
@@ -175,21 +135,6 @@ namespace LaborVolumeCalculator.Migrations
                     b.HasIndex("DeviceCompositionID");
 
                     b.ToTable("OkrInnovationRate");
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.DeviceComplexityRate", b =>
-                {
-                    b.HasOne("LaborVolumeCalculator.Models.DeviceComposition", "DeviceComposition")
-                        .WithMany()
-                        .HasForeignKey("DeviceCompositionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LaborVolumeCalculator.Models.DeviceCountRange", "DeviceCountRange")
-                        .WithMany()
-                        .HasForeignKey("DeviceCountRangeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.NirInnovationRate", b =>

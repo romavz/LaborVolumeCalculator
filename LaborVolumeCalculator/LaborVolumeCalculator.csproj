@@ -17,6 +17,12 @@
     <Compile Remove="Migrations\20200519104011_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20200519104417_InitialCreate.cs" />
     <Compile Remove="Migrations\20200519104417_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200528114253_Add_OKR_Entities.cs" />
+    <Compile Remove="Migrations\20200528114253_Add_OKR_Entities.Designer.cs" />
+    <Compile Remove="Migrations\20200528135126_Add_OKR_Entities.cs" />
+    <Compile Remove="Migrations\20200528135126_Add_OKR_Entities.Designer.cs" />
+    <Compile Remove="Migrations\20200528135908_Add_OKR_Entities.cs" />
+    <Compile Remove="Migrations\20200528135908_Add_OKR_Entities.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +33,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
   </ItemGroup>
 
 </Project>

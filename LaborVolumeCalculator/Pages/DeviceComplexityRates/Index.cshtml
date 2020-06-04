@@ -1,0 +1,51 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.DeviceComplexityRates.IndexModel
+
+@{
+    string title = Html.DisplayGroupNameFor(model => model.DeviceComplexityRates[0]);
+
+    ViewData["Title"] = title;
+}
+
+<h1>@title</h1>
+
+<p>
+    <a asp-page="Create">Создать</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DeviceComplexityRates[0].DeviceComposition)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeviceComplexityRates[0].DeviceCountRange)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeviceComplexityRates[0].Value)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DeviceComplexityRates)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeviceComposition.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeviceCountRange.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Изменить</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID">Открыть</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

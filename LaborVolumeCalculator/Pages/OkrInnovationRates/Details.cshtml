@@ -1,0 +1,35 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.OkrInnovationRates.DetailsModel
+
+@{
+    ViewData["Title"] = "Детали";
+}
+
+<div>
+    <h4> @Html.DisplayNameFor(model => model.OkrInnovationRate)</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OkrInnovationRate.OkrInnovationProperty)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OkrInnovationRate.OkrInnovationProperty.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OkrInnovationRate.DeviceComposition)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OkrInnovationRate.DeviceComposition.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OkrInnovationRate.Value)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OkrInnovationRate.Value)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-OkrInnovationPropertyID ="@Model.OkrInnovationRate.OkrInnovationPropertyID" asp-route-OkrDeviceCompositionID ="@Model.OkrInnovationRate.DeviceCompositionID"> Изменить</a> |
+    <a asp-page="./Index">Вернуться к списку</a>
+</div>
