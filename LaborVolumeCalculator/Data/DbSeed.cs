@@ -25,6 +25,8 @@ namespace LaborVolumeCalculator.Data
 
         public void Initialize()
         {
+            dbContext.Database.Migrate();
+
             if (dbContext.Nirs.Any())
             {
                 return;
