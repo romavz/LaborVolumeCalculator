@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroup')]/providers/Microsoft.Sql/servers/laborvolumecalculatordbserver/databases/LaborVolumeCalculator_db",
+      "type": "mssql.azure",
+      "connectionId": "LVCContext",
+      "secretStore": "AzureAppSettings"
+    },
+    "secrets1": {
+      "type": "secrets",
+      "suggestion": "true",
+      "ignored": "true"
+    }
+  }
+}
