@@ -23,7 +23,6 @@ namespace LaborVolumeCalculator.Models
         public int ID { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Название должно содержать символы")]
-        [StringLength(255, ErrorMessage = "Максимальная длинна названия 255 символов")]
         [DisplayName("Название")]
         public string Name { get; set; }
 
