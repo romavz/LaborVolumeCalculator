@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models;
 
-namespace LaborVolumeCalculator.Pages.NirInnovationRates
+namespace LaborVolumeCalculator.Pages.NirScales
 {
     public class EditModel : PageModel
     {
@@ -21,26 +21,21 @@ namespace LaborVolumeCalculator.Pages.NirInnovationRates
         }
 
         [BindProperty]
-        public NirInnovationRate NirInnovationRate { get; set; }
+        public NirScale NirScale { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? nirID, int? nirInnovationPropertyID)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (nirID == null || nirInnovationPropertyID == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            NirInnovationRate = await _context.NirInnovationRates
-                .Include(n => n.NirScale)
-                .Include(n => n.NirInnovationProperty)
-                .FirstOrDefaultAsync(m => m.NirScaleID == nirID && m.NirInnovationPropertyID == nirInnovationPropertyID);
+            NirScale = await _context.NirScales.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (NirInnovationRate == null)
+            if (NirScale == null)
             {
                 return NotFound();
             }
-            ViewData["NirID"] = new SelectList(_context.Nirs, "ID", "Name");
-            ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
             return Page();
         }
 
@@ -53,7 +48,7 @@ namespace LaborVolumeCalculator.Pages.NirInnovationRates
                 return Page();
             }
 
-            _context.Attach(NirInnovationRate).State = EntityState.Modified;
+            _context.Attach(NirScale).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +56,7 @@ namespace LaborVolumeCalculator.Pages.NirInnovationRates
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NirInnovationRateExists(NirInnovationRate.NirScaleID, NirInnovationRate.NirInnovationPropertyID))
+                if (!NirScaleExists(NirScale.ID))
                 {
                     return NotFound();
                 }
@@ -74,9 +69,9 @@ namespace LaborVolumeCalculator.Pages.NirInnovationRates
             return RedirectToPage("./Index");
         }
 
-        private bool NirInnovationRateExists(int nirID, int nirInnovationPropertyID)
+        private bool NirScaleExists(int id)
         {
-            return _context.NirInnovationRates.Any(e => e.NirScaleID == nirID && e.NirInnovationPropertyID == nirInnovationPropertyID);
+            return _context.NirScales.Any(e => e.ID == id);
         }
     }
 }

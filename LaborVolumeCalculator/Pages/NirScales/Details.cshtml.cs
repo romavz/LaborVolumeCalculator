@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models;
 
-namespace LaborVolumeCalculator.Pages.NirInnovationRates
+namespace LaborVolumeCalculator.Pages.NirScales
 {
     public class DetailsModel : PageModel
     {
@@ -19,21 +19,18 @@ namespace LaborVolumeCalculator.Pages.NirInnovationRates
             _context = context;
         }
 
-        public NirInnovationRate NirInnovationRate { get; set; }
+        public NirScale NirScale { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? nirID, int? nirInnovationPropertyID)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (nirID == null || nirInnovationPropertyID == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            NirInnovationRate = await _context.NirInnovationRates
-                .Include(n => n.NirScale)
-                .Include(n => n.NirInnovationProperty)
-                .FirstOrDefaultAsync(m => m.NirScaleID == nirID && m.NirInnovationPropertyID == nirInnovationPropertyID);
+            NirScale = await _context.NirScales.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (NirInnovationRate == null)
+            if (NirScale == null)
             {
                 return NotFound();
             }

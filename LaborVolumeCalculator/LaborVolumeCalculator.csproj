@@ -24,6 +24,16 @@
     <Compile Remove="Migrations\20200528135126_Add_OKR_Entities.Designer.cs" />
     <Compile Remove="Migrations\20200528135908_Add_OKR_Entities.cs" />
     <Compile Remove="Migrations\20200528135908_Add_OKR_Entities.Designer.cs" />
+    <Compile Remove="Migrations\20200703115329_add_nir_scale.cs" />
+    <Compile Remove="Migrations\20200703115329_add_nir_scale.Designer.cs" />
+    <Compile Remove="Migrations\20200703121003_add_nir_scale.cs" />
+    <Compile Remove="Migrations\20200703121003_add_nir_scale.Designer.cs" />
+    <Compile Remove="Migrations\20200703121406_add_nir_scale.cs" />
+    <Compile Remove="Migrations\20200703121406_add_nir_scale.Designer.cs" />
+    <Compile Remove="Migrations\20200703124453_clear_Nir_table.cs" />
+    <Compile Remove="Migrations\20200703124453_clear_Nir_table.Designer.cs" />
+    <Compile Remove="Migrations\20200703125448_add_NirScale.cs" />
+    <Compile Remove="Migrations\20200703125448_add_NirScale.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

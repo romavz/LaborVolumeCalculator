@@ -24,7 +24,7 @@ namespace LaborVolumeCalculator.Pages.NirInnovationRates
         public async Task OnGetAsync()
         {
             NirInnovationRate = await _context.NirInnovationRates
-                .Include(n => n.Nir)
+                .Include(n => n.NirScale)
                 .Include(n => n.NirInnovationProperty).ToListAsync();
         }
     }

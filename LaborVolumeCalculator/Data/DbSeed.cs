@@ -32,14 +32,14 @@ namespace LaborVolumeCalculator.Data
                 return;
             }
 
-            Nir[] nirs =
+            NirScale[] nirScales =
             {
-                new Nir("Фундаметнальная НИР"),
-                new Nir("Прикладная НИР, без создания ЭО или макета"),
-                new Nir("Прикладная НИР, с разработкой и изготовлением ЭО или макета")
+                new NirScale("Фундаметнальная НИР"),
+                new NirScale("Прикладная НИР, без создания ЭО или макета"),
+                new NirScale("Прикладная НИР, с разработкой и изготовлением ЭО или макета")
             };
 
-            dbContext.Nirs.AddRange(nirs);
+            dbContext.NirScales.AddRange(nirScales);
 
             NirInnovationProperty[] nirProps =
             {
@@ -51,15 +51,15 @@ namespace LaborVolumeCalculator.Data
             dbContext.NirInnovationProperties.AddRange(nirProps);
 
             dbContext.NirInnovationRates.AddRange(
-                new NirInnovationRate(nirs[0], nirProps[0], (decimal)1.3 ),
-                new NirInnovationRate(nirs[0], nirProps[1], (decimal)1.7 ),
-                new NirInnovationRate(nirs[0], nirProps[2], (decimal)2.9 ),
-                new NirInnovationRate(nirs[1], nirProps[0], (decimal)1.0 ),
-                new NirInnovationRate(nirs[1], nirProps[1], (decimal)1.4 ),
-                new NirInnovationRate(nirs[1], nirProps[2], (decimal)2.5 ),
-                new NirInnovationRate(nirs[2], nirProps[0], (decimal)1.2 ),
-                new NirInnovationRate(nirs[2], nirProps[1], (decimal)1.7 ),
-                new NirInnovationRate(nirs[2], nirProps[2], (decimal)2.7 )
+                new NirInnovationRate(nirScales[0], nirProps[0], (decimal)1.3 ),
+                new NirInnovationRate(nirScales[0], nirProps[1], (decimal)1.7 ),
+                new NirInnovationRate(nirScales[0], nirProps[2], (decimal)2.9 ),
+                new NirInnovationRate(nirScales[1], nirProps[0], (decimal)1.0 ),
+                new NirInnovationRate(nirScales[1], nirProps[1], (decimal)1.4 ),
+                new NirInnovationRate(nirScales[1], nirProps[2], (decimal)2.5 ),
+                new NirInnovationRate(nirScales[2], nirProps[0], (decimal)1.2 ),
+                new NirInnovationRate(nirScales[2], nirProps[1], (decimal)1.7 ),
+                new NirInnovationRate(nirScales[2], nirProps[2], (decimal)2.7 )
             );
 
             var dcREFU = new DeviceComposition("РЭФУ");

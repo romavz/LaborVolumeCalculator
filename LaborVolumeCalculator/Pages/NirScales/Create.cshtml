@@ -1,0 +1,44 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.NirScales.CreateModel
+
+@{
+    ViewData["Title"] = "Создать";
+}
+
+<h1>Создать</h1>
+
+<h4>@Html.DisplayNameFor(model => model.NirScale)</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NirScale.Name" class="control-label"></label>
+                <input asp-for="NirScale.Name" class="form-control" />
+                <span asp-validation-for="NirScale.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NirScale.CreateTime" class="control-label"></label>
+                <input asp-for="NirScale.CreateTime" class="form-control" />
+                <span asp-validation-for="NirScale.CreateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NirScale.UpdateTime" class="control-label"></label>
+                <input asp-for="NirScale.UpdateTime" class="form-control" />
+                <span asp-validation-for="NirScale.UpdateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Создать" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Вернуться к списку</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -18,6 +18,8 @@ namespace LaborVolumeCalculator.Data
         }
 
         public DbSet<Nir> Nirs { get; set; }
+        public DbSet<NirScale> NirScales { get; set; }
+
         public DbSet<NirInnovationRate> NirInnovationRates { get; set; }
         public DbSet<NirInnovationProperty> NirInnovationProperties { get; set; }
         public DbSet<DeviceComposition> DeviceCompositions { get; set; }
@@ -30,11 +32,12 @@ namespace LaborVolumeCalculator.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Nir>().ToTable("Nir");
+            modelBuilder.Entity<NirScale>().ToTable("NirScale");
             modelBuilder.Entity<NirInnovationProperty>().ToTable("NirInnovationProperty");
             modelBuilder
                 .Entity<NirInnovationRate>()
                 .ToTable("NirInnovationRate")
-                .HasKey(key => new { key.NirID, key.NirInnovationPropertyID });
+                .HasKey(key => new { key.NirScaleID, key.NirInnovationPropertyID });
             
             modelBuilder.Entity<DeviceComposition>().ToTable("DeviceComposition");
             modelBuilder.Entity<OkrInnovationProperty>().ToTable("OkrInnovationProperty");
