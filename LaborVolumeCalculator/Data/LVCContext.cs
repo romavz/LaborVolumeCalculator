@@ -27,7 +27,6 @@ namespace LaborVolumeCalculator.Data
         public DbSet<DeviceComplexityRate> DeviceComplexityRates { get; set; }
         public DbSet<OkrInnovationRate> OkrInnovationRates { get; set; }
         public DbSet<DeviceCountRange> DeviceCountRange { get; set; }
-        public DbSet<Project> Projects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
