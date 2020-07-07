@@ -1,0 +1,35 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.NirScales.DetailsModel
+
+@{
+    ViewData["Title"] = "Детали";
+}
+
+<div>
+    <h4> @Html.DisplayNameFor(model => model.NirScale)</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirScale.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirScale.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirScale.CreateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirScale.CreateTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirScale.UpdateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirScale.UpdateTime)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.NirScale.ID">Изменить</a> |
+    <a asp-page="./Index">Вернуться к списку</a>
+</div>

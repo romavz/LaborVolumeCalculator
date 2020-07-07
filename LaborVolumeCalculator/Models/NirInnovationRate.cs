@@ -16,20 +16,20 @@ namespace LaborVolumeCalculator.Models
             CreateTime = DateTime.Now;
         }
 
-        public NirInnovationRate(Nir nir, NirInnovationProperty innovationProperty, decimal value):this()
+        public NirInnovationRate(NirScale nirScale, NirInnovationProperty innovationProperty, decimal value):this()
         {
-            Nir = nir;
-            NirID = nir.ID;
+            NirScale = nirScale;
+            NirScaleID = nirScale.ID;
             NirInnovationProperty = innovationProperty;
             NirInnovationPropertyID = innovationProperty.ID;
             Value = value;
         }
 
         [DisplayName("НИР")]
-        public int NirID { get; set; }
+        public int NirScaleID { get; set; }
 
         [DisplayName("НИР")]
-        public Nir Nir { get; set; }
+        public NirScale NirScale { get; set; }
 
         [DisplayName("Свойство новизны НИР")]
         public int NirInnovationPropertyID { get; set; }

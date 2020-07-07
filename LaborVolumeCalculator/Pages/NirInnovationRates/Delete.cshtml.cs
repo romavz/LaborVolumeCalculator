@@ -30,9 +30,9 @@ namespace LaborVolumeCalculator.Pages.NirInnovationRates
             }
 
             NirInnovationRate = await _context.NirInnovationRates
-                .Include(n => n.Nir)
+                .Include(n => n.NirScale)
                 .Include(n => n.NirInnovationProperty)
-                .FirstOrDefaultAsync(m => m.NirID == nirID && m.NirInnovationPropertyID == nirInnovationPropertyID);
+                .FirstOrDefaultAsync(m => m.NirScaleID == nirID && m.NirInnovationPropertyID == nirInnovationPropertyID);
 
             if (NirInnovationRate == null)
             {

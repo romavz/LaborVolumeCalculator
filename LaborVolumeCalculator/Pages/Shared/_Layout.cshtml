@@ -34,17 +34,12 @@
                 <div class="col-auto">
                     <div class="card mb-3" style="width: 18rem;">
                         <div class="card-header"> НИР </div>
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Nirs/Index">НИРы</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/NirInnovationProperties/Index">Свойства новизны НИР</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/NirInnovationRates/Index">Коэффициенты новизны НИР</a>
-                            </li>
-                        </ul>
+                        <nav class="nav flex-column">
+                            <a class="nav-link" asp-area="" asp-page="/Nirs/Index">НИРы</a>
+                            <a class="nav-link" asp-area="" asp-page="/NirScales/Index">Масштабы НИР</a>
+                            <a class="nav-link" asp-area="" asp-page="/NirInnovationProperties/Index">Свойства новизны НИР</a>
+                            <a class="nav-link" asp-area="" asp-page="/NirInnovationRates/Index">Коэффициенты новизны НИР</a>
+                        </nav>
                     </div>
 
                     <div class="card mb-3" style="width: 18rem;">
@@ -71,12 +66,6 @@
             </div>
         </div>
     </main>
-
-    @*<main class="content-wrapper pb-3">
-        <div class="container-fluid">
-            @RenderBody()
-        </div>
-    </main>*@
 
     <footer class="border-top footer text-muted">
         <div class="container">

@@ -14,7 +14,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.NirInnovationRate[0].Nir)
+                @Html.DisplayNameFor(model => model.NirInnovationRate[0].NirScale)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NirInnovationRate[0].NirInnovationProperty)
@@ -32,7 +32,7 @@
 @foreach (var item in Model.NirInnovationRate) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Nir.Name)
+                @Html.DisplayFor(modelItem => item.NirScale.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NirInnovationProperty.Name)
@@ -44,9 +44,9 @@
                 @Html.DisplayFor(modelItem => item.CreateTime)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-nirID="@item.NirID" asp-route-NirInnovationPropertyID="@item.NirInnovationPropertyID">Изменить</a> |
-                <a asp-page="./Details" asp-route-nirID="@item.NirID" asp-route-NirInnovationPropertyID="@item.NirInnovationPropertyID">Открыть</a> |
-                <a asp-page="./Delete" asp-route-nirID="@item.NirID" asp-route-NirInnovationPropertyID="@item.NirInnovationPropertyID">Удалить</a>
+                <a asp-page="./Edit" asp-route-nirID="@item.NirScaleID" asp-route-NirInnovationPropertyID="@item.NirInnovationPropertyID">Изменить</a> |
+                <a asp-page="./Details" asp-route-nirID="@item.NirScaleID" asp-route-NirInnovationPropertyID="@item.NirInnovationPropertyID">Открыть</a> |
+                <a asp-page="./Delete" asp-route-nirID="@item.NirScaleID" asp-route-NirInnovationPropertyID="@item.NirInnovationPropertyID">Удалить</a>
             </td>
         </tr>
 }
