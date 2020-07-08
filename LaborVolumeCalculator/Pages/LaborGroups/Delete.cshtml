@@ -1,0 +1,40 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.LaborGroups.DeleteModel
+
+@{
+    ViewData["Title"] = "Удалить";
+}
+
+<h1>Удалить</h1>
+
+<h3>Вы действительто хотите удалить этот объект?</h3>
+<div>
+    <h4> @Html.DisplayNameFor(model => model.LaborGroup)</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LaborGroup.ParentGroup)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LaborGroup.ParentGroup.ID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LaborGroup.Code)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LaborGroup.Code)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LaborGroup.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LaborGroup.Name)
+        </dd>
+    </dl>
+
+    <form method="post">
+        <input type="hidden" asp-for="LaborGroup.ID" />
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-page="./Index" asp-route-parentGroupId="@Model.LaborGroup.ParentGroupId">Вернуться к списку</a>
+    </form>
+</div>

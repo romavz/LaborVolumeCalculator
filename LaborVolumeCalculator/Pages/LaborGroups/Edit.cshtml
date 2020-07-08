@@ -1,0 +1,48 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.LaborGroups.EditModel
+
+@{
+    ViewData["Title"] = "Изменить";
+}
+
+<h1>Изменить</h1>
+
+<h4> @Html.DisplayNameFor(model => model.LaborGroup)</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="LaborGroup.ID" />
+            <div class="form-group">
+                <label asp-for="LaborGroup.ParentGroup" class="control-label"></label>
+                <div>
+                    <input asp-for="LaborGroup.ParentGroupId" class="form-control" hidden value="@Model.LaborGroup.ParentGroupId" />
+                    @{ LaborVolumeCalculator.Models.LaborGroup parentGroup = Model.LaborGroup.ParentGroup; }
+                    <a asp-page="./Index" asp-route-parentGroupId="@parentGroup?.ID">@(parentGroup != null ? String.Format("{0} {1}", parentGroup.Code, parentGroup.Name) : "\\ . .")</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="LaborGroup.Code" class="control-label"></label>
+                <input asp-for="LaborGroup.Code" class="form-control" />
+                <span asp-validation-for="LaborGroup.Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LaborGroup.Name" class="control-label"></label>
+                <input asp-for="LaborGroup.Name" class="form-control" />
+                <span asp-validation-for="LaborGroup.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index" asp-route-parentGroupId="@Model.LaborGroup.ParentGroupId">Вернуться к списку</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

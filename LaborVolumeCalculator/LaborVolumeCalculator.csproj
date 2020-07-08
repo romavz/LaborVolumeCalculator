@@ -34,6 +34,10 @@
     <Compile Remove="Migrations\20200703124453_clear_Nir_table.Designer.cs" />
     <Compile Remove="Migrations\20200703125448_add_NirScale.cs" />
     <Compile Remove="Migrations\20200703125448_add_NirScale.Designer.cs" />
+    <Compile Remove="Migrations\20200707103114_add_LaborGroup.cs" />
+    <Compile Remove="Migrations\20200707103114_add_LaborGroup.Designer.cs" />
+    <Compile Remove="Migrations\20200707125840_add_LaborGroup.cs" />
+    <Compile Remove="Migrations\20200707125840_add_LaborGroup.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

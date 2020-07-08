@@ -28,6 +28,8 @@ namespace LaborVolumeCalculator.Data
         public DbSet<OkrInnovationRate> OkrInnovationRates { get; set; }
         public DbSet<DeviceCountRange> DeviceCountRange { get; set; }
 
+        public DbSet<LaborGroup> LaborGroup { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Nir>().ToTable("Nir");
@@ -53,6 +55,21 @@ namespace LaborVolumeCalculator.Data
                 .IsUnique();
             modelBuilder.Entity<DeviceComplexityRate>()
                 .Property("Value").HasColumnType("DECIMAL(8, 4)");
+
+            modelBuilder.Entity<LaborGroup>().ToTable("LaborGroup", "Dictionary")
+                .HasIndex(i => new { i.ParentGroupId });
+            
+            modelBuilder.Entity<LaborGroup>()
+                .HasIndex(i => new { i.Code })
+                .IsUnique();
+
+            modelBuilder.Entity<LaborGroup>()
+                .Property(p => p.Code)
+                .IsRequired();
+
+            modelBuilder.Entity<LaborGroup>()
+                .Property(p => p.Name)
+                .IsRequired();
         }
     
         private class TimeUpdateService
