@@ -74,6 +74,31 @@ namespace LaborVolumeCalculator.Data
                 .Property(p => p.Name)
                 .IsRequired();
 
+            modelBuilder.Entity<LaborGroupRelation>().ToTable("LaborGroupRelation", Schema.Dictionary)
+                .HasKey(k => new { k.ID });
+
+            modelBuilder.Entity<LaborGroupRelation>()
+                .HasIndex(i => new { i.LaborGroupId, i.ParentGroupId })
+                .IsUnique()
+                .HasFilter("LaborGroupId IS NOT NULL");
+
+            modelBuilder.Entity<LaborGroupRelation>()
+                .HasIndex(i => i.LaborGroupId);
+
+            modelBuilder.Entity<LaborGroupRelation>()
+                .Property(p => p.LaborGroupId)
+                .IsRequired();
+
+            modelBuilder.Entity<LaborGroupRelation>()
+                .HasOne(ulg => ulg.LaborGroup)
+                .WithMany(lg => lg.ParentGroups)
+                .HasForeignKey(fk => fk.LaborGroupId);
+
+            modelBuilder.Entity<LaborGroupRelation>()
+                .Property(p => p.ParentGroupId)
+                .IsRequired(false);
+
+
             modelBuilder.Entity<Labor>().ToTable("Labor", Schema.Dictionary)
                 .HasIndex(i => new { i.LaborGroupId });
 

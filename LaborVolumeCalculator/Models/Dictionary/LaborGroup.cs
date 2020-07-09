@@ -33,6 +33,8 @@ namespace LaborVolumeCalculator.Models.Dictionary
 
         public List<Labor> Labors { get; set; }
 
+        public List<LaborGroupRelation> ParentGroups { get; set; }
+
         public static string ToString(LaborGroup laborGroup)
         {
             string parentCode = RootGroup.Code;
