@@ -1,5 +1,6 @@
 ﻿@page
 @model LaborVolumeCalculator.Pages.LaborGroups.EditModel
+@using LaborVolumeCalculator.Models.Dictionary
 
 @{
     ViewData["Title"] = "Изменить";
@@ -17,9 +18,8 @@
             <div class="form-group">
                 <label asp-for="LaborGroup.ParentGroup" class="control-label"></label>
                 <div>
-                    <input asp-for="LaborGroup.ParentGroupId" class="form-control" hidden value="@Model.LaborGroup.ParentGroupId" />
-                    @{ LaborVolumeCalculator.Models.LaborGroup parentGroup = Model.LaborGroup.ParentGroup; }
-                    <a asp-page="./Index" asp-route-parentGroupId="@parentGroup?.ID">@(parentGroup != null ? String.Format("{0} {1}", parentGroup.Code, parentGroup.Name) : "\\ . .")</a>
+                    <input asp-for="LaborGroup.ParentGroupId" class="form-control" hidden value="@Model.ParentGroupId" />
+                    <a asp-page="./Index" asp-route-parentGroupId="@Model.ParentGroupId">@LaborGroup.ToString(Model.ParentGroup)</a>
                 </div>
             </div>
             <div class="form-group">

@@ -1,5 +1,6 @@
 ﻿@page
 @model LaborVolumeCalculator.Pages.LaborGroups.CreateModel
+@using LaborVolumeCalculator.Models.Dictionary
 
 @{
     ViewData["Title"] = "Создать";
@@ -13,12 +14,12 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
             <div class="form-group">
+                <input asp-for="LaborGroup.ParentGroupId" class="form-control" hidden value="@Model.ParentGroup?.ID" />
                 <label asp-for="LaborGroup.ParentGroup" class="control-label"></label>
                 <div>
-                    <input asp-for="LaborGroup.ParentGroupId" class="form-control" hidden value="@Model.ParentGroup?.ID" />
-                    @{ LaborVolumeCalculator.Models.LaborGroup parentGroup = Model.ParentGroup; }
-                    <a asp-page="./Index" asp-route-parentGroupId="@parentGroup?.ID">@(parentGroup != null ? String.Format("{0} {1}", parentGroup.Code, parentGroup.Name) : "\\ . .")</a>
+                    <a asp-page="./Index" asp-route-parentGroupId="@(Model.ParentGroup?.ID)">@LaborGroup.ToString(Model.ParentGroup)</a>
                 </div>
             </div>
             <div class="form-group">

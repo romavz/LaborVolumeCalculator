@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models;
 using System.Collections;
+using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Pages.LaborGroups
 {
@@ -23,7 +24,7 @@ namespace LaborVolumeCalculator.Pages.LaborGroups
         public IActionResult OnGet(int? parentGroupId = null)
         {
 
-            ParentGroup = _context.LaborGroup.Find(parentGroupId);
+            ParentGroup = _context.LaborGroups.Find(parentGroupId);
             return Page();
         }
 
@@ -41,7 +42,7 @@ namespace LaborVolumeCalculator.Pages.LaborGroups
                 return Page();
             }
 
-            _context.LaborGroup.Add(LaborGroup);
+            _context.LaborGroups.Add(LaborGroup);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index", new { parentGroupId = LaborGroup.ParentGroupId });

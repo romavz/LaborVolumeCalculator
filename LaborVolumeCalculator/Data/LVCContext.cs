@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Models;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Data
 {
@@ -28,7 +29,9 @@ namespace LaborVolumeCalculator.Data
         public DbSet<OkrInnovationRate> OkrInnovationRates { get; set; }
         public DbSet<DeviceCountRange> DeviceCountRange { get; set; }
 
-        public DbSet<LaborGroup> LaborGroup { get; set; }
+        public DbSet<LaborGroup> LaborGroups { get; set; }
+
+        public DbSet<Labor> Labors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,7 +59,7 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<DeviceComplexityRate>()
                 .Property("Value").HasColumnType("DECIMAL(8, 4)");
 
-            modelBuilder.Entity<LaborGroup>().ToTable("LaborGroup", "Dictionary")
+            modelBuilder.Entity<LaborGroup>().ToTable("LaborGroup", Schema.Dictionary)
                 .HasIndex(i => new { i.ParentGroupId });
             
             modelBuilder.Entity<LaborGroup>()
@@ -70,8 +73,29 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<LaborGroup>()
                 .Property(p => p.Name)
                 .IsRequired();
+
+            modelBuilder.Entity<Labor>().ToTable("Labor", Schema.Dictionary)
+                .HasIndex(i => new { i.LaborGroupId });
+
+            modelBuilder.Entity<Labor>()
+                .HasIndex(i => i.Code)
+                .IsUnique();
+
+            modelBuilder.Entity<Labor>()
+                .Property(p => p.Code)
+                .IsRequired();
+
+            modelBuilder.Entity<Labor>()
+                .Property(p => p.Name)
+                .IsRequired();
+
         }
     
+        private class Schema
+        {
+            public static string Dictionary => "Dictionary";
+        }
+
         private class TimeUpdateService
         {
             public TimeUpdateService(ChangeTracker changeTracker)

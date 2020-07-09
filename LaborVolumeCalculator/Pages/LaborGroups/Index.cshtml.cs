@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models;
+using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Pages.LaborGroups
 {
@@ -28,9 +29,9 @@ namespace LaborVolumeCalculator.Pages.LaborGroups
         public async Task OnGetAsync(int? parentGroupId)
         {
             ParentGroupId = parentGroupId;
-            ParentGroup = _context.LaborGroup.Find(parentGroupId);
+            ParentGroup = _context.LaborGroups.Find(parentGroupId);
 
-            LaborGroups = await _context.LaborGroup
+            LaborGroups = await _context.LaborGroups
                 .Include(lg => lg.ParentGroup)
                 .Where(lg => lg.ParentGroupId == parentGroupId)
                 .ToListAsync();

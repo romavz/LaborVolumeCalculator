@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models;
+using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Pages.LaborGroups
 {
@@ -23,6 +24,11 @@ namespace LaborVolumeCalculator.Pages.LaborGroups
         [BindProperty]
         public LaborGroup LaborGroup { get; set; }
 
+        public LaborGroup ParentGroup { get; private set; }
+
+        public int? ParentGroupId { get; private set; }
+
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -30,13 +36,17 @@ namespace LaborVolumeCalculator.Pages.LaborGroups
                 return NotFound();
             }
 
-            LaborGroup = await _context.LaborGroup
+            LaborGroup = await _context.LaborGroups
                 .Include(l => l.ParentGroup).FirstOrDefaultAsync(m => m.ID == id);
 
             if (LaborGroup == null)
             {
                 return NotFound();
             }
+
+            ParentGroup = LaborGroup.ParentGroup;
+            ParentGroupId = LaborGroup.ParentGroupId;
+
             return Page();
         }
 
@@ -67,12 +77,12 @@ namespace LaborVolumeCalculator.Pages.LaborGroups
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new { parentGroupId = LaborGroup.ParentGroupId });
         }
 
         private bool LaborGroupExists(int? id)
         {
-            return _context.LaborGroup.Any(e => e.ID == id);
+            return _context.LaborGroups.Any(e => e.ID == id);
         }
     }
 }

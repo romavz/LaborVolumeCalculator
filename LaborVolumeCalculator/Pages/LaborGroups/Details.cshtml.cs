@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models;
+using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Pages.LaborGroups
 {
@@ -28,7 +29,7 @@ namespace LaborVolumeCalculator.Pages.LaborGroups
                 return NotFound();
             }
 
-            LaborGroup = await _context.LaborGroup
+            LaborGroup = await _context.LaborGroups
                 .Include(l => l.ParentGroup).FirstOrDefaultAsync(m => m.ID == id);
 
             if (LaborGroup == null)
