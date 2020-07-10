@@ -9,9 +9,15 @@
 
     <h1>@(Model.ParentGroup?.Name ?? title )</h1>
 
-<p>
-    <a asp-page="Create" asp-route-parentGroupId="@Model.ParentGroupId">Создать группу</a>
-</p>
+    <p>
+        <a asp-page="Create" asp-route-parentGroupId="@Model.ParentGroupId">Создать группу</a> 
+        @if (Model.ParentGroup != null)
+        {
+            <span> |
+            <a asp-page="../Labors/Create" asp-route-laborGroupId="@Model.ParentGroupId">Создать работу</a>
+            </span>
+        }
+    </p>
 <table class="table">
     <thead>
         <tr>
@@ -52,6 +58,27 @@
                     <a asp-page="./Delete" asp-route-id="@item.ID">Удалить</a>
                 </td>
             </tr>
+        }
+
+
+        @if (Model.ParentGroup != null)
+        {
+            foreach (LaborVolumeCalculator.Models.Dictionary.Labor item in Model.ParentGroup.Labors)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a asp-page="../Labors/Edit" asp-route-id="@item.ID">Изменить</a> |
+                        <a asp-page="../Labors/Details" asp-route-id="@item.ID">Открыть</a> |
+                        <a asp-page="../Labors/Delete" asp-route-id="@item.ID">Удалить</a>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>

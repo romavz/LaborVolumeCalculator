@@ -6,11 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Models;
-using System.Collections;
 using LaborVolumeCalculator.Models.Dictionary;
 
-namespace LaborVolumeCalculator.Pages.LaborGroups
+namespace LaborVolumeCalculator.Pages.Labors
 {
     public class CreateModel : PageModel
     {
@@ -21,16 +19,16 @@ namespace LaborVolumeCalculator.Pages.LaborGroups
             _context = context;
         }
 
-        public IActionResult OnGet(int? parentGroupId = null)
+        public IActionResult OnGet(int laborGroupId)
         {
-            ParentGroup = _context.LaborGroups.Find(parentGroupId);
+            LaborGroup = _context.LaborGroups.Find(laborGroupId);
             return Page();
         }
 
         [BindProperty]
-        public LaborGroup LaborGroup { get; set; }
+        public Labor Labor { get; set; }
 
-        public LaborGroup ParentGroup { get; set; }
+        public LaborGroup LaborGroup { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -41,10 +39,10 @@ namespace LaborVolumeCalculator.Pages.LaborGroups
                 return Page();
             }
 
-            _context.LaborGroups.Add(LaborGroup);
+            _context.Labors.Add(Labor);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index", new { parentGroupId = LaborGroup.ParentGroupId });
+            return RedirectToPage("../LaborGroups/Index", new { parentGroupId = Labor.LaborGroupId });
         }
     }
 }

@@ -29,10 +29,11 @@ namespace LaborVolumeCalculator.Pages.LaborGroups
         public async Task OnGetAsync(int? parentGroupId)
         {
             ParentGroupId = parentGroupId;
-            ParentGroup = _context.LaborGroups.Find(parentGroupId);
+            ParentGroup = await _context.LaborGroups
+                .Include(i => i.Labors)
+                .FirstOrDefaultAsync(lg => lg.ID == parentGroupId);
 
             LaborGroups = await _context.LaborGroups
-                .Include(lg => lg.ParentGroup)
                 .Where(lg => lg.ParentGroupId == parentGroupId)
                 .ToListAsync();
         }
