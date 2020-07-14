@@ -81,7 +81,8 @@ namespace LaborVolumeCalculator.Data
 
             lg_entity
                 .Property(p => p.Level)
-                .IsRequired();
+                .IsRequired()
+                .HasDefaultValue(0);
 
             modelBuilder.Entity<LaborGroupRelation>().ToTable("LaborGroupRelation", Schema.Dictionary)
                 .HasKey(k => new { k.ID });
