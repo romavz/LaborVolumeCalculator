@@ -12,10 +12,12 @@ namespace LaborVolumeCalculator.Models.Dictionary
     {
         public Labor() { }
 
-        public Labor(string code, string name) : this()
+        public Labor(string code, string name, LaborGroup laborGroup) : this()
         {
             Code = code;
             Name = name;
+            LaborGroup = laborGroup ?? throw new ArgumentNullException("laborGroup");
+            LaborGroupId = LaborGroup.ID;
         }
 
         public int ID { get; set; }

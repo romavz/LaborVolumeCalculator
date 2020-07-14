@@ -59,19 +59,28 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<DeviceComplexityRate>()
                 .Property("Value").HasColumnType("DECIMAL(8, 4)");
 
-            modelBuilder.Entity<LaborGroup>().ToTable("LaborGroup", Schema.Dictionary)
-                .HasIndex(i => new { i.ParentGroupId });
+            var lg_entity = modelBuilder.Entity<LaborGroup>().ToTable("LaborGroup", Schema.Dictionary);
+                
+            lg_entity.HasIndex(i => new { i.ParentGroupId });
             
-            modelBuilder.Entity<LaborGroup>()
+            lg_entity
                 .HasIndex(i => new { i.Code })
                 .IsUnique();
 
-            modelBuilder.Entity<LaborGroup>()
+            lg_entity
                 .Property(p => p.Code)
                 .IsRequired();
 
-            modelBuilder.Entity<LaborGroup>()
+            lg_entity
                 .Property(p => p.Name)
+                .IsRequired();
+
+            lg_entity
+                .HasMany(lg => lg.Labors)
+                .WithOne(l => l.LaborGroup);
+
+            lg_entity
+                .Property(p => p.Level)
                 .IsRequired();
 
             modelBuilder.Entity<LaborGroupRelation>().ToTable("LaborGroupRelation", Schema.Dictionary)
@@ -99,18 +108,17 @@ namespace LaborVolumeCalculator.Data
                 .IsRequired(false);
 
 
-            modelBuilder.Entity<Labor>().ToTable("Labor", Schema.Dictionary)
-                .HasIndex(i => new { i.LaborGroupId });
+            var laborsEntity = modelBuilder.Entity<Labor>().ToTable("Labor", Schema.Dictionary);
 
-            modelBuilder.Entity<Labor>()
+            laborsEntity
                 .HasIndex(i => i.Code)
                 .IsUnique();
 
-            modelBuilder.Entity<Labor>()
+            laborsEntity
                 .Property(p => p.Code)
                 .IsRequired();
 
-            modelBuilder.Entity<Labor>()
+            laborsEntity
                 .Property(p => p.Name)
                 .IsRequired();
 

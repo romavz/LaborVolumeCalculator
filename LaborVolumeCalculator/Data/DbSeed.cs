@@ -1,5 +1,7 @@
-﻿using LaborVolumeCalculator.Migrations;
+﻿using LaborVolumeCalculator.Data.Fillers;
+using LaborVolumeCalculator.Migrations;
 using LaborVolumeCalculator.Models;
+using LaborVolumeCalculator.Models.Dictionary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -27,7 +29,7 @@ namespace LaborVolumeCalculator.Data
         {
             dbContext.Database.Migrate();
 
-            if (dbContext.Nirs.Any())
+            if (dbContext.NirScales.Any())
             {
                 return;
             }
@@ -124,7 +126,31 @@ namespace LaborVolumeCalculator.Data
             IEnumerable<OkrInnovationRate> sreuRates = SREU_ratesBinder.Bind(sreuRatesValues);
             dbContext.OkrInnovationRates.AddRange(sreuRates);
 
+            FillLabors();
+            
+            //FillLaborVolumes();
+
             dbContext.SaveChanges();
+        }
+
+        private void FillLabors()
+        {
+            LaborGroup lg_NIR = new LaborGroup("1", "НИР");
+
+            new NirLaborList(lg_NIR);
+            dbContext.LaborGroups.Add(lg_NIR);
+
+            LaborGroup lg_OKR = new LaborGroup("2", "ОКР");
+            LaborGroup lg_OKR_s1 = new LaborGroup("2.1", "Этап 1. Эскизный проект", lg_OKR);
+            LaborGroup lg_OKR_s2 = new LaborGroup("2.2", "Этап 2. Технический проект", lg_OKR);
+
+            new OkrLaborList.Stage1(lg_OKR_s1);
+            new OkrLaborList(lg_OKR);
+        }
+
+        private void FillLaborVolumes()
+        {
+            
         }
     }
 
