@@ -4,14 +4,16 @@ using LaborVolumeCalculator.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaborVolumeCalculator.Migrations
 {
     [DbContext(typeof(LVCContext))]
-    partial class LVCContextModelSnapshot : ModelSnapshot
+    [Migration("20200709134350_add_LaborGroupRelation")]
+    partial class add_LaborGroupRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,11 +117,6 @@ namespace LaborVolumeCalculator.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Level")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -161,30 +158,6 @@ namespace LaborVolumeCalculator.Migrations
                         .HasFilter("LaborGroupId IS NOT NULL");
 
                     b.ToTable("LaborGroupRelation","Dictionary");
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.LaborVolume", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("LaborID")
-                        .HasColumnType("int");
-
-                    b.Property<float>("MaxValue")
-                        .HasColumnType("real");
-
-                    b.Property<float>("MinValue")
-                        .HasColumnType("real");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("LaborID")
-                        .IsUnique();
-
-                    b.ToTable("LaborVolume","Dictionary");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Nir", b =>
@@ -350,15 +323,6 @@ namespace LaborVolumeCalculator.Migrations
                     b.HasOne("LaborVolumeCalculator.Models.Dictionary.LaborGroup", "ParentGroup")
                         .WithMany()
                         .HasForeignKey("ParentGroupId");
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.LaborVolume", b =>
-                {
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.Labor", "Labor")
-                        .WithOne()
-                        .HasForeignKey("LaborVolumeCalculator.Models.Dictionary.LaborVolume", "LaborID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.NirInnovationRate", b =>

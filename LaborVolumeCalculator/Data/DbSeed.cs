@@ -1,7 +1,11 @@
-﻿using LaborVolumeCalculator.Migrations;
+﻿using LaborVolumeCalculator.Data.Seeds;
+using LaborVolumeCalculator.Migrations;
 using LaborVolumeCalculator.Models;
+using LaborVolumeCalculator.Models.Dictionary;
+using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +31,7 @@ namespace LaborVolumeCalculator.Data
         {
             dbContext.Database.Migrate();
 
-            if (dbContext.Nirs.Any())
+            if (dbContext.NirScales.Any())
             {
                 return;
             }
@@ -124,7 +128,54 @@ namespace LaborVolumeCalculator.Data
             IEnumerable<OkrInnovationRate> sreuRates = SREU_ratesBinder.Bind(sreuRatesValues);
             dbContext.OkrInnovationRates.AddRange(sreuRates);
 
+            SeedNirLabors();
+            SeedOkrLabors();
+            SeedLaborVolumes();
+
             dbContext.SaveChanges();
+        }
+
+        private void SeedNirLabors()
+        {
+            LaborGroup lg_NIR = new LaborGroup("1", "НИР");
+
+            dbContext.LaborGroups.Add(lg_NIR);
+            dbContext.Labors.AddRange(new NirLaborsSeeds(lg_NIR));
+        }
+
+        private void SeedOkrLabors()
+        {
+            LaborGroup lg_OKR = new LaborGroup("2", "ОКР");
+            LaborGroup[] OKR_Stages = new LaborGroup[] {
+                lg_OKR,
+                new LaborGroup("2.1", "Этап 1. Эскизный проект", lg_OKR),
+                new LaborGroup("2.2", "Этап 2. Технический проект", lg_OKR),
+                new LaborGroup("2.3", "Этап 3. Разработка РКД для изготовления ОО изделия", lg_OKR),
+                new LaborGroup("2.4", "Этап 4. Изготовление ОО изделия", lg_OKR),
+                new LaborGroup("2.5", "Этап 5. Проведение ГИ ОО", lg_OKR),
+                new LaborGroup("2.6", "Этап 6. Утверждение РКД для организации промышленного(серийного) производства изделия", lg_OKR),
+                new LaborGroup("2.7", "Работы, осуществляемые в ходе всей ОКР", lg_OKR)
+            };
+
+            foreach (LaborGroup okrStage in OKR_Stages)
+            {
+                dbContext.LaborGroups.Add(okrStage);
+            }
+
+            dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage1(OKR_Stages[1]));
+            dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage2(OKR_Stages[2]));
+            dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage3(OKR_Stages[3]));
+            dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage4(OKR_Stages[4]));
+            dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage5(OKR_Stages[5]));
+            dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage6(OKR_Stages[6]));
+            dbContext.Labors.AddRange(new OkrLaborsSeeds.SharedLabors(OKR_Stages[7]));
+            dbContext.SaveChanges();
+        }
+
+        private void SeedLaborVolumes()
+        {
+            dbContext.LaborVolumes.AddRange(new LaborVolumesSeeds(dbContext.Labors).Data);
+            
         }
     }
 

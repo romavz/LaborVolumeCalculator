@@ -6,34 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200515193405_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200515193405_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200516170932_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200516170932_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200519094112_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200519094112_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200519095612_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200519095612_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200519104011_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200519104011_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200519104417_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200519104417_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200528114253_Add_OKR_Entities.cs" />
-    <Compile Remove="Migrations\20200528114253_Add_OKR_Entities.Designer.cs" />
-    <Compile Remove="Migrations\20200528135126_Add_OKR_Entities.cs" />
-    <Compile Remove="Migrations\20200528135126_Add_OKR_Entities.Designer.cs" />
-    <Compile Remove="Migrations\20200528135908_Add_OKR_Entities.cs" />
-    <Compile Remove="Migrations\20200528135908_Add_OKR_Entities.Designer.cs" />
-    <Compile Remove="Migrations\20200703115329_add_nir_scale.cs" />
-    <Compile Remove="Migrations\20200703115329_add_nir_scale.Designer.cs" />
-    <Compile Remove="Migrations\20200703121003_add_nir_scale.cs" />
-    <Compile Remove="Migrations\20200703121003_add_nir_scale.Designer.cs" />
-    <Compile Remove="Migrations\20200703121406_add_nir_scale.cs" />
-    <Compile Remove="Migrations\20200703121406_add_nir_scale.Designer.cs" />
-    <Compile Remove="Migrations\20200703124453_clear_Nir_table.cs" />
-    <Compile Remove="Migrations\20200703124453_clear_Nir_table.Designer.cs" />
-    <Compile Remove="Migrations\20200703125448_add_NirScale.cs" />
-    <Compile Remove="Migrations\20200703125448_add_NirScale.Designer.cs" />
+    
   </ItemGroup>
 
   <ItemGroup>
