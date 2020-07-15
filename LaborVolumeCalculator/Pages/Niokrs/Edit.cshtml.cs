@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using LaborVolumeCalculator.Data;
+using LaborVolumeCalculator.Models.Dictionary;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace LaborVolumeCalculator.Pages.Nirs
+namespace LaborVolumeCalculator.Pages.Niokrs
 {
     public class EditModel : PageModel
     {
-        private readonly LaborVolumeCalculator.Data.LVCContext _context;
+        private readonly LVCContext _context;
 
-        public EditModel(LaborVolumeCalculator.Data.LVCContext context)
+        public EditModel(LVCContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public Nir Nir { get; set; }
+        public Niokr Niokr { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,9 +27,9 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 return NotFound();
             }
 
-            Nir = await _context.Nirs.FirstOrDefaultAsync(m => m.ID == id);
+            Niokr = await _context.Niokrs.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (Nir == null)
+            if (Niokr == null)
             {
                 return NotFound();
             }
@@ -48,7 +45,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 return Page();
             }
 
-            _context.Attach(Nir).State = EntityState.Modified;
+            _context.Attach(Niokr).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +53,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NirExists(Nir.ID))
+                if (!NiokrExists(Niokr.ID))
                 {
                     return NotFound();
                 }
@@ -69,9 +66,9 @@ namespace LaborVolumeCalculator.Pages.Nirs
             return RedirectToPage("./Index");
         }
 
-        private bool NirExists(int id)
+        private bool NiokrExists(int id)
         {
-            return _context.Nirs.Any(e => e.ID == id);
+            return _context.Niokrs.Any(e => e.ID == id);
         }
     }
 }

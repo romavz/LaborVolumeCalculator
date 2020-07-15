@@ -7,20 +7,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models;
+using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Pages.Nirs
 {
-    public class DeleteModel : PageModel
+    public class DetailsModel : PageModel
     {
         private readonly LaborVolumeCalculator.Data.LVCContext _context;
 
-        public DeleteModel(LaborVolumeCalculator.Data.LVCContext context)
+        public DetailsModel(LaborVolumeCalculator.Data.LVCContext context)
         {
             _context = context;
         }
 
-        [BindProperty]
-        public Nir Nir { get; set; }
+        public Niokr Niokr { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,31 +29,13 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 return NotFound();
             }
 
-            Nir = await _context.Nirs.FirstOrDefaultAsync(m => m.ID == id);
+            Niokr = await _context.Niokrs.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (Nir == null)
+            if (Niokr == null)
             {
                 return NotFound();
             }
             return Page();
-        }
-
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Nir = await _context.Nirs.FindAsync(id);
-
-            if (Nir != null)
-            {
-                _context.Nirs.Remove(Nir);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToPage("./Index");
         }
     }
 }

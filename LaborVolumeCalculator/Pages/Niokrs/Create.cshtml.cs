@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models;
+using LaborVolumeCalculator.Models.Dictionary;
 
-namespace LaborVolumeCalculator.Pages.Nirs
+namespace LaborVolumeCalculator.Pages.Niokrs
 {
     public class CreateModel : PageModel
     {
@@ -21,11 +22,12 @@ namespace LaborVolumeCalculator.Pages.Nirs
 
         public IActionResult OnGet()
         {
+            ViewData["NiokrCategoryID"] = new SelectList(_context.NiokrCategories, "ID", "Name");
             return Page();
         }
 
         [BindProperty]
-        public Nir Nir { get; set; }
+        public Niokr Niokr { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -36,7 +38,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 return Page();
             }
 
-            _context.Nirs.Add(Nir);
+            _context.Niokrs.Add(Niokr);
 
             await _context.SaveChangesAsync();
 

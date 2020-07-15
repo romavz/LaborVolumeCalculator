@@ -1,5 +1,5 @@
 ﻿@page
-@model LaborVolumeCalculator.Pages.Nirs.DeleteModel
+@model LaborVolumeCalculator.Pages.Niokrs.DeleteModel
 
 @{
     ViewData["Title"] = "Удалить";
@@ -9,31 +9,31 @@
 
 <h3>Вы действительто хотите удалить этот объект?</h3>
 <div>
-    <h4>НИР</h4>
+    <h4>@Html.DisplayNameFor(model => model.Niokr)</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nir.Name)
+            @Html.DisplayNameFor(model => model.Niokr.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nir.Name)
+            @Html.DisplayFor(model => model.Niokr.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nir.CreateTime)
+            @Html.DisplayNameFor(model => model.Niokr.CreateTime)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nir.CreateTime)
+            @Html.DisplayFor(model => model.Niokr.CreateTime)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nir.UpdateTime)
+            @Html.DisplayNameFor(model => model.Niokr.UpdateTime)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nir.UpdateTime)
+            @Html.DisplayFor(model => model.Niokr.UpdateTime)
         </dd>
     </dl>
     
     <form method="post">
-        <input type="hidden" asp-for="Nir.ID" />
+        <input type="hidden" asp-for="Niokr.ID" />
         <input type="submit" value="Удалить" class="btn btn-danger" /> |
         <a asp-page="./Index">Вернуться к списку</a>
     </form>

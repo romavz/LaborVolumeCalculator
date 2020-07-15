@@ -19,7 +19,7 @@ namespace LaborVolumeCalculator.Data
             new TimeUpdateService(this.ChangeTracker);
         }
 
-        public DbSet<Nir> Nirs { get; set; }
+        public DbSet<Niokr> Niokrs { get; set; }
         public DbSet<NirScale> NirScales { get; set; }
 
         public DbSet<NirInnovationRate> NirInnovationRates { get; set; }
@@ -42,7 +42,7 @@ namespace LaborVolumeCalculator.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Nir>().ToTable("Nir");
+            modelBuilder.Entity<Niokr>().ToTable("Niokr", Schema.Dictionary);
             modelBuilder.Entity<NirScale>().ToTable("NirScale");
             modelBuilder.Entity<NirInnovationProperty>().ToTable("NirInnovationProperty");
             modelBuilder
@@ -156,7 +156,7 @@ namespace LaborVolumeCalculator.Data
         private class Schema
         {
             public static string Dictionary => "Dictionary";
-            public static string Register => "Register";
+            public static string Registers => "Registers";
         }
 
         private class TimeUpdateService

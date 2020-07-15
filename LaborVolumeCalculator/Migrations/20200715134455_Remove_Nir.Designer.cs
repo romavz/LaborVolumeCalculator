@@ -4,14 +4,16 @@ using LaborVolumeCalculator.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaborVolumeCalculator.Migrations
 {
     [DbContext(typeof(LVCContext))]
-    partial class LVCContextModelSnapshot : ModelSnapshot
+    [Migration("20200715134455_Remove_Nir")]
+    partial class Remove_Nir
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,33 +187,6 @@ namespace LaborVolumeCalculator.Migrations
                         .IsUnique();
 
                     b.ToTable("LaborVolume","Dictionary");
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Niokr", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NiokrCategoryID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("NiokrCategoryID");
-
-                    b.ToTable("Niokr","Dictionary");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.NiokrCategory", b =>
@@ -397,15 +372,6 @@ namespace LaborVolumeCalculator.Migrations
                     b.HasOne("LaborVolumeCalculator.Models.Dictionary.Labor", "Labor")
                         .WithOne()
                         .HasForeignKey("LaborVolumeCalculator.Models.Dictionary.LaborVolume", "LaborID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Niokr", b =>
-                {
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.NiokrCategory", "NiokrCategory")
-                        .WithMany()
-                        .HasForeignKey("NiokrCategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
