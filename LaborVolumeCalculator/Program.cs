@@ -30,6 +30,7 @@ namespace LaborVolumeCalculator
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "Произошла ошибка во время первоначального заполнения БД.");
+                    throw ex;
                 }
             }
 

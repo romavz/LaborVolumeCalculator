@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200709132842_add_LaborGroupRelation.cs" />
-    <Compile Remove="Migrations\20200709132842_add_LaborGroupRelation.Designer.cs" />
+    
   </ItemGroup>
 
   <ItemGroup>

@@ -2,6 +2,7 @@
 using LaborVolumeCalculator.Migrations;
 using LaborVolumeCalculator.Models;
 using LaborVolumeCalculator.Models.Dictionary;
+using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Schema;
@@ -128,10 +129,8 @@ namespace LaborVolumeCalculator.Data
             dbContext.OkrInnovationRates.AddRange(sreuRates);
 
             SeedNirLabors();
-            
-            FillLabors();
-            
-            //FillLaborVolumes();
+            SeedOkrLabors();
+            SeedLaborVolumes();
 
             dbContext.SaveChanges();
         }
@@ -144,7 +143,7 @@ namespace LaborVolumeCalculator.Data
             dbContext.Labors.AddRange(new NirLaborsSeeds(lg_NIR));
         }
 
-        private void FillLabors()
+        private void SeedOkrLabors()
         {
             LaborGroup lg_OKR = new LaborGroup("2", "ОКР");
             LaborGroup[] OKR_Stages = new LaborGroup[] {
@@ -170,10 +169,12 @@ namespace LaborVolumeCalculator.Data
             dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage5(OKR_Stages[5]));
             dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage6(OKR_Stages[6]));
             dbContext.Labors.AddRange(new OkrLaborsSeeds.SharedLabors(OKR_Stages[7]));
+            dbContext.SaveChanges();
         }
 
-        private void FillLaborVolumes()
+        private void SeedLaborVolumes()
         {
+            dbContext.LaborVolumes.AddRange(new LaborVolumesSeeds(dbContext.Labors).Data);
             
         }
     }

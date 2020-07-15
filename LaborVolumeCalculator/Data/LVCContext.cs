@@ -7,6 +7,7 @@ using LaborVolumeCalculator.Models;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using LaborVolumeCalculator.Models.Dictionary;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LaborVolumeCalculator.Data
 {
@@ -33,6 +34,11 @@ namespace LaborVolumeCalculator.Data
 
         public DbSet<Labor> Labors { get; set; }
 
+        public DbSet<LaborGroupRelation> LaborGroupRelations { get; set; }
+
+        public DbSet<LaborVolume> LaborVolumes { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Nir>().ToTable("Nir");
@@ -42,10 +48,10 @@ namespace LaborVolumeCalculator.Data
                 .Entity<NirInnovationRate>()
                 .ToTable("NirInnovationRate")
                 .HasKey(key => new { key.NirScaleID, key.NirInnovationPropertyID });
-            
+
             modelBuilder.Entity<DeviceComposition>().ToTable("DeviceComposition");
             modelBuilder.Entity<OkrInnovationProperty>().ToTable("OkrInnovationProperty");
-            
+
             modelBuilder.Entity<OkrInnovationRate>().ToTable("OkrInnovationRate")
                 .HasKey(key => new { key.OkrInnovationPropertyID, key.DeviceCompositionID });
             modelBuilder.Entity<OkrInnovationRate>()
@@ -59,72 +65,88 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<DeviceComplexityRate>()
                 .Property("Value").HasColumnType("DECIMAL(8, 4)");
 
-            var lg_entity = modelBuilder.Entity<LaborGroup>().ToTable("LaborGroup", Schema.Dictionary);
-                
-            lg_entity.HasIndex(i => new { i.ParentGroupId });
+            modelBuilder.Entity<LaborGroup>(LaborGroupConfigure);
+            modelBuilder.Entity<LaborGroupRelation>(LaborGroupRelationConfigure);
+            modelBuilder.Entity<Labor>(LaborConfigure);
             
-            lg_entity
+            modelBuilder.Entity<LaborVolume>().ToTable("LaborVolume", Schema.Dictionary)
+                .HasOne(i => i.Labor)
+                .WithOne();
+
+        }
+
+        private void LaborGroupConfigure(EntityTypeBuilder<LaborGroup> entity)
+        {
+            entity.ToTable("LaborGroup", Schema.Dictionary);
+
+            entity.HasIndex(i => new { i.ParentGroupId });
+
+            entity
                 .HasIndex(i => new { i.Code })
                 .IsUnique();
 
-            lg_entity
+            entity
                 .Property(p => p.Code)
                 .IsRequired();
 
-            lg_entity
+            entity
                 .Property(p => p.Name)
                 .IsRequired();
 
-            lg_entity
+            entity
                 .HasMany(lg => lg.Labors)
                 .WithOne(l => l.LaborGroup);
 
-            lg_entity
+            entity
                 .Property(p => p.Level)
                 .IsRequired()
                 .HasDefaultValue(0);
+        }
 
-            modelBuilder.Entity<LaborGroupRelation>().ToTable("LaborGroupRelation", Schema.Dictionary)
+        private void LaborGroupRelationConfigure(EntityTypeBuilder<LaborGroupRelation> entity)
+        {
+            entity.ToTable("LaborGroupRelation", Schema.Dictionary)
                 .HasKey(k => new { k.ID });
 
-            modelBuilder.Entity<LaborGroupRelation>()
+            entity
                 .HasIndex(i => new { i.LaborGroupId, i.ParentGroupId })
                 .IsUnique()
                 .HasFilter("LaborGroupId IS NOT NULL");
 
-            modelBuilder.Entity<LaborGroupRelation>()
+            entity
                 .HasIndex(i => i.LaborGroupId);
 
-            modelBuilder.Entity<LaborGroupRelation>()
+            entity
                 .Property(p => p.LaborGroupId)
                 .IsRequired();
 
-            modelBuilder.Entity<LaborGroupRelation>()
+            entity
                 .HasOne(ulg => ulg.LaborGroup)
                 .WithMany(lg => lg.ParentGroups)
                 .HasForeignKey(fk => fk.LaborGroupId);
 
-            modelBuilder.Entity<LaborGroupRelation>()
+            entity
                 .Property(p => p.ParentGroupId)
                 .IsRequired(false);
+        }
 
+        private void LaborConfigure(EntityTypeBuilder<Labor> laborEntity)
+        {
+            laborEntity.ToTable("Labor", Schema.Dictionary);
 
-            var laborsEntity = modelBuilder.Entity<Labor>().ToTable("Labor", Schema.Dictionary);
-
-            laborsEntity
+            laborEntity
                 .HasIndex(i => i.Code)
                 .IsUnique();
 
-            laborsEntity
+            laborEntity
                 .Property(p => p.Code)
                 .IsRequired();
 
-            laborsEntity
+            laborEntity
                 .Property(p => p.Name)
                 .IsRequired();
-
         }
-    
+
         private class Schema
         {
             public static string Dictionary => "Dictionary";

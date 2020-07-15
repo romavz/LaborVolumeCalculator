@@ -13,13 +13,15 @@ namespace LaborVolumeCalculator.Models.Dictionary
 
         public LaborVolume(Labor labor, float minValue, float maxValue) : this()
         {
-            LaborId = labor.ID;
+            LaborID = labor.ID;
             Labor = labor;
             MinValue = minValue;
             MaxValue = maxValue;
         }
 
-        public int LaborId { get; set; }
+        public int ID { get; set; }
+
+        public int LaborID { get; set; }
         [Display(Name = "Работа")]
         public Labor Labor { get; set; }
 
