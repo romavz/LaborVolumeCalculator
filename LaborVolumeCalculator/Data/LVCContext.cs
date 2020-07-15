@@ -37,7 +37,8 @@ namespace LaborVolumeCalculator.Data
         public DbSet<LaborGroupRelation> LaborGroupRelations { get; set; }
 
         public DbSet<LaborVolume> LaborVolumes { get; set; }
-
+        public DbSet<NiokrCategory> NiokrCategories { get; set; }
+        public DbSet<NiokrStage> NiokrStages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -73,6 +74,11 @@ namespace LaborVolumeCalculator.Data
                 .HasOne(i => i.Labor)
                 .WithOne();
 
+            modelBuilder.Entity<NiokrCategory>().ToTable("NiokrCategory", Schema.Dictionary);
+
+            modelBuilder.Entity<NiokrStage>().ToTable("NiokrStage", Schema.Dictionary)
+                .HasOne(s => s.NiokrCategory)
+                .WithMany();
         }
 
         private void LaborGroupConfigure(EntityTypeBuilder<LaborGroup> entity)
@@ -150,6 +156,7 @@ namespace LaborVolumeCalculator.Data
         private class Schema
         {
             public static string Dictionary => "Dictionary";
+            public static string Register => "Register";
         }
 
         private class TimeUpdateService

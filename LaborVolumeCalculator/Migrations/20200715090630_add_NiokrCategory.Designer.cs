@@ -4,14 +4,16 @@ using LaborVolumeCalculator.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaborVolumeCalculator.Migrations
 {
     [DbContext(typeof(LVCContext))]
-    partial class LVCContextModelSnapshot : ModelSnapshot
+    [Migration("20200715090630_add_NiokrCategory")]
+    partial class add_NiokrCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,26 +204,6 @@ namespace LaborVolumeCalculator.Migrations
                     b.ToTable("NiokrCategory","Dictionary");
                 });
 
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.NiokrStage", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NiokrCategoryID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("NiokrCategoryID");
-
-                    b.ToTable("NiokrStage","Dictionary");
-                });
-
             modelBuilder.Entity("LaborVolumeCalculator.Models.Nir", b =>
                 {
                     b.Property<int>("ID")
@@ -392,15 +374,6 @@ namespace LaborVolumeCalculator.Migrations
                     b.HasOne("LaborVolumeCalculator.Models.Dictionary.Labor", "Labor")
                         .WithOne()
                         .HasForeignKey("LaborVolumeCalculator.Models.Dictionary.LaborVolume", "LaborID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.NiokrStage", b =>
-                {
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.NiokrCategory", "NiokrCategory")
-                        .WithMany()
-                        .HasForeignKey("NiokrCategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

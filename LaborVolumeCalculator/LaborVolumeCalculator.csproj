@@ -6,7 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    
+    <Compile Remove="Migrations\20200715090239_add_NiokrCategory.cs" />
+    <Compile Remove="Migrations\20200715090239_add_NiokrCategory.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
