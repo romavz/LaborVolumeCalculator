@@ -132,7 +132,44 @@ namespace LaborVolumeCalculator.Data
             SeedOkrLabors();
             SeedLaborVolumes();
 
+            var NirCategory = new NiokrCategory("НИР");
+            var OkrCategory = new NiokrCategory("ОКР");
+            dbContext.NiokrCategories.Add(NirCategory);
+            dbContext.NiokrCategories.Add(OkrCategory);
+
+            SeedNirStages(NirCategory);
+            SeedOkrStages(OkrCategory);
+
             dbContext.SaveChanges();
+        }
+
+        private void SeedNirStages(NiokrCategory nirCategory)
+        {
+            NiokrStage[] niokrStages = new NiokrStage[]
+            {
+                new NiokrStage("Этап 1.", nirCategory),
+                new NiokrStage("Этап 2.", nirCategory),
+                new NiokrStage("Этап 3.", nirCategory),
+                new NiokrStage("Этап 4.", nirCategory),
+            };
+            Array.Reverse(niokrStages);
+            dbContext.AddRange(niokrStages);
+        }
+
+        private void SeedOkrStages(NiokrCategory okrCategory)
+        {
+            NiokrStage[] niokrStages = new NiokrStage[]
+            {
+                new NiokrStage("Этап 1. Эскизный проект", okrCategory),
+                new NiokrStage("Этап 2. Технический проект", okrCategory),
+                new NiokrStage("Этап 3. Разработка РКД для изготовления ОО изделия", okrCategory),
+                new NiokrStage("Этап 4. Изготовление ОО изделия", okrCategory),
+                new NiokrStage("Этап 5. Проведение ГИ ОО", okrCategory),
+                new NiokrStage("Этап 6. Утверждение РКД для организации промышленного(серийного) производства изделия", okrCategory),
+                new NiokrStage("Работы, осуществляемые в ходе всей ОКР", okrCategory),
+            };
+            Array.Reverse(niokrStages);
+            dbContext.AddRange(niokrStages);
         }
 
         private void SeedNirLabors()
