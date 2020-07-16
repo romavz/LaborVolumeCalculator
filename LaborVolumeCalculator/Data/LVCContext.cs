@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using LaborVolumeCalculator.Models.Dictionary;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using LaborVolumeCalculator.Models.Documents;
 
 namespace LaborVolumeCalculator.Data
 {
@@ -39,6 +40,10 @@ namespace LaborVolumeCalculator.Data
         public DbSet<LaborVolume> LaborVolumes { get; set; }
         public DbSet<NiokrCategory> NiokrCategories { get; set; }
         public DbSet<NiokrStage> NiokrStages { get; set; }
+
+        public DbSet<NirLaborVolumesDoc> NirLaborVolumesDocs { get; set; }
+
+        public DbSet<NirLaborVolumesDocRecord> NirLaborVolumesDocRecords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -79,6 +84,25 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<NiokrStage>().ToTable("NiokrStage", Schema.Dictionary)
                 .HasOne(s => s.NiokrCategory)
                 .WithMany();
+
+            modelBuilder.Entity<NirLaborVolumesDoc>(d =>
+            {
+                d.ToTable("NirLaborVolumesDoc", Schema.Documents)
+                    .OwnsMany<NirLaborVolumesDocRecord>(r => r.NirLaborVolumesDocRecords, dr =>
+                    {
+                        dr.WithOwner(o => o.NirLaborVolumesDoc);
+                        dr.ToTable("NirLaborVolumesDocRecord", Schema.Documents)
+                            .HasKey(k => new { k.NirLaborVolumesDocID, k.LaborID });
+                        dr.HasOne<Labor>(r => r.Labor).WithMany().OnDelete(DeleteBehavior.NoAction);
+                    });
+
+                d.Property(p => p.IsImplemented).HasDefaultValue(false);
+
+                d.HasOne(r => r.Niokr)      .WithMany().OnDelete(DeleteBehavior.NoAction);
+                d.HasOne(r => r.NiokrStage) .WithMany().OnDelete(DeleteBehavior.NoAction);
+                d.HasOne(r => r.NirScale)   .WithMany().OnDelete(DeleteBehavior.NoAction);
+                d.HasOne(r => r.NirInnovationProperty).WithMany().OnDelete(DeleteBehavior.NoAction);
+            });
         }
 
         private void LaborGroupConfigure(EntityTypeBuilder<LaborGroup> entity)
@@ -157,6 +181,7 @@ namespace LaborVolumeCalculator.Data
         {
             public static string Dictionary => "Dictionary";
             public static string Registers => "Registers";
+            public static string Documents => "Documents";
         }
 
         private class TimeUpdateService
