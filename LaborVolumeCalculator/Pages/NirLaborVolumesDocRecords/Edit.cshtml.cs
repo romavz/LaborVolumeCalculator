@@ -32,14 +32,15 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocRecords
 
             NirLaborVolumesDocRecord = await _context.NirLaborVolumesDocRecords
                 .Include(n => n.Labor)
-                .Include(n => n.NirLaborVolumesDoc).FirstOrDefaultAsync(m => m.NirLaborVolumesDocID == id);
+                .Include(n => n.NirLaborVolumesDoc).FirstOrDefaultAsync(m => m.ID == id);
 
             if (NirLaborVolumesDocRecord == null)
             {
                 return NotFound();
             }
-           ViewData["LaborID"] = new SelectList(_context.Labors, "ID", "Code");
-           ViewData["NirLaborVolumesDocID"] = new SelectList(_context.NirLaborVolumesDocs, "ID", "ID");
+            
+            ViewData["LaborID"] = new SelectList(_context.Labors, "ID", "Code");
+            ViewData["NirLaborVolumesDocID"] = new SelectList(_context.NirLaborVolumesDocs, "ID", "Name");
             return Page();
         }
 
@@ -70,7 +71,7 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocRecords
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../NirLaborVolumesDocs/Details", new { ID = NirLaborVolumesDocRecord.NirLaborVolumesDocID } );
         }
 
         private bool NirLaborVolumesDocRecordExists(int id)

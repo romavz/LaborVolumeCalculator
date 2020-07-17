@@ -39,19 +39,7 @@
             @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.NiokrStage)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NirLaborVolumesDoc.NiokrStage.ID)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.NirInnovationProperty)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NirLaborVolumesDoc.NirInnovationProperty.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.NirScale)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NirLaborVolumesDoc.NirScale.Name)
+            @Html.DisplayFor(model => model.NirLaborVolumesDoc.NiokrStage.Name)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.NirInnovationRate)
@@ -70,7 +58,7 @@
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.NirLaborVolumesDoc.ID">Изменить</a> |
     <a asp-page="./Index">Вернуться к списку</a> |
-    <a asp-page="../NirLaborVolumesDocRecords/Create"> Добавить трудозатраты </a>
+    <a asp-page="../NirLaborVolumesDocRecords/Create" asp-route-docId="@Model.NirLaborVolumesDoc.ID"> Добавить трудозатраты </a>
 </div>
 
 <hr />

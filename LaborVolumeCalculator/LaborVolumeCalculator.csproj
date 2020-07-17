@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="web.config" />
   </ItemGroup>
 

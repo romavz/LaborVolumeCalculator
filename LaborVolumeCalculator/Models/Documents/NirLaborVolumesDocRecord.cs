@@ -21,6 +21,7 @@ namespace LaborVolumeCalculator.Models.Documents
             LaborID = labor.ID;
         }
 
+        public int ID { get; set; }
         public int NirLaborVolumesDocID { get; set; }
 
         public NirLaborVolumesDoc NirLaborVolumesDoc { get; set; }

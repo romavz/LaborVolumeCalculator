@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Documents;
+using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
 {
@@ -33,8 +34,6 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
             NirLaborVolumesDoc = await _context.NirLaborVolumesDocs
                 .Include(n => n.Niokr)
                 .Include(n => n.NiokrStage)
-                .Include(n => n.NirInnovationProperty)
-                .Include(n => n.NirScale)
                 .Include(n => n.NirLaborVolumesDocRecords)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
@@ -42,10 +41,18 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
             {
                 return NotFound();
             }
-           ViewData["NiokrID"] = new SelectList(_context.Niokrs, "ID", "Name");
-           ViewData["NiokrStageID"] = new SelectList(_context.NiokrStages, "ID", "ID");
-           ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
-           ViewData["NirScaleID"] = new SelectList(_context.NirScales, "ID", "Name");
+            var niokrs = _context.Niokrs
+                 .Include(i => i.NiokrCategory)
+                 .Where(i => i.NiokrCategory.Name == NiokrCategory.NIR.Name);
+
+            var niokrStages = _context.NiokrStages
+                .Include(i => i.NiokrCategory)
+                .Where(i => i.NiokrCategory.Name == NiokrCategory.NIR.Name);
+
+            ViewData["NiokrID"] = new SelectList(niokrs, "ID", "Name");
+            ViewData["NiokrStageID"] = new SelectList(niokrStages, "ID", "Name");
+            ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
+            ViewData["NirScaleID"] = new SelectList(_context.NirScales, "ID", "Name");
             return Page();
         }
 

@@ -33,8 +33,6 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
             NirLaborVolumesDoc = await _context.NirLaborVolumesDocs
                 .Include(n => n.Niokr)
                 .Include(n => n.NiokrStage)
-                .Include(n => n.NirInnovationProperty)
-                .Include(n => n.NirScale)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
             if (NirLaborVolumesDoc == null)
@@ -43,8 +41,8 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
             }
 
             NirLaborVolumesDocRecords = await _context.NirLaborVolumesDocRecords
-                .Include(i => i.Labor)
-                .Where(i => i.NirLaborVolumesDocID == id)
+                .Include(n => n.Labor)
+                .Where(n => n.NirLaborVolumesDocID == id)
                 .ToListAsync();
 
             return Page();

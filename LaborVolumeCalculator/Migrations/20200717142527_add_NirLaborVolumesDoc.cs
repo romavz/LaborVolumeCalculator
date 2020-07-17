@@ -22,8 +22,6 @@ namespace LaborVolumeCalculator.Migrations
                     Date = table.Column<DateTime>(nullable: false),
                     NiokrID = table.Column<int>(nullable: false),
                     NiokrStageID = table.Column<int>(nullable: false),
-                    NirInnovationPropertyID = table.Column<int>(nullable: false),
-                    NirScaleID = table.Column<int>(nullable: false),
                     NirInnovationRate = table.Column<float>(nullable: false),
                     Total = table.Column<float>(nullable: false)
                 },
@@ -42,16 +40,6 @@ namespace LaborVolumeCalculator.Migrations
                         principalSchema: "Dictionary",
                         principalTable: "NiokrStage",
                         principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_NirLaborVolumesDoc_NirInnovationProperty_NirInnovationPropertyID",
-                        column: x => x.NirInnovationPropertyID,
-                        principalTable: "NirInnovationProperty",
-                        principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_NirLaborVolumesDoc_NirScale_NirScaleID",
-                        column: x => x.NirScaleID,
-                        principalTable: "NirScale",
-                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -59,6 +47,8 @@ namespace LaborVolumeCalculator.Migrations
                 schema: "Documents",
                 columns: table => new
                 {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     NirLaborVolumesDocID = table.Column<int>(nullable: false),
                     LaborID = table.Column<int>(nullable: false),
                     Volume = table.Column<float>(nullable: false),
@@ -66,7 +56,7 @@ namespace LaborVolumeCalculator.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NirLaborVolumesDocRecord", x => new { x.NirLaborVolumesDocID, x.LaborID });
+                    table.PrimaryKey("PK_NirLaborVolumesDocRecord", x => x.ID);
                     table.ForeignKey(
                         name: "FK_NirLaborVolumesDocRecord_Labor_LaborID",
                         column: x => x.LaborID,
@@ -95,22 +85,16 @@ namespace LaborVolumeCalculator.Migrations
                 column: "NiokrStageID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NirLaborVolumesDoc_NirInnovationPropertyID",
-                schema: "Documents",
-                table: "NirLaborVolumesDoc",
-                column: "NirInnovationPropertyID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_NirLaborVolumesDoc_NirScaleID",
-                schema: "Documents",
-                table: "NirLaborVolumesDoc",
-                column: "NirScaleID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_NirLaborVolumesDocRecord_LaborID",
                 schema: "Documents",
                 table: "NirLaborVolumesDocRecord",
                 column: "LaborID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NirLaborVolumesDocRecord_NirLaborVolumesDocID",
+                schema: "Documents",
+                table: "NirLaborVolumesDocRecord",
+                column: "NirLaborVolumesDocID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

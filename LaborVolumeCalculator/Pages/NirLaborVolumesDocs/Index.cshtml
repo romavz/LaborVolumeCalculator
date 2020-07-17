@@ -56,8 +56,9 @@
                 @Html.DisplayFor(modelItem => item.Total)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Изменить</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Открыть</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Удалить</a>
             </td>
         </tr>
 }

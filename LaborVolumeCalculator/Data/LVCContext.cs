@@ -87,21 +87,22 @@ namespace LaborVolumeCalculator.Data
 
             modelBuilder.Entity<NirLaborVolumesDoc>(d =>
             {
-                d.ToTable("NirLaborVolumesDoc", Schema.Documents)
-                    .OwnsMany<NirLaborVolumesDocRecord>(r => r.NirLaborVolumesDocRecords, dr =>
-                    {
-                        dr.WithOwner(o => o.NirLaborVolumesDoc);
-                        dr.ToTable("NirLaborVolumesDocRecord", Schema.Documents)
-                            .HasKey(k => new { k.NirLaborVolumesDocID, k.LaborID });
-                        dr.HasOne<Labor>(r => r.Labor).WithMany().OnDelete(DeleteBehavior.NoAction);
-                    });
+                d.ToTable("NirLaborVolumesDoc", Schema.Documents);
+                d.HasMany(r => r.NirLaborVolumesDocRecords)
+                    .WithOne(r => r.NirLaborVolumesDoc).OnDelete(DeleteBehavior.Cascade);
 
                 d.Property(p => p.IsImplemented).HasDefaultValue(false);
+                d.HasOne(r => r.Niokr).WithMany().OnDelete(DeleteBehavior.NoAction);
+                d.HasOne(r => r.NiokrStage).WithMany().OnDelete(DeleteBehavior.NoAction);
+            });
 
-                d.HasOne(r => r.Niokr)      .WithMany().OnDelete(DeleteBehavior.NoAction);
-                d.HasOne(r => r.NiokrStage) .WithMany().OnDelete(DeleteBehavior.NoAction);
-                d.HasOne(r => r.NirScale)   .WithMany().OnDelete(DeleteBehavior.NoAction);
-                d.HasOne(r => r.NirInnovationProperty).WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<NirLaborVolumesDocRecord>(e =>
+            {
+                e.ToTable("NirLaborVolumesDocRecord", Schema.Documents);
+                e.HasOne<NirLaborVolumesDoc>(d => d.NirLaborVolumesDoc)
+                    .WithMany(r => r.NirLaborVolumesDocRecords)
+                    .OnDelete(DeleteBehavior.Cascade);
+                e.HasOne<Labor>(r => r.Labor).WithMany().OnDelete(DeleteBehavior.NoAction);
             });
         }
 

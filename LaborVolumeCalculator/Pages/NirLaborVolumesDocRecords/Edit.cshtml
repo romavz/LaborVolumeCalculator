@@ -9,31 +9,36 @@
 
 <h4>NirLaborVolumesDocRecord</h4>
 <hr />
+
+<h4>@Html.DisplayFor(model => model.NirLaborVolumesDocRecord.NirLaborVolumesDoc.Number)</h4>
+
+<hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="NirLaborVolumesDocRecord.NirLaborVolumesDocID" />
-            <input type="hidden" asp-for="NirLaborVolumesDocRecord.LaborID" />
+            <input hidden asp-for="NirLaborVolumesDocRecord.NirLaborVolumesDocID" class="form-control" value="@Model.NirLaborVolumesDocRecord.NirLaborVolumesDocID" />
+
+            <div class="form-group">
+                <label asp-for="NirLaborVolumesDocRecord.LaborID" class="control-label"></label>
+                <select asp-for="NirLaborVolumesDocRecord.LaborID" class="form-control" asp-items="ViewBag.LaborID"></select>
+                <span asp-validation-for="NirLaborVolumesDocRecord.LaborID" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="NirLaborVolumesDocRecord.Volume" class="control-label"></label>
                 <input asp-for="NirLaborVolumesDocRecord.Volume" class="form-control" />
                 <span asp-validation-for="NirLaborVolumesDocRecord.Volume" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="NirLaborVolumesDocRecord.Calculation" class="control-label"></label>
-                <input asp-for="NirLaborVolumesDocRecord.Calculation" class="form-control" />
-                <span asp-validation-for="NirLaborVolumesDocRecord.Calculation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="../NirLaborVolumesDocs/Details" asp-route-id="@Model.NirLaborVolumesDocRecord.NirLaborVolumesDocID">Вернуться</a>
 </div>
 
 @section Scripts {

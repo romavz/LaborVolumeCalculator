@@ -27,15 +27,7 @@ namespace LaborVolumeCalculator.Models.Documents
         public int NiokrStageID { get; set; }
 
         public NiokrStage NiokrStage { get; set; }
-
-        public int NirInnovationPropertyID { get; set; }
-
-        public NirInnovationProperty NirInnovationProperty { get; set; }
-
-        public int NirScaleID { get; set; }
-
-        public NirScale NirScale { get; set; }
-
+        
         public float NirInnovationRate { get; set; }
 
         public List<NirLaborVolumesDocRecord> NirLaborVolumesDocRecords { get; set; }

@@ -270,14 +270,8 @@ namespace LaborVolumeCalculator.Migrations
                     b.Property<int>("NiokrStageID")
                         .HasColumnType("int");
 
-                    b.Property<int>("NirInnovationPropertyID")
-                        .HasColumnType("int");
-
                     b.Property<float>("NirInnovationRate")
                         .HasColumnType("real");
-
-                    b.Property<int>("NirScaleID")
-                        .HasColumnType("int");
 
                     b.Property<string>("Number")
                         .HasColumnType("nvarchar(max)");
@@ -291,11 +285,35 @@ namespace LaborVolumeCalculator.Migrations
 
                     b.HasIndex("NiokrStageID");
 
-                    b.HasIndex("NirInnovationPropertyID");
-
-                    b.HasIndex("NirScaleID");
-
                     b.ToTable("NirLaborVolumesDoc","Documents");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Documents.NirLaborVolumesDocRecord", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<float>("Calculation")
+                        .HasColumnType("real");
+
+                    b.Property<int>("LaborID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NirLaborVolumesDocID")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Volume")
+                        .HasColumnType("real");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LaborID");
+
+                    b.HasIndex("NirLaborVolumesDocID");
+
+                    b.ToTable("NirLaborVolumesDocRecord","Documents");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.NirInnovationProperty", b =>
@@ -481,48 +499,21 @@ namespace LaborVolumeCalculator.Migrations
                         .HasForeignKey("NiokrStageID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+                });
 
-                    b.HasOne("LaborVolumeCalculator.Models.NirInnovationProperty", "NirInnovationProperty")
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Documents.NirLaborVolumesDocRecord", b =>
+                {
+                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.Labor", "Labor")
                         .WithMany()
-                        .HasForeignKey("NirInnovationPropertyID")
+                        .HasForeignKey("LaborID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("LaborVolumeCalculator.Models.NirScale", "NirScale")
-                        .WithMany()
-                        .HasForeignKey("NirScaleID")
-                        .OnDelete(DeleteBehavior.NoAction)
+                    b.HasOne("LaborVolumeCalculator.Models.Documents.NirLaborVolumesDoc", "NirLaborVolumesDoc")
+                        .WithMany("NirLaborVolumesDocRecords")
+                        .HasForeignKey("NirLaborVolumesDocID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.OwnsMany("LaborVolumeCalculator.Models.Documents.NirLaborVolumesDocRecord", "NirLaborVolumesDocRecords", b1 =>
-                        {
-                            b1.Property<int>("NirLaborVolumesDocID")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("LaborID")
-                                .HasColumnType("int");
-
-                            b1.Property<float>("Calculation")
-                                .HasColumnType("real");
-
-                            b1.Property<float>("Volume")
-                                .HasColumnType("real");
-
-                            b1.HasKey("NirLaborVolumesDocID", "LaborID");
-
-                            b1.HasIndex("LaborID");
-
-                            b1.ToTable("NirLaborVolumesDocRecord","Documents");
-
-                            b1.HasOne("LaborVolumeCalculator.Models.Dictionary.Labor", "Labor")
-                                .WithMany()
-                                .HasForeignKey("LaborID")
-                                .OnDelete(DeleteBehavior.NoAction)
-                                .IsRequired();
-
-                            b1.WithOwner("NirLaborVolumesDoc")
-                                .HasForeignKey("NirLaborVolumesDocID");
-                        });
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.NirInnovationRate", b =>

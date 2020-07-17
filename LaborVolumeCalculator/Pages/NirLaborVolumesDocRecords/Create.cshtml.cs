@@ -19,15 +19,24 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocRecords
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(int docId)
         {
-        ViewData["LaborID"] = new SelectList(_context.Labors, "ID", "Code");
-        ViewData["NirLaborVolumesDocID"] = new SelectList(_context.NirLaborVolumesDocs, "ID", "ID");
+            if (!_context.NirLaborVolumesDocs.Any(d => d.ID == docId))
+            {
+                return NotFound();
+            }
+
+            ViewData["LaborID"] = new SelectList(_context.Labors, "ID", "Name");
+
+            NirLaborVolumesDoc = _context.NirLaborVolumesDocs.Find(docId);
+
             return Page();
         }
 
         [BindProperty]
         public NirLaborVolumesDocRecord NirLaborVolumesDocRecord { get; set; }
+
+        public NirLaborVolumesDoc NirLaborVolumesDoc { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -39,9 +48,10 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocRecords
             }
 
             _context.NirLaborVolumesDocRecords.Add(NirLaborVolumesDocRecord);
+
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../NirLaborVolumesDocs/Details", new { ID = NirLaborVolumesDocRecord.NirLaborVolumesDocID });
         }
     }
 }
