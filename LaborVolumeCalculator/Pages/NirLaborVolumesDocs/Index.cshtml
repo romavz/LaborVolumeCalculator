@@ -1,0 +1,65 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.NirLaborVolumesDocs.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NirLaborVolumesDoc[0].IsImplemented)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NirLaborVolumesDoc[0].Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NirLaborVolumesDoc[0].Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NirLaborVolumesDoc[0].Niokr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NirLaborVolumesDoc[0].NiokrStage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NirLaborVolumesDoc[0].Total)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.NirLaborVolumesDoc) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsImplemented)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Niokr.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NiokrStage.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -132,8 +132,8 @@ namespace LaborVolumeCalculator.Data
             SeedOkrLabors();
             SeedLaborVolumes();
 
-            var NirCategory = new NiokrCategory("НИР");
-            var OkrCategory = new NiokrCategory("ОКР");
+            var NirCategory = NiokrCategory.NIR;
+            var OkrCategory = NiokrCategory.OKR;
             dbContext.NiokrCategories.Add(NirCategory);
             dbContext.NiokrCategories.Add(OkrCategory);
 

@@ -1,0 +1,47 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.NirLaborVolumesDocRecords.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>NirLaborVolumesDocRecord</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NirLaborVolumesDocRecord.NirLaborVolumesDocID" class="control-label"></label>
+                <select asp-for="NirLaborVolumesDocRecord.NirLaborVolumesDocID" class ="form-control" asp-items="ViewBag.NirLaborVolumesDocID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="NirLaborVolumesDocRecord.LaborID" class="control-label"></label>
+                <select asp-for="NirLaborVolumesDocRecord.LaborID" class ="form-control" asp-items="ViewBag.LaborID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="NirLaborVolumesDocRecord.Volume" class="control-label"></label>
+                <input asp-for="NirLaborVolumesDocRecord.Volume" class="form-control" />
+                <span asp-validation-for="NirLaborVolumesDocRecord.Volume" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NirLaborVolumesDocRecord.Calculation" class="control-label"></label>
+                <input asp-for="NirLaborVolumesDocRecord.Calculation" class="form-control" />
+                <span asp-validation-for="NirLaborVolumesDocRecord.Calculation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

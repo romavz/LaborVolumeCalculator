@@ -1,0 +1,120 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.NirLaborVolumesDocs.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>NirLaborVolumesDoc</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.IsImplemented)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirLaborVolumesDoc.IsImplemented)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.Number)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirLaborVolumesDoc.Number)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirLaborVolumesDoc.Date)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.Niokr)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirLaborVolumesDoc.Niokr.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.NiokrStage)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirLaborVolumesDoc.NiokrStage.ID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.NirInnovationProperty)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirLaborVolumesDoc.NirInnovationProperty.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.NirScale)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirLaborVolumesDoc.NirScale.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.NirInnovationRate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirLaborVolumesDoc.NirInnovationRate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.Total)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NirLaborVolumesDoc.Total)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.NirLaborVolumesDoc.ID">Изменить</a> |
+    <a asp-page="./Index">Вернуться к списку</a> |
+    <a asp-page="../NirLaborVolumesDocRecords/Create"> Добавить трудозатраты </a>
+</div>
+
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NirLaborVolumesDocRecords[0].NirLaborVolumesDoc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NirLaborVolumesDocRecords[0].Labor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NirLaborVolumesDocRecords[0].Volume)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NirLaborVolumesDocRecords[0].Calculation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.NirLaborVolumesDocRecords)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NirLaborVolumesDoc.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Labor.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Volume)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Calculation)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { NirLaborVolumesDocID = item.NirLaborVolumesDocID, LaborID = item.LaborID }) |
+                    @Html.ActionLink("Details", "Details", new { NirLaborVolumesDocID = item.NirLaborVolumesDocID, LaborID = item.LaborID }) |
+                    @Html.ActionLink("Delete", "Delete", new { NirLaborVolumesDocID = item.NirLaborVolumesDocID, LaborID = item.LaborID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
