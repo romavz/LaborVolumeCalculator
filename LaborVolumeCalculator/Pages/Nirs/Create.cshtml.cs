@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Models;
 using LaborVolumeCalculator.Models.Dictionary;
+using Microsoft.EntityFrameworkCore;
 
-namespace LaborVolumeCalculator.Pages.Niokrs
+namespace LaborVolumeCalculator.Pages.Nirs
 {
     public class CreateModel : PageModel
     {
@@ -22,12 +22,13 @@ namespace LaborVolumeCalculator.Pages.Niokrs
 
         public IActionResult OnGet()
         {
-            ViewData["NiokrCategoryID"] = new SelectList(_context.NiokrCategories, "ID", "Name");
+            ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
+            ViewData["NirScaleID"] = new SelectList(_context.NirScales, "ID", "Name");
             return Page();
         }
 
         [BindProperty]
-        public Niokr Niokr { get; set; }
+        public Nir Nir { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -38,8 +39,14 @@ namespace LaborVolumeCalculator.Pages.Niokrs
                 return Page();
             }
 
-            _context.Niokrs.Add(Niokr);
+            var nirInnovationRate = await _context.NirInnovationRates
+                .Where(n => n.NirInnovationPropertyID == Nir.NirInnovationPropertyID)
+                .Where(n => n.NirScaleID == Nir.NirScaleID)
+                .FirstOrDefaultAsync();
 
+            Nir.NirInnovationRateID = nirInnovationRate.ID;
+
+            _context.Nirs.Add(Nir);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

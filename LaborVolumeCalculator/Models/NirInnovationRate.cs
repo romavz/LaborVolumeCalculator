@@ -25,6 +25,8 @@ namespace LaborVolumeCalculator.Models
             Value = value;
         }
 
+        public int ID { get; set; }
+
         [DisplayName("НИР")]
         public int NirScaleID { get; set; }
 

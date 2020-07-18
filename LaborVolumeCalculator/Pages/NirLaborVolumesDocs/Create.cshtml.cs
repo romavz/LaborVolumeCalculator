@@ -24,9 +24,9 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
 
         public IActionResult OnGet()
         {
-            var niokrs = _context.Niokrs
-                .Include(i => i.NiokrCategory)
-                .Where(i => i.NiokrCategory.Name == NiokrCategory.NIR.Name);
+            var niokrs = _context.Niokrs;
+                //.Include(i => i.NiokrCategory)
+                //.Where(i => i.NiokrCategory.Name == NiokrCategory.NIR.Name);
 
             var niokrStages = _context.NiokrStages
                 .Include(i => i.NiokrCategory)
@@ -50,6 +50,11 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
             {
                 return Page();
             }
+
+            //Nir nir = NirLaborVolumesDoc.Nir;
+
+            //NirLaborVolumesDoc.NirInnovationRate = (float)_context.NirInnovationRates.Where(d => d.ID == )
+            //    .FirstOrDefault().Value;
 
             _context.NirLaborVolumesDocs.Add(NirLaborVolumesDoc);
             await _context.SaveChangesAsync();

@@ -4,14 +4,16 @@ using LaborVolumeCalculator.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaborVolumeCalculator.Migrations
 {
     [DbContext(typeof(LVCContext))]
-    partial class LVCContextModelSnapshot : ModelSnapshot
+    [Migration("20200718123328_RefactorInnovationRates")]
+    partial class RefactorInnovationRates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,18 +203,12 @@ namespace LaborVolumeCalculator.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NiokrCategory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("UpdateTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("ID");
 
                     b.ToTable("Niokr","Dictionary");
-
-                    b.HasDiscriminator<string>("NiokrCategory").HasValue("Niokr");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.NiokrCategory", b =>
@@ -432,60 +428,6 @@ namespace LaborVolumeCalculator.Migrations
                     b.ToTable("OkrInnovationRate");
                 });
 
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Nir", b =>
-                {
-                    b.HasBaseType("LaborVolumeCalculator.Models.Dictionary.Niokr");
-
-                    b.Property<int>("NirInnovationPropertyID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NirInnovationRateID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NirScaleID")
-                        .HasColumnType("int");
-
-                    b.HasIndex("NirInnovationPropertyID");
-
-                    b.HasIndex("NirInnovationRateID");
-
-                    b.HasIndex("NirScaleID");
-
-                    b.HasDiscriminator().HasValue("НИР");
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Okr", b =>
-                {
-                    b.HasBaseType("LaborVolumeCalculator.Models.Dictionary.Niokr");
-
-                    b.Property<int>("DeviceComplexityRateID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DeviceCompositionID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DeviceCountRangeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OkrInnovationPropertyID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OkrInnovationRateID")
-                        .HasColumnType("int");
-
-                    b.HasIndex("DeviceComplexityRateID");
-
-                    b.HasIndex("DeviceCompositionID");
-
-                    b.HasIndex("DeviceCountRangeID");
-
-                    b.HasIndex("OkrInnovationPropertyID");
-
-                    b.HasIndex("OkrInnovationRateID");
-
-                    b.HasDiscriminator().HasValue("ОКР");
-                });
-
             modelBuilder.Entity("LaborVolumeCalculator.Models.DeviceComplexityRate", b =>
                 {
                     b.HasOne("LaborVolumeCalculator.Models.DeviceComposition", "DeviceComposition")
@@ -605,60 +547,6 @@ namespace LaborVolumeCalculator.Migrations
                         .WithMany()
                         .HasForeignKey("OkrInnovationPropertyID")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Nir", b =>
-                {
-                    b.HasOne("LaborVolumeCalculator.Models.NirInnovationProperty", "NirInnovationProperty")
-                        .WithMany()
-                        .HasForeignKey("NirInnovationPropertyID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("LaborVolumeCalculator.Models.NirInnovationRate", "NirInnovationRate")
-                        .WithMany()
-                        .HasForeignKey("NirInnovationRateID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("LaborVolumeCalculator.Models.NirScale", "NirScale")
-                        .WithMany()
-                        .HasForeignKey("NirScaleID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Okr", b =>
-                {
-                    b.HasOne("LaborVolumeCalculator.Models.DeviceComplexityRate", "DeviceComplexityRate")
-                        .WithMany()
-                        .HasForeignKey("DeviceComplexityRateID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("LaborVolumeCalculator.Models.DeviceComposition", "DeviceComposition")
-                        .WithMany()
-                        .HasForeignKey("DeviceCompositionID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("LaborVolumeCalculator.Models.DeviceCountRange", "DeviceCountRange")
-                        .WithMany()
-                        .HasForeignKey("DeviceCountRangeID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("LaborVolumeCalculator.Models.OkrInnovationProperty", "OkrInnovationProperty")
-                        .WithMany()
-                        .HasForeignKey("OkrInnovationPropertyID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("LaborVolumeCalculator.Models.OkrInnovationRate", "OkrInnovationRate")
-                        .WithMany()
-                        .HasForeignKey("OkrInnovationRateID")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

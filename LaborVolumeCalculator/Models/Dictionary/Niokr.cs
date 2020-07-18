@@ -8,15 +8,17 @@ namespace LaborVolumeCalculator.Models.Dictionary
     public class Niokr : BasicModel
     {
         public Niokr() : base() { }
-        public Niokr(string name, NiokrCategory niokrCategory) : base(name)
+        public Niokr(string name) : base(name)
         {
-            NiokrCategory = niokrCategory ?? throw new ArgumentNullException("niokrCategory");
-            NiokrCategoryID = niokrCategory.ID;
+            //NiokrCategory = niokrCategory ?? throw new ArgumentNullException("niokrCategory");
+            //NiokrCategoryID = niokrCategory.ID;
         }
 
-        public int NiokrCategoryID { get; set; }
+        //public int NiokrCategoryID { get; set; }
         
-        [DisplayName("Категория")]
-        public NiokrCategory NiokrCategory { get; set; }
+        //[DisplayName("Категория")]
+        public virtual string NiokrCategory { get; set; }
+
+        
     }
 }

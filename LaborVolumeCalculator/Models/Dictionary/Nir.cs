@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Models.Dictionary
 {
-    public class NirProperties
+    public class Nir : Niokr
     {
-        public int ID { get; set; }
+        public Nir() : base() { }
 
-        public int NiokrID { get; set; }
+        public Nir(string name) : base(name) { }
 
-        public Niokr Niokr { get; set; }
+        public int NirInnovationRateID { get; set; }
+        public NirInnovationRate NirInnovationRate { get; set; }
 
         public int NirInnovationPropertyID { get; set; }
 

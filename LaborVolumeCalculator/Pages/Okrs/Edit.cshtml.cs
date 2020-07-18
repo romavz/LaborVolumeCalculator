@@ -7,10 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Models.Documents;
 using LaborVolumeCalculator.Models.Dictionary;
 
-namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
+namespace LaborVolumeCalculator.Pages.Okrs
 {
     public class EditModel : PageModel
     {
@@ -22,7 +21,7 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
         }
 
         [BindProperty]
-        public NirLaborVolumesDoc NirLaborVolumesDoc { get; set; }
+        public Okr Okr { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -31,28 +30,18 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
                 return NotFound();
             }
 
-            NirLaborVolumesDoc = await _context.NirLaborVolumesDocs
-                .Include(n => n.Niokr)
-                .Include(n => n.NiokrStage)
-                .Include(n => n.NirLaborVolumesDocRecords)
-                .FirstOrDefaultAsync(m => m.ID == id);
+            Okr = await _context.Okrs
+                .Include(o => o.DeviceComposition)
+                .Include(o => o.DeviceCountRange)
+                .Include(o => o.OkrInnovationProperty).FirstOrDefaultAsync(m => m.ID == id);
 
-            if (NirLaborVolumesDoc == null)
+            if (Okr == null)
             {
                 return NotFound();
             }
-            var niokrs = _context.Niokrs;
-                 //.Include(i => i.NiokrCategory)
-                 //.Where(i => i.NiokrCategory.Name == NiokrCategory.NIR.Name);
-
-            var niokrStages = _context.NiokrStages
-                .Include(i => i.NiokrCategory)
-                .Where(i => i.NiokrCategory.Name == NiokrCategory.NIR.Name);
-
-            ViewData["NiokrID"] = new SelectList(niokrs, "ID", "Name");
-            ViewData["NiokrStageID"] = new SelectList(niokrStages, "ID", "Name");
-            ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
-            ViewData["NirScaleID"] = new SelectList(_context.NirScales, "ID", "Name");
+            ViewData["DeviceCompositionID"] = new SelectList(_context.DeviceCompositions, "ID", "Name");
+            ViewData["DeviceCountRangeID"] = new SelectList(_context.DeviceCountRange, "ID", "Name");
+            ViewData["OkrInnovationPropertyID"] = new SelectList(_context.OkrInnovationProperties, "ID", "Name");
             return Page();
         }
 
@@ -65,7 +54,20 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
                 return Page();
             }
 
-            _context.Attach(NirLaborVolumesDoc).State = EntityState.Modified;
+            var okrInnovationRate = await _context.OkrInnovationRates
+                .Where(n => n.OkrInnovationPropertyID == Okr.OkrInnovationPropertyID)
+                .Where(n => n.DeviceCompositionID == Okr.DeviceCompositionID)
+                .FirstOrDefaultAsync();
+
+            var deviceComplexityRate = await _context.DeviceComplexityRates
+                .Where(n => n.DeviceCompositionID == Okr.DeviceCompositionID)
+                .Where(n => n.DeviceCountRangeID == Okr.DeviceCountRangeID)
+                .FirstOrDefaultAsync();
+
+            Okr.DeviceComplexityRateID = deviceComplexityRate.ID;
+            Okr.OkrInnovationRateID = okrInnovationRate.ID;
+
+            _context.Attach(Okr).State = EntityState.Modified;
 
             try
             {
@@ -73,7 +75,7 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NirLaborVolumesDocExists(NirLaborVolumesDoc.ID))
+                if (!OkrExists(Okr.ID))
                 {
                     return NotFound();
                 }
@@ -86,9 +88,9 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
             return RedirectToPage("./Index");
         }
 
-        private bool NirLaborVolumesDocExists(int id)
+        private bool OkrExists(int id)
         {
-            return _context.NirLaborVolumesDocs.Any(e => e.ID == id);
+            return _context.Okrs.Any(e => e.ID == id);
         }
     }
 }

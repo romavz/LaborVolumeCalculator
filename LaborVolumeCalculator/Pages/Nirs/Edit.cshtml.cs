@@ -1,24 +1,27 @@
-﻿using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Models.Dictionary;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using LaborVolumeCalculator.Data;
+using LaborVolumeCalculator.Models.Dictionary;
 
-namespace LaborVolumeCalculator.Pages.Niokrs
+namespace LaborVolumeCalculator.Pages.Nirs
 {
     public class EditModel : PageModel
     {
-        private readonly LVCContext _context;
+        private readonly LaborVolumeCalculator.Data.LVCContext _context;
 
-        public EditModel(LVCContext context)
+        public EditModel(LaborVolumeCalculator.Data.LVCContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public Niokr Niokr { get; set; }
+        public Nir Nir { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -27,12 +30,16 @@ namespace LaborVolumeCalculator.Pages.Niokrs
                 return NotFound();
             }
 
-            Niokr = await _context.Niokrs.FirstOrDefaultAsync(m => m.ID == id);
+            Nir = await _context.Nirs
+                .Include(n => n.NirInnovationProperty)
+                .Include(n => n.NirScale).FirstOrDefaultAsync(m => m.ID == id);
 
-            if (Niokr == null)
+            if (Nir == null)
             {
                 return NotFound();
             }
+           ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
+           ViewData["NirScaleID"] = new SelectList(_context.NirScales, "ID", "Name");
             return Page();
         }
 
@@ -45,7 +52,7 @@ namespace LaborVolumeCalculator.Pages.Niokrs
                 return Page();
             }
 
-            _context.Attach(Niokr).State = EntityState.Modified;
+            _context.Attach(Nir).State = EntityState.Modified;
 
             try
             {
@@ -53,7 +60,7 @@ namespace LaborVolumeCalculator.Pages.Niokrs
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NiokrExists(Niokr.ID))
+                if (!NirExists(Nir.ID))
                 {
                     return NotFound();
                 }
@@ -66,9 +73,9 @@ namespace LaborVolumeCalculator.Pages.Niokrs
             return RedirectToPage("./Index");
         }
 
-        private bool NiokrExists(int id)
+        private bool NirExists(int id)
         {
-            return _context.Niokrs.Any(e => e.ID == id);
+            return _context.Nirs.Any(e => e.ID == id);
         }
     }
 }

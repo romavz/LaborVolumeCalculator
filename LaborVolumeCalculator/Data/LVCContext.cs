@@ -21,6 +21,11 @@ namespace LaborVolumeCalculator.Data
         }
 
         public DbSet<Niokr> Niokrs { get; set; }
+
+        public DbSet<Nir> Nirs { get; set; }
+
+        public DbSet<Okr> Okrs { get; set; }
+
         public DbSet<NirScale> NirScales { get; set; }
 
         public DbSet<NirInnovationRate> NirInnovationRates { get; set; }
@@ -45,21 +50,46 @@ namespace LaborVolumeCalculator.Data
 
         public DbSet<NirLaborVolumesDocRecord> NirLaborVolumesDocRecords { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Niokr>().ToTable("Niokr", Schema.Dictionary);
+            modelBuilder.Entity<Niokr>(e =>
+            {
+                e.ToTable("Niokr", Schema.Dictionary);
+                e.HasDiscriminator<string>("NiokrCategory")
+                    .HasValue<Nir>("НИР")
+                    .HasValue<Okr>("ОКР");
+            });
+
+            modelBuilder.Entity<Nir>(e =>
+            {
+                e.HasOne(n => n.NirInnovationRate).WithMany().OnDelete(DeleteBehavior.NoAction);
+                e.HasOne(n => n.NirInnovationProperty).WithMany().OnDelete(DeleteBehavior.NoAction);
+                e.HasOne(n => n.NirScale).WithMany().OnDelete(DeleteBehavior.NoAction);
+            });
+
+            modelBuilder.Entity<Okr>(e => 
+            {
+                e.HasOne(n => n.OkrInnovationRate).WithMany().OnDelete(DeleteBehavior.NoAction);
+                e.HasOne(n => n.DeviceComplexityRate).WithMany().OnDelete(DeleteBehavior.NoAction);
+                e.HasOne(n => n.OkrInnovationProperty).WithMany().OnDelete(DeleteBehavior.NoAction);
+                e.HasOne(n => n.DeviceComposition).WithMany().OnDelete(DeleteBehavior.NoAction);
+                e.HasOne(n => n.DeviceCountRange).WithMany().OnDelete(DeleteBehavior.NoAction);
+            });
+
             modelBuilder.Entity<NirScale>().ToTable("NirScale");
             modelBuilder.Entity<NirInnovationProperty>().ToTable("NirInnovationProperty");
             modelBuilder
-                .Entity<NirInnovationRate>()
-                .ToTable("NirInnovationRate")
-                .HasKey(key => new { key.NirScaleID, key.NirInnovationPropertyID });
+                .Entity<NirInnovationRate>().ToTable("NirInnovationRate")
+                .HasIndex(key => new { key.NirScaleID, key.NirInnovationPropertyID })
+                .IsUnique();
 
             modelBuilder.Entity<DeviceComposition>().ToTable("DeviceComposition");
             modelBuilder.Entity<OkrInnovationProperty>().ToTable("OkrInnovationProperty");
 
             modelBuilder.Entity<OkrInnovationRate>().ToTable("OkrInnovationRate")
-                .HasKey(key => new { key.OkrInnovationPropertyID, key.DeviceCompositionID });
+                .HasIndex(key => new { key.OkrInnovationPropertyID, key.DeviceCompositionID })
+                .IsUnique();
             modelBuilder.Entity<OkrInnovationRate>()
                 .Property("Value").HasColumnType("DECIMAL(8, 4)");
 
@@ -104,6 +134,14 @@ namespace LaborVolumeCalculator.Data
                     .OnDelete(DeleteBehavior.Cascade);
                 e.HasOne<Labor>(r => r.Labor).WithMany().OnDelete(DeleteBehavior.NoAction);
             });
+
+            //modelBuilder.Entity<NirProperties>(e =>
+            //{
+            //    e.ToTable("NirProperties", Schema.Dictionary);
+            //    e.HasOne(n => n.Niokr).WithOne().OnDelete(DeleteBehavior.Cascade);
+            //    e.HasOne(n => n.NirInnovationProperty).WithMany().OnDelete(DeleteBehavior.NoAction);
+            //    e.HasOne(n => n.NirScale).WithMany().OnDelete(DeleteBehavior.NoAction);
+            //});
         }
 
         private void LaborGroupConfigure(EntityTypeBuilder<LaborGroup> entity)

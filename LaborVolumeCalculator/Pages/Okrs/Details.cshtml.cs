@@ -6,10 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Models;
 using LaborVolumeCalculator.Models.Dictionary;
 
-namespace LaborVolumeCalculator.Pages.Nirs
+namespace LaborVolumeCalculator.Pages.Okrs
 {
     public class DetailsModel : PageModel
     {
@@ -20,7 +19,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
             _context = context;
         }
 
-        public Niokr Niokr { get; set; }
+        public Okr Okr { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,9 +28,12 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 return NotFound();
             }
 
-            Niokr = await _context.Niokrs.FirstOrDefaultAsync(m => m.ID == id);
+            Okr = await _context.Okrs
+                .Include(o => o.DeviceComposition)
+                .Include(o => o.DeviceCountRange)
+                .Include(o => o.OkrInnovationProperty).FirstOrDefaultAsync(m => m.ID == id);
 
-            if (Niokr == null)
+            if (Okr == null)
             {
                 return NotFound();
             }

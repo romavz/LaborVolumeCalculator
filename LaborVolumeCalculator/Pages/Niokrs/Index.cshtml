@@ -16,9 +16,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Niokrs[0].NiokrCategory)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Niokrs[0].Name)
             </th>
             <th>
@@ -34,9 +31,6 @@
         @foreach (var item in Model.Niokrs)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NiokrCategory.Name)
-                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>

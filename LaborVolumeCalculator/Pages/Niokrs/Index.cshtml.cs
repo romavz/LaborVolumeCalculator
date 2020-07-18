@@ -21,7 +21,6 @@ namespace LaborVolumeCalculator.Pages.Niokrs
         public async Task OnGetAsync()
         {
             Niokrs = await _context.Niokrs
-                .Include(n => n.NiokrCategory)
                 .ToListAsync();
         }
     }

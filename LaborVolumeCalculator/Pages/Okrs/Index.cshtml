@@ -1,0 +1,68 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.Okrs.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Okr[0].OkrInnovationProperty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Okr[0].DeviceComposition)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Okr[0].DeviceCountRange)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Okr[0].NiokrCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Okr[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Okr[0].CreateTime)
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Okr) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OkrInnovationProperty.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeviceComposition.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeviceCountRange.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NiokrCategory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateTime)
+            </td>
+            
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
