@@ -24,8 +24,8 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
         public async Task OnGetAsync()
         {
             NirLaborVolumesDoc = await _context.NirLaborVolumesDocs
-                .Include(n => n.Niokr)
-                .Include(n => n.NiokrStage).ToListAsync();
+                .Include(n => n.NiokrStage)
+                .Include(n => n.Nir).ToListAsync();
         }
     }
 }

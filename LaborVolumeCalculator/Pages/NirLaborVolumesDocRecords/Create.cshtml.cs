@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Documents;
+using Microsoft.EntityFrameworkCore;
 
 namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocRecords
 {
@@ -46,6 +47,12 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocRecords
             {
                 return Page();
             }
+
+            NirLaborVolumesDoc doc = await _context.NirLaborVolumesDocs.FindAsync(NirLaborVolumesDocRecord.NirLaborVolumesDocID);
+
+            NirLaborVolumesDocRecord.Calculation = NirLaborVolumesDocRecord.Volume * doc.NirInnovationRate;
+
+            doc.Total += NirLaborVolumesDocRecord.Calculation;
 
             _context.NirLaborVolumesDocRecords.Add(NirLaborVolumesDocRecord);
 

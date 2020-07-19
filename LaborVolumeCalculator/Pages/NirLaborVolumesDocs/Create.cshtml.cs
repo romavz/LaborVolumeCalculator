@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Documents;
 using LaborVolumeCalculator.Models.Dictionary;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
@@ -24,18 +23,8 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
 
         public IActionResult OnGet()
         {
-            var niokrs = _context.Niokrs;
-                //.Include(i => i.NiokrCategory)
-                //.Where(i => i.NiokrCategory.Name == NiokrCategory.NIR.Name);
-
-            var niokrStages = _context.NiokrStages
-                .Include(i => i.NiokrCategory)
-                .Where(i => i.NiokrCategory.Name == NiokrCategory.NIR.Name);
-
-            ViewData["NiokrID"] = new SelectList(niokrs, "ID", "Name");
-            ViewData["NiokrStageID"] = new SelectList(niokrStages, "ID", "Name");
-            ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
-            ViewData["NirScaleID"] = new SelectList(_context.NirScales, "ID", "Name");
+        ViewData["NiokrStageID"] = new SelectList(_context.NiokrStages, "ID", "Name");
+        ViewData["NirID"] = new SelectList(_context.Nirs, "ID", "Name");
             return Page();
         }
 
@@ -51,10 +40,15 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
                 return Page();
             }
 
-            //Nir nir = NirLaborVolumesDoc.Nir;
+            var nir = await _context.Nirs
+                .Where(n => n.ID == NirLaborVolumesDoc.NirID)
+                .FirstOrDefaultAsync();
 
-            //NirLaborVolumesDoc.NirInnovationRate = (float)_context.NirInnovationRates.Where(d => d.ID == )
-            //    .FirstOrDefault().Value;
+            var nirInnovationRate = await _context.NirInnovationRates
+                .Where(n => n.ID == nir.NirInnovationRateID)
+                .FirstOrDefaultAsync();
+
+            NirLaborVolumesDoc.NirInnovationRate = (float)nirInnovationRate.Value;
 
             _context.NirLaborVolumesDocs.Add(NirLaborVolumesDoc);
             await _context.SaveChangesAsync();

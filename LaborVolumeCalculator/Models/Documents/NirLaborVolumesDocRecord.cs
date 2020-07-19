@@ -1,7 +1,9 @@
 ﻿using LaborVolumeCalculator.Models.Dictionary;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Models.Documents
@@ -24,14 +26,18 @@ namespace LaborVolumeCalculator.Models.Documents
         public int ID { get; set; }
         public int NirLaborVolumesDocID { get; set; }
 
+        [DisplayName("Документ учета трудозатрат")]
         public NirLaborVolumesDoc NirLaborVolumesDoc { get; set; }
 
         public int LaborID { get; set; }
 
+        [DisplayName("Работа")]
         public Labor Labor { get; set; }
         
+        [DisplayName("Объем")]
         public float Volume { get; set; }
 
+        [DisplayName("С учетом коэффицинтов")]
         public float Calculation { get; set; }
     }
 }

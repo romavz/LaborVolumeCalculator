@@ -122,7 +122,7 @@ namespace LaborVolumeCalculator.Data
                     .WithOne(r => r.NirLaborVolumesDoc).OnDelete(DeleteBehavior.Cascade);
 
                 d.Property(p => p.IsImplemented).HasDefaultValue(false);
-                d.HasOne(r => r.Niokr).WithMany().OnDelete(DeleteBehavior.NoAction);
+                d.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.NoAction);
                 d.HasOne(r => r.NiokrStage).WithMany().OnDelete(DeleteBehavior.NoAction);
             });
 
@@ -135,13 +135,6 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne<Labor>(r => r.Labor).WithMany().OnDelete(DeleteBehavior.NoAction);
             });
 
-            //modelBuilder.Entity<NirProperties>(e =>
-            //{
-            //    e.ToTable("NirProperties", Schema.Dictionary);
-            //    e.HasOne(n => n.Niokr).WithOne().OnDelete(DeleteBehavior.Cascade);
-            //    e.HasOne(n => n.NirInnovationProperty).WithMany().OnDelete(DeleteBehavior.NoAction);
-            //    e.HasOne(n => n.NirScale).WithMany().OnDelete(DeleteBehavior.NoAction);
-            //});
         }
 
         private void LaborGroupConfigure(EntityTypeBuilder<LaborGroup> entity)

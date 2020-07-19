@@ -9,7 +9,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
     {
         public NiokrStage() { }
 
-        public NiokrStage(string name, NiokrCategory niokrCategory)
+        public NiokrStage(string name, NiokrCategory niokrCategory) : this()
         {
             Name = name ?? throw new ArgumentNullException("name");
             NiokrCategory = niokrCategory ?? throw new ArgumentNullException("niokrCategory");

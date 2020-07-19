@@ -32,7 +32,7 @@ namespace LaborVolumeCalculator.Pages.NirLaborVolumesDocs
             }
 
             NirLaborVolumesDoc = await _context.NirLaborVolumesDocs
-                .Include(n => n.Niokr)
+                .Include(n => n.Nir)
                 .Include(n => n.NiokrStage)
                 .Include(n => n.NirLaborVolumesDocRecords)
                 .FirstOrDefaultAsync(m => m.ID == id);

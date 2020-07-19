@@ -30,10 +30,10 @@
             @Html.DisplayFor(model => model.NirLaborVolumesDoc.Date)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.Niokr)
+            @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.Nir)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NirLaborVolumesDoc.Niokr.Name)
+            @Html.DisplayFor(model => model.NirLaborVolumesDoc.Nir.Name)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.NirLaborVolumesDoc.NiokrStage)
@@ -67,9 +67,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.NirLaborVolumesDocRecords[0].NirLaborVolumesDoc)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.NirLaborVolumesDocRecords[0].Labor)
             </th>
             <th>
@@ -86,9 +83,6 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NirLaborVolumesDoc.ID)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Labor.Name)
                 </td>
                 <td>
@@ -98,9 +92,8 @@
                     @Html.DisplayFor(modelItem => item.Calculation)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { NirLaborVolumesDocID = item.NirLaborVolumesDocID, LaborID = item.LaborID }) |
-                    @Html.ActionLink("Details", "Details", new { NirLaborVolumesDocID = item.NirLaborVolumesDocID, LaborID = item.LaborID }) |
-                    @Html.ActionLink("Delete", "Delete", new { NirLaborVolumesDocID = item.NirLaborVolumesDocID, LaborID = item.LaborID })
+                    <a asp-page="../NirLaborVolumesDocRecords/Edit" asp-route-id="@item.ID">Изменить</a> |
+                    <a asp-page="../NirLaborVolumesDocRecords/Delete" asp-route-id="@item.ID">Удалить</a>
                 </td>
             </tr>
         }

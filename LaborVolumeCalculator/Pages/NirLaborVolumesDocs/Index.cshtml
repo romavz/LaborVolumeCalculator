@@ -23,10 +23,13 @@
                 @Html.DisplayNameFor(model => model.NirLaborVolumesDoc[0].Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NirLaborVolumesDoc[0].Niokr)
+                @Html.DisplayNameFor(model => model.NirLaborVolumesDoc[0].Nir)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NirLaborVolumesDoc[0].NiokrStage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NirLaborVolumesDoc[0].NirInnovationRate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NirLaborVolumesDoc[0].Total)
@@ -47,18 +50,21 @@
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Niokr.Name)
+                @Html.DisplayFor(modelItem => item.Nir.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NiokrStage.ID)
+                @Html.DisplayFor(modelItem => item.NiokrStage.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NirInnovationRate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Total)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Изменить</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Открыть</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Удалить</a>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
             </td>
         </tr>
 }
