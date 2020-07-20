@@ -1,15 +1,9 @@
-﻿using LaborVolumeCalculator.Data.Seeds;
-using LaborVolumeCalculator.Migrations;
-using LaborVolumeCalculator.Models;
+﻿using LaborVolumeCalculator.Models;
 using LaborVolumeCalculator.Models.Dictionary;
-using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Data
 {
@@ -128,10 +122,6 @@ namespace LaborVolumeCalculator.Data
             IEnumerable<OkrInnovationRate> sreuRates = SREU_ratesBinder.Bind(sreuRatesValues);
             dbContext.OkrInnovationRates.AddRange(sreuRates);
 
-            SeedNirLabors();
-            SeedOkrLabors();
-            SeedLaborVolumes();
-
             var NirCategory = NiokrCategory.NIR;
             var OkrCategory = NiokrCategory.OKR;
             dbContext.NiokrCategories.Add(NirCategory);
@@ -139,81 +129,255 @@ namespace LaborVolumeCalculator.Data
 
             SeedNirStages(NirCategory);
             SeedOkrStages(OkrCategory);
+            dbContext.SaveChanges();
+
+            SeedNirLabors();
+            SeedOkrLabors();
 
             dbContext.SaveChanges();
-        }
-
-        private void SeedNirStages(NiokrCategory nirCategory)
-        {
-            NiokrStage[] niokrStages = new NiokrStage[]
-            {
-                new NiokrStage("Этап 1.", nirCategory),
-                new NiokrStage("Этап 2.", nirCategory),
-                new NiokrStage("Этап 3.", nirCategory),
-                new NiokrStage("Этап 4.", nirCategory),
-            };
-            Array.Reverse(niokrStages);
-            dbContext.AddRange(niokrStages);
-        }
-
-        private void SeedOkrStages(NiokrCategory okrCategory)
-        {
-            NiokrStage[] niokrStages = new NiokrStage[]
-            {
-                new NiokrStage("Этап 1. Эскизный проект", okrCategory),
-                new NiokrStage("Этап 2. Технический проект", okrCategory),
-                new NiokrStage("Этап 3. Разработка РКД для изготовления ОО изделия", okrCategory),
-                new NiokrStage("Этап 4. Изготовление ОО изделия", okrCategory),
-                new NiokrStage("Этап 5. Проведение ГИ ОО", okrCategory),
-                new NiokrStage("Этап 6. Утверждение РКД для организации промышленного(серийного) производства изделия", okrCategory),
-                new NiokrStage("Работы, осуществляемые в ходе всей ОКР", okrCategory),
-            };
-            Array.Reverse(niokrStages);
-            dbContext.AddRange(niokrStages);
-        }
-
-        private void SeedNirLabors()
-        {
-            LaborGroup lg_NIR = new LaborGroup("1", "НИР");
-
-            dbContext.LaborGroups.Add(lg_NIR);
-            dbContext.Labors.AddRange(new NirLaborsSeeds(lg_NIR));
         }
 
         private void SeedOkrLabors()
         {
-            LaborGroup lg_OKR = new LaborGroup("2", "ОКР");
-            LaborGroup[] OKR_Stages = new LaborGroup[] {
-                lg_OKR,
-                new LaborGroup("2.1", "Этап 1. Эскизный проект", lg_OKR),
-                new LaborGroup("2.2", "Этап 2. Технический проект", lg_OKR),
-                new LaborGroup("2.3", "Этап 3. Разработка РКД для изготовления ОО изделия", lg_OKR),
-                new LaborGroup("2.4", "Этап 4. Изготовление ОО изделия", lg_OKR),
-                new LaborGroup("2.5", "Этап 5. Проведение ГИ ОО", lg_OKR),
-                new LaborGroup("2.6", "Этап 6. Утверждение РКД для организации промышленного(серийного) производства изделия", lg_OKR),
-                new LaborGroup("2.7", "Работы, осуществляемые в ходе всей ОКР", lg_OKR)
+            OkrStage okrStage1 = dbContext.OkrStages.First(n => n.Name.Contains("Этап 1."));
+            OkrStage okrStage2 = dbContext.OkrStages.First(n => n.Name.Contains("Этап 2."));
+            OkrStage okrStage3 = dbContext.OkrStages.First(n => n.Name.Contains("Этап 3."));
+            OkrStage okrStage4 = dbContext.OkrStages.First(n => n.Name.Contains("Этап 4."));
+            OkrStage okrStage5 = dbContext.OkrStages.First(n => n.Name.Contains("Этап 5."));
+            OkrStage okrStage6 = dbContext.OkrStages.First(n => n.Name.Contains("Этап 6."));
+            OkrStage okrStage7 = dbContext.OkrStages.First(n => n.Name.Contains("Работы, осуществляемые в ходе всей ОКР"));
+
+            OkrLabor[] okrLabors = new OkrLabor[]
+            {
+                new OkrLabor("2.1.1",
+                    "Рарзработка укрупненного сетевого плана-графика работ на ОКР, перечня комплектности эскизного проекта",
+                    okrStage1, 0.1f, 0.25f),
+
+                new OkrLabor("2.1.2",
+                    "Поиск, сбор изучение технической информации, Выбор путей реализации основных СРЭУ системы (комплекса)",
+                    okrStage1, 0.5f, 1.5f),
+
+                new OkrLabor("2.1.3",
+                    "Разработка алгоритмов функционирования разрабатываемых в ходе выполнения  ОКР (СЧ ОКР) опытного образца " +
+                    "(опытных образцов и специального программного обеспечения (на один ОО) (рекоммендуется разбить на подзадачи)",
+                    okrStage1, 0.5f, 2.5f ),
+
+                // --- Stage 2 ---
+                
+                new OkrLabor("2.2.1",
+                    "Корректировка укрупненного сетевого плана-графика работ по ОКР",
+                    okrStage2, 0.1f, 0.25f),
+
+                new OkrLabor("2.2.2",
+                    "Разработка перечней комплектности технического проекта: \n" +
+                    " - РКД на ОО;\n" +
+                    " - ЭД на ОО;"
+                    , okrStage2, 0.1f, 0.35f),
+
+                new OkrLabor("2.2.3",
+                    "Разработка, согласование, утверждение схемы деления изделия на составные части",
+                    okrStage2, 0.1f, 0.25f),
+
+                // --- Stage 3 ---
+
+                new OkrLabor("2.3.3",
+                    "Разработка программы и методик предварительных испытаний опытного образца изделия",
+                    okrStage3, 0.5f, 1.5f),
+
+                new OkrLabor("2.3.4",
+                    "Разработка и согласование ис заказчиком состава опытного образца (опытных образцов)," +
+                    "создаваемого при проведении ОКР",
+                    okrStage3, 0.1f, 0.3f),
+
+                new OkrLabor("2.3.5",
+                    "Разработка и согласование с заказчиком инструкции по защите от ТСР ИГ и ее утечки по техническим каналам на этапе" +
+                    "изготовления ОО и проведения предварительных испытаний",
+                    okrStage3,  0.1f, 0.3f),
+
+                new OkrLabor("2.3.6",
+                    "Рассмотрение сводки отзывов и результатов технического проекта на НТС, участие в работе комиссии по приемке этапа," +
+                    "подготовка заключения заказчика и акта приемки этапа ОКР",
+                    okrStage3, 0.05f, 0.15f),
+
+                // --- Stage 4 ---
+
+                new OkrLabor("2.4.1",
+                    "Разработка и создание опытного образца (рекомендуется разбить на подзадачи)",
+                    okrStage4, 0.5f, 10.0f),
+                new OkrLabor("2.4.4",
+                    "Комплексирование технических и программных средств ОО",
+                    okrStage4, 0.2f, 2.0f),
+
+                // --- Stage 5 ---
+
+                new OkrLabor("2.5.1",
+                    "Разработка и согласование с заказчиком программы и методик государственных испытаний опытного образца изделия",
+                    okrStage5, 0.5f, 1.5f),
+
+                new OkrLabor("2.5.2",
+                    "Участие в государственных испытаниях, проводимых заказчиком",
+                    okrStage5, 0.15f, 0.3f),
+
+                // --- Stage 6 ---
+
+                new OkrLabor("2.6.2",
+                    "Разработка и согласование с заказчиком документов по сервисному обслуживанию",
+                    okrStage6, 0.5f, 1.2f),
+
+                new OkrLabor("2.6.3",
+                    "Подготовка отчета о патентных исследованиях",
+                    okrStage6, 0.2f, 2.0f),
+
+                // --- Stage 7 ---
+
+                new OkrLabor("2.7.1",
+                    "При наличии в ОКР составных частей, выполнение функции заказчика по отношению к исполнителям СЧ ОКР, включая " +
+                    "разработку ТТЗ, координацию и контроль выполнения работ исполнителями СЧ ОКР на всех этапах выполнения СЧ ОКР",
+                    okrStage7, 0.5f, 2.0f),
+
+                new OkrLabor("2.7.2",
+                    "Обеспечение заказчику (его представителям) необходимых условий для контроля работ, выполняемых как на отдельных " +
+                    "этапах, так и по ОКР в целом",
+                    okrStage7, 0.01f, 0.02f),
+
+                new OkrLabor("2.7.3",
+                    "Осуществление мероприятий по защите от ТСР ИГ в период проведения ОКР",
+                    okrStage7, 0.1f, 0.2f),
+
+                new OkrLabor("2.7.4",
+                    "Осуществление мероприятий по защите гостударственной тайны в период проведения ОКР",
+                    okrStage7, 0.1f, 0.2f),
+
+                new OkrLabor("2.7.5",
+                    "Уточнение и, при необходимости, корректировка плана совместных работ в пределах ТТЗ (ТЗ)",
+                    okrStage7, 0.1f, 0.25f),
             };
 
-            foreach (LaborGroup okrStage in OKR_Stages)
-            {
-                dbContext.LaborGroups.Add(okrStage);
-            }
-
-            dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage1(OKR_Stages[1]));
-            dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage2(OKR_Stages[2]));
-            dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage3(OKR_Stages[3]));
-            dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage4(OKR_Stages[4]));
-            dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage5(OKR_Stages[5]));
-            dbContext.Labors.AddRange(new OkrLaborsSeeds.Stage6(OKR_Stages[6]));
-            dbContext.Labors.AddRange(new OkrLaborsSeeds.SharedLabors(OKR_Stages[7]));
-            dbContext.SaveChanges();
+            dbContext.OkrLabors.AddRange(okrLabors);
         }
 
-        private void SeedLaborVolumes()
+        private void SeedNirLabors()
         {
-            dbContext.LaborVolumes.AddRange(new LaborVolumesSeeds(dbContext.Labors).Data);
-            
+            NirLabor[] nirLabors = new NirLabor[]
+            {
+                new NirLabor("1.1",
+                    "Проведение научно-технического анализа состояния исследуемого вопроса, определение направлений(методов) исследований " +
+                    "для обеспечения достижения поставленных в НИР целей исследования", 0.5f, 1.5f),
+
+                new NirLabor("1.2",
+                    "Определение перечня и содержания задач, решение которых в ходе выполнения НИР позволит достичь поставленной в НИР цели." +
+                    "При наличии задач, сформулированных в ТТЗ в общем виде.", 0.5f, 0.6f),
+
+                new NirLabor("1.3",
+                    "Подготовка и направление заказчику необходимых документов для государственной регистрации, учета НИР и ОИС, " +
+                    "получаемых в рамках НИР (СЧ НИР)", 0.1f, 0.2f),
+
+                new NirLabor("1.4",
+                    "При наличии в НИР составных частей выполнение функции заказчика по отношению к исполнителям СЧ НИР. " +
+                    "Применяется либо п. 7, либо п.4", 0.2f, 1.0f),
+
+                new NirLabor("1.5",
+                    "Проведение патентных исследований, изучение на патентную чистоту ОИС, используемых при выполнении НИР, согласование с заказчиком " +
+                    "лицензионных договоров на использование в НИР ОИС", 1.5f, 2.2f),
+
+                new NirLabor("1.6",
+                    "Подготовка отчета о патентных исследованиях", 0.2f, 1.0f),
+
+                new NirLabor("1.7",
+                    "Коордитация и контроль выполнения работ исполнителями СЧ НИР на всех этапах, опеспечение исполнителей СЧ НИР необходимыми материалам " +
+                    "и информацией. Применяется либо п.7, либо п.4 ", 0.2f, 1.0f),
+
+                new NirLabor("1.9",
+                    "Уточнение(корректировка) и согласование с заказчиком состава макета(экспериментального образца), создаваемого при проведении НИР " +
+                    "(при наличии соответствующего пункта в ТТЗ)", 0.02f, 0.05f),
+
+                new NirLabor("1.11",
+                    "Разработка и создание макетов, моделей, экспериментальных образцов технических средств (рекоммендуется разбить на подзадачи)", 0.5f, 1.5f),
+
+                new NirLabor("1.13",
+                    "Разработка и создание экспериментальных образцов аппаратно-программных комплексов (рекомендуется разбить на подзадачи)", 1.5f, 5.0f),
+
+                new NirLabor("1.15",
+                    "Установка и автономное тестирование разрабатываемого СПО", 0.2f, 0.5f),
+
+                new NirLabor("1.16",
+                    "Тестирование и отладка СПО на разрабатываемом экспериментальном образце", 0.1f, 1.5f),
+
+                new NirLabor("1.17",
+                    "Разработка и согласование с заказчиком методики встраивания разработканного в ходе выполнения НИР (СЧ НИР) экспериментального образца " +
+                    "(макета) в образец ВТ заказчика", 0.3f, 0.6f),
+
+                new NirLabor("1.18",
+                    "Разработка и согласование с заказчиком Программы и методик исследований (испытаний) созданных в ходе выполнения НИР экспериментальных" +
+                    "образцов (макетов, моделей)", 0.5f, 1.0f),
+
+                new NirLabor("1.19",
+                    "Проведение испытаний (исследований) созданного в ходе выполнения НИР специального программного обеспечения, макетов (моделей," +
+                    "эксперементальных образцов) аппаратно-программных комплексов", 1.0f, 2.5f),
+
+                new NirLabor("1.20",
+                    "Оформление результатов проведенных исследований (испытаний) созданных в ходе выполнения НИР экспериментальных образцов (макетов, моделей)" +
+                    "соответствующими протоколами (атаками)", 0.01f, 0.02f),
+
+                new NirLabor("1.21",
+                    "Разработка проекта ТЗ (ТТЗ) на ОКР", 0.5f, 1.5f),
+
+                new NirLabor("1.22",
+                    "Оценка технико-экономической эффективности результатов НИР, определение и обоснование необходимости проведения дальнейших исследований" +
+                    " (в рамках НИР, ОКР", 0.02f, 0.08f),
+
+                new NirLabor("1.24",
+                    "Выборка рекомендаций по использованию результатов НИР", 0.01f, 0.02f),
+
+                new NirLabor("1.25",
+                    "Проведение рассмотрения результатов этапа НИР на НТС (секции НТС, техническом совещании специалистов)", 0.02f, 0.03f),
+
+                new NirLabor("1.26",
+                    "Обеспечение заказчику (его представителям) необходимых условий для контроля ходя и осуществления приемки НИР", 0.01f, 0.02f),
+
+                new NirLabor("1.27",
+                    "Осуществление мероприятий по защите государственной тайны в период проведения НИР", 0.1f, 0.2f),
+
+                new NirLabor("1.28",
+                    "Уточнение и, при необходимости, корректировка плана совместных работ в пределах ТТЗ (ТЗ) и условий контракта на " +
+                    "выполнение НИР (СЧ НИР)", 0.1f, 0.25f),
+
+                new NirLabor("1.29",
+                    "Участие в работе комиссии по приемке этапов НИР и НИР в целом", 0.01f, 0.05f),
+            };
+
+            dbContext.NirLabors.AddRange(nirLabors);
         }
+
+        private void SeedNirStages(NiokrCategory nirCategory)
+        {
+            NirStage[] nirStages = new NirStage[]
+            {
+                new NirStage("Этап 1.", nirCategory),
+                new NirStage("Этап 2.", nirCategory),
+                new NirStage("Этап 3.", nirCategory),
+                new NirStage("Этап 4.", nirCategory),
+            };
+            Array.Reverse(nirStages);
+            dbContext.NirStages.AddRange(nirStages);
+        }
+
+        private void SeedOkrStages(NiokrCategory okrCategory)
+        {
+            OkrStage[] okrStages = new OkrStage[]
+            {
+                new OkrStage("Этап 1. Эскизный проект", okrCategory),
+                new OkrStage("Этап 2. Технический проект", okrCategory),
+                new OkrStage("Этап 3. Разработка РКД для изготовления ОО изделия", okrCategory),
+                new OkrStage("Этап 4. Изготовление ОО изделия", okrCategory),
+                new OkrStage("Этап 5. Проведение ГИ ОО", okrCategory),
+                new OkrStage("Этап 6. Утверждение РКД для организации промышленного(серийного) производства изделия", okrCategory),
+                new OkrStage("Работы, осуществляемые в ходе всей ОКР", okrCategory),
+            };
+            Array.Reverse(okrStages);
+            dbContext.OkrStages.AddRange(okrStages);
+        }
+
     }
 
     internal class InnovationRatesBinder

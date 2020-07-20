@@ -6,7 +6,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    
+    <Compile Remove="Data\Seeds\**" />
+    <Compile Remove="Pages\LaborGroups\**" />
+    <Compile Remove="Pages\Labors\**" />
+    <Content Remove="Data\Seeds\**" />
+    <Content Remove="Pages\LaborGroups\**" />
+    <Content Remove="Pages\Labors\**" />
+    <EmbeddedResource Remove="Data\Seeds\**" />
+    <EmbeddedResource Remove="Pages\LaborGroups\**" />
+    <EmbeddedResource Remove="Pages\Labors\**" />
+    <None Remove="Data\Seeds\**" />
+    <None Remove="Pages\LaborGroups\**" />
+    <None Remove="Pages\Labors\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200720134114_Refactor_LaborVolumes.cs" />
+    <Compile Remove="Migrations\20200720134114_Refactor_LaborVolumes.Designer.cs" />
+    <Compile Remove="Migrations\20200720135142_Refactor_LaborVolumes.cs" />
+    <Compile Remove="Migrations\20200720135142_Refactor_LaborVolumes.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

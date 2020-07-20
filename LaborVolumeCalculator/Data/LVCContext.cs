@@ -36,20 +36,29 @@ namespace LaborVolumeCalculator.Data
         public DbSet<OkrInnovationRate> OkrInnovationRates { get; set; }
         public DbSet<DeviceCountRange> DeviceCountRange { get; set; }
 
-        public DbSet<LaborGroup> LaborGroups { get; set; }
-
         public DbSet<Labor> Labors { get; set; }
+        public DbSet<NirLabor> NirLabors { get; set; }
+        public DbSet<OkrLabor> OkrLabors { get; set; }
+        public DbSet<OntdLabor> OntdLabors { get; set; }
+        public DbSet<SoftwareDevLabor> SoftwareDevLabors { get; set; }
+        public DbSet<DbDevLabor> DbDevLabors { get; set; }
+        public DbSet<HardwareDevLabor> HardwareDevLabors { get; set; }
 
-        public DbSet<LaborGroupRelation> LaborGroupRelations { get; set; }
 
-        public DbSet<LaborVolume> LaborVolumes { get; set; }
         public DbSet<NiokrCategory> NiokrCategories { get; set; }
         public DbSet<NiokrStage> NiokrStages { get; set; }
+        public DbSet<NirStage> NirStages { get; set; }
+        public DbSet<OkrStage> OkrStages { get; set; }
 
         public DbSet<NirLaborVolumesDoc> NirLaborVolumesDocs { get; set; }
 
         public DbSet<NirLaborVolumesDocRecord> NirLaborVolumesDocRecords { get; set; }
 
+        public DbSet<SoftwareDevEnv> SoftwareDevEnvs { get; set; }
+
+        public DbSet<PlatePointsCountRange> PlatePointsCountRanges { get; set; }
+
+        public DbSet<DbEntityCountRange> DbEntityCountRanges { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -101,13 +110,17 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<DeviceComplexityRate>()
                 .Property("Value").HasColumnType("DECIMAL(8, 4)");
 
-            modelBuilder.Entity<LaborGroup>(LaborGroupConfigure);
-            modelBuilder.Entity<LaborGroupRelation>(LaborGroupRelationConfigure);
-            modelBuilder.Entity<Labor>(LaborConfigure);
-            
-            modelBuilder.Entity<LaborVolume>().ToTable("LaborVolume", Schema.Dictionary)
-                .HasOne(i => i.Labor)
-                .WithOne();
+            modelBuilder.Entity<Labor>(e =>
+            {
+                e.ToTable("Labor", Schema.Dictionary);
+                e.Property(p => p.Code).IsRequired();
+                e.Property(p => p.Name).IsRequired();
+            });
+
+            modelBuilder.Entity<OkrLabor>()         .HasOne(r => r.OkrStage)                .WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<DbDevLabor>()       .HasOne(r => r.DbEntityCountRange)      .WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<SoftwareDevLabor>() .HasOne(r => r.SoftwareDevEnv)          .WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<HardwareDevLabor>() .HasOne(r => r.PlatePointsCountRange)   .WithMany().OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<NiokrCategory>().ToTable("NiokrCategory", Schema.Dictionary);
 
@@ -136,79 +149,7 @@ namespace LaborVolumeCalculator.Data
             });
 
         }
-
-        private void LaborGroupConfigure(EntityTypeBuilder<LaborGroup> entity)
-        {
-            entity.ToTable("LaborGroup", Schema.Dictionary);
-
-            entity.HasIndex(i => new { i.ParentGroupId });
-
-            entity
-                .HasIndex(i => new { i.Code })
-                .IsUnique();
-
-            entity
-                .Property(p => p.Code)
-                .IsRequired();
-
-            entity
-                .Property(p => p.Name)
-                .IsRequired();
-
-            entity
-                .HasMany(lg => lg.Labors)
-                .WithOne(l => l.LaborGroup);
-
-            entity
-                .Property(p => p.Level)
-                .IsRequired()
-                .HasDefaultValue(0);
-        }
-
-        private void LaborGroupRelationConfigure(EntityTypeBuilder<LaborGroupRelation> entity)
-        {
-            entity.ToTable("LaborGroupRelation", Schema.Dictionary)
-                .HasKey(k => new { k.ID });
-
-            entity
-                .HasIndex(i => new { i.LaborGroupId, i.ParentGroupId })
-                .IsUnique()
-                .HasFilter("LaborGroupId IS NOT NULL");
-
-            entity
-                .HasIndex(i => i.LaborGroupId);
-
-            entity
-                .Property(p => p.LaborGroupId)
-                .IsRequired();
-
-            entity
-                .HasOne(ulg => ulg.LaborGroup)
-                .WithMany(lg => lg.ParentGroups)
-                .HasForeignKey(fk => fk.LaborGroupId);
-
-            entity
-                .Property(p => p.ParentGroupId)
-                .IsRequired(false);
-        }
-
-        private void LaborConfigure(EntityTypeBuilder<Labor> laborEntity)
-        {
-            laborEntity.ToTable("Labor", Schema.Dictionary);
-
-            laborEntity
-                .HasIndex(i => i.Code)
-                .IsUnique();
-
-            laborEntity
-                .Property(p => p.Code)
-                .IsRequired();
-
-            laborEntity
-                .Property(p => p.Name)
-                .IsRequired();
-        }
-
+                
         private class Schema
         {
             public static string Dictionary => "Dictionary";
