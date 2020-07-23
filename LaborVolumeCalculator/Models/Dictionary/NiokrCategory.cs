@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Models.Dictionary
 {
-    public class NiokrCategory : IEquatable<NiokrCategory>
+    [Display(Name ="Категория НИОКР", GroupName ="Категории НИОКР")]
+    public class NiokrCategory
     {
         static NiokrCategory()
         {
@@ -25,20 +27,6 @@ namespace LaborVolumeCalculator.Models.Dictionary
 
         public string Name { get; set; }
 
-        public bool Equals([AllowNull] NiokrCategory other)
-        {
-            return (other?.Name == Name); 
-        }
-
-        public static bool operator ==(NiokrCategory first, NiokrCategory second)
-        {
-            return first.Equals(second);
-        }
-
-        public static bool operator !=(NiokrCategory first, NiokrCategory second)
-        {
-            return !first.Equals(second);
-        }
     }
 
 }
