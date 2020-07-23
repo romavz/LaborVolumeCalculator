@@ -37,7 +37,7 @@ namespace LaborVolumeCalculator.Pages.NiokrStages
             {
                 return NotFound();
             }
-           ViewData["NiokrCategoryID"] = new SelectList(_context.NiokrCategories, "ID", "ID");
+           ViewData["NiokrCategoryID"] = new SelectList(_context.NiokrCategories, "ID", "Name");
             return Page();
         }
 

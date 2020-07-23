@@ -19,11 +19,11 @@ namespace LaborVolumeCalculator.Pages.NiokrStages
             _context = context;
         }
 
-        public IList<NiokrStage> NiokrStage { get;set; }
+        public IList<NiokrStage> NiokrStages { get;set; }
 
         public async Task OnGetAsync()
         {
-            NiokrStage = await _context.NiokrStages
+            NiokrStages = await _context.NiokrStages
                 .Include(n => n.NiokrCategory)
                 .OrderBy(m => m.NiokrCategoryID).ThenBy(m => m.Name)
                 .ToListAsync();

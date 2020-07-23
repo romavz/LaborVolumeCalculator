@@ -21,7 +21,7 @@ namespace LaborVolumeCalculator.Pages.NiokrStages
 
         public IActionResult OnGet()
         {
-        ViewData["NiokrCategoryID"] = new SelectList(_context.NiokrCategories, "ID", "ID");
+        ViewData["NiokrCategoryID"] = new SelectList(_context.NiokrCategories, "ID", "Name");
             return Page();
         }
 
