@@ -6,10 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Models.Dictionary;
-using Microsoft.EntityFrameworkCore;
+using LaborVolumeCalculator.Models.Registers;
 
-namespace LaborVolumeCalculator.Pages.Nirs
+namespace LaborVolumeCalculator.Pages.LaborVolumeRegs
 {
     public class CreateModel : PageModel
     {
@@ -22,13 +21,14 @@ namespace LaborVolumeCalculator.Pages.Nirs
 
         public IActionResult OnGet()
         {
-            ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
-            ViewData["NirScaleID"] = new SelectList(_context.NirScales, "ID", "Name");
+            ViewData["LaborID"] = new SelectList(_context.Labors, "ID", "Code");
+            ViewData["NiokrID"] = new SelectList(_context.Niokrs, "ID", "Name");
+            ViewData["NiokrStageID"] = new SelectList(_context.NiokrStages, "ID", "Name");
             return Page();
         }
 
         [BindProperty]
-        public Nir Nir { get; set; }
+        public LaborVolumeReg LaborVolumeReg { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -39,17 +39,10 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 return Page();
             }
 
-            var nirInnovationRate = await _context.NirInnovationRates
-                .Where(n => n.NirInnovationPropertyID == Nir.NirInnovationPropertyID)
-                .Where(n => n.NirScaleID == Nir.NirScaleID)
-                .FirstOrDefaultAsync();
-
-            Nir.NirInnovationRateID = nirInnovationRate.ID;
-
-            _context.Nirs.Add(Nir);
+            _context.LaborVolumeRegs.Add(LaborVolumeReg);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./EditLaborVolumes", new { id = Nir.ID });
+            return RedirectToPage("./Index");
         }
     }
 }

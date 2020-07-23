@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using LaborVolumeCalculator.Models.Dictionary;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using LaborVolumeCalculator.Models.Documents;
+using LaborVolumeCalculator.Models.Registers;
 
 namespace LaborVolumeCalculator.Data
 {
@@ -44,21 +45,18 @@ namespace LaborVolumeCalculator.Data
         public DbSet<DbDevLabor> DbDevLabors { get; set; }
         public DbSet<HardwareDevLabor> HardwareDevLabors { get; set; }
 
-
         public DbSet<NiokrCategory> NiokrCategories { get; set; }
         public DbSet<NiokrStage> NiokrStages { get; set; }
         public DbSet<NirStage> NirStages { get; set; }
         public DbSet<OkrStage> OkrStages { get; set; }
-
-        public DbSet<NirLaborVolumesDoc> NirLaborVolumesDocs { get; set; }
-
-        public DbSet<NirLaborVolumesDocRecord> NirLaborVolumesDocRecords { get; set; }
 
         public DbSet<SoftwareDevEnv> SoftwareDevEnvs { get; set; }
 
         public DbSet<PlatePointsCountRange> PlatePointsCountRanges { get; set; }
 
         public DbSet<DbEntityCountRange> DbEntityCountRanges { get; set; }
+
+        public DbSet<LaborVolumeReg> LaborVolumeRegs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -128,26 +126,12 @@ namespace LaborVolumeCalculator.Data
                 .HasOne(s => s.NiokrCategory)
                 .WithMany();
 
-            modelBuilder.Entity<NirLaborVolumesDoc>(d =>
+            modelBuilder.Entity<LaborVolumeReg>(e =>
             {
-                d.ToTable("NirLaborVolumesDoc", Schema.Documents);
-                d.HasMany(r => r.NirLaborVolumesDocRecords)
-                    .WithOne(r => r.NirLaborVolumesDoc).OnDelete(DeleteBehavior.Cascade);
-
-                d.Property(p => p.IsImplemented).HasDefaultValue(false);
-                d.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.NoAction);
-                d.HasOne(r => r.NiokrStage).WithMany().OnDelete(DeleteBehavior.NoAction);
+                e.HasOne(r => r.Niokr).WithMany().OnDelete(DeleteBehavior.Cascade);
+                e.HasOne(r => r.NiokrStage).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
             });
-
-            modelBuilder.Entity<NirLaborVolumesDocRecord>(e =>
-            {
-                e.ToTable("NirLaborVolumesDocRecord", Schema.Documents);
-                e.HasOne<NirLaborVolumesDoc>(d => d.NirLaborVolumesDoc)
-                    .WithMany(r => r.NirLaborVolumesDocRecords)
-                    .OnDelete(DeleteBehavior.Cascade);
-                e.HasOne<Labor>(r => r.Labor).WithMany().OnDelete(DeleteBehavior.NoAction);
-            });
-
         }
                 
         private class Schema

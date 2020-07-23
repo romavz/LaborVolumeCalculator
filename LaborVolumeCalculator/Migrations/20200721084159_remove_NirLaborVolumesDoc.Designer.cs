@@ -4,14 +4,16 @@ using LaborVolumeCalculator.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaborVolumeCalculator.Migrations
 {
     [DbContext(typeof(LVCContext))]
-    partial class LVCContextModelSnapshot : ModelSnapshot
+    [Migration("20200721084159_remove_NirLaborVolumesDoc")]
+    partial class remove_NirLaborVolumesDoc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -337,42 +339,6 @@ namespace LaborVolumeCalculator.Migrations
                     b.ToTable("OkrInnovationRate");
                 });
 
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Registers.LaborVolumeReg", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("LaborID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NiokrID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NiokrStageID")
-                        .HasColumnType("int");
-
-                    b.Property<float>("TotalVolume")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Volume")
-                        .HasColumnType("real");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("LaborID");
-
-                    b.HasIndex("NiokrID");
-
-                    b.HasIndex("NiokrStageID");
-
-                    b.ToTable("LaborVolumeRegs");
-                });
-
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.DbDevLabor", b =>
                 {
                     b.HasBaseType("LaborVolumeCalculator.Models.Dictionary.Labor");
@@ -554,27 +520,6 @@ namespace LaborVolumeCalculator.Migrations
                         .WithMany()
                         .HasForeignKey("OkrInnovationPropertyID")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Registers.LaborVolumeReg", b =>
-                {
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.Labor", "Labor")
-                        .WithMany()
-                        .HasForeignKey("LaborID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.Niokr", "Niokr")
-                        .WithMany()
-                        .HasForeignKey("NiokrID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.NiokrStage", "NiokrStage")
-                        .WithMany()
-                        .HasForeignKey("NiokrStageID")
-                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

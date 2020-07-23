@@ -15,12 +15,6 @@ namespace LaborVolumeCalculator.Models.Documents
         }
 
         public int ID { get; set; }
-
-        [DisplayName("Проведен")]
-        public bool IsImplemented { get; set; }
-        
-        [DisplayName("Номер")]
-        public string Number { get; set; }
         
         [DisplayName("Дата")]
         public DateTime Date { get; set; }

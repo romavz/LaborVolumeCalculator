@@ -28,7 +28,8 @@
         </div>
     </nav>
 
-    <main class="flex-grow-1 flex-shrink-1 d-flex">
+    <!-- <main class="flex-grow-1 flex-shrink-1 d-flex"> -->
+    <main class="w-auto px-3">
         <div class="container-fluid px-0">
             <div class="row">
                 <div class="col-auto">
@@ -36,9 +37,7 @@
                         <div class="card-header"> НИР </div>
                         <nav class="nav flex-column">
                             <a class="nav-link" asp-area="" asp-page="/Nirs/Index">НИРы</a>
-                            <a class="nav-link" asp-area="" asp-page="/NirScales/Index">Масштабы НИР</a>
-                            <a class="nav-link" asp-area="" asp-page="/NirInnovationProperties/Index">Свойства новизны НИР</a>
-                            <a class="nav-link" asp-area="" asp-page="/NirInnovationRates/Index">Коэффициенты новизны НИР</a>
+                            <a class="nav-link" asp-area="" asp-page="/Nirs/EditLaborVolumes">Трудозатраты НИР</a>
                         </nav>
                     </div>
 
@@ -61,7 +60,7 @@
                         </nav>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col pl-0">
                     @RenderBody()
                 </div>
             </div>

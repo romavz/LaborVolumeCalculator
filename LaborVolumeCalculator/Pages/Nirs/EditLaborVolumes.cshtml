@@ -1,0 +1,180 @@
+﻿@page
+@model LaborVolumeCalculator.Pages.Nirs.EditLaborVolumesModel
+@using LaborVolumeCalculator.Models.Dictionary
+
+@{
+    ViewData["Title"] = "Трудозатраты НИР";
+}
+
+<div>
+    <h4>@Html.DisplayFor(model => model.Nir.Name)</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nir.NirInnovationProperty)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nir.NirInnovationProperty.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nir.NirScale)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nir.NirScale.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nir.NirInnovationRate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nir.NirInnovationRate.ID)
+        </dd>
+        <dt class="col-sm-2">
+            Трудозатраты по НИР (ч*м)
+        </dt>
+        <dd id="nir-labor-volumes-total" class="col-sm-10">
+            0.0
+        </dd>
+    </dl>
+    <hr/>
+    <div>
+        <a asp-page="./Index">Вернуться к списку</a>
+    </div>
+</div>
+
+<div class="container-lg px-0" id ="NiokrStages">
+    @foreach (var nirStage in Model.NirStagesVM)
+    {
+        <div class="card d-flex mb-3">
+            
+            <div class="card-header d-flex justify-content-between" type="button" data-toggle="collapse" data-target="#collapseExample_@nirStage.ID.ToString()" aria-expanded="false" aria-controls="collapseExample_@nirStage.ID.ToString()"> 
+                <div>@nirStage.Name </div>
+                <div class="d-flex"> 
+                    <div class="px-2" > Сумма трудозатрат: </div> 
+                    <div class="px-2" id="stage-labor-volumes-total-@nirStage.ID.ToString()">0.0</div> 
+                </div>
+            </div>
+            
+            <div>
+                <div class="collapse" id="collapseExample_@nirStage.ID.ToString()">
+                    <div class="card-body px-2 py-0">
+                        <nav class="nav py-1">
+                            <form class="form-inline">
+                                <button type="button" class="btn btn-link btn-sm d-inline align-middle" data-toggle="modal" data-target="#staticBackdrop">
+                                    Добавить трудозатраты
+                                </button>
+                            </form>
+                        </nav>
+
+                        <table class="table table-sm my-1">
+                            <thead class="card-header">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Работа</th>
+                                    <th scope="col">Объем(чм)</th>
+                                    <th scope="col">Итог(чм)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Соображения высшего порядка, а также курс на социально-ориентированный национальный проект способствует подготовке и реализации ключевых компонентов планируемого обновления. Повседневная практика показывает, что новая модель организационной деятельности обеспечивает широкому кругу специалистов участие в формировании позиций, занимаемых участниками в отношении поставленных задач.</td>
+                                    <td>Otto asdfafddsf</td>
+                                    <td>mdoasdf</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton asfasdfsadf</td>
+                                    <td>fat</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td colspan="2">Larry the Bird</td>
+                                    <td>twitter</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table" hidden>
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.RegistredLabors[0].Labor.Code)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.RegistredLabors[0].Labor)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.RegistredLabors[0].Volume)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.RegistredLabors[0].TotalVolume)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.RegistredLabors)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Labor.Code)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Labor.Name)
+                            </td>
+                            <td>
+                                <div data-id="@item.ID">Удалить</div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div> <!-- card-->
+    }
+</div>
+
+<!-- Modals -->
+@foreach (var nirStage in Model.NirStagesVM)
+{
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Работы НИР</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body container">
+                        @foreach (var labor in nirStage.ExceptedLabors)
+                        {
+                            <div class="row justify-content-start">
+                                <div class="col-1 pr-0">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="labor-@labor.ID" />
+                                        <label class="custom-control-label" for="labor-@labor.ID">@labor.Code</label>
+                                    </div>
+                                </div>
+                                <div class="col-11 pl-0">
+                                    <label for="labor-@labor.ID">@labor.Name</label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary">ОК</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
