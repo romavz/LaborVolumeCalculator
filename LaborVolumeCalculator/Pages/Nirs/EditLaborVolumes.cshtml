@@ -46,20 +46,21 @@
     {
         <div class="card d-flex mb-3">
             
-            <div class="card-header d-flex justify-content-between" type="button" data-toggle="collapse" data-target="#collapseExample_@nirStage.ID.ToString()" aria-expanded="false" aria-controls="collapseExample_@nirStage.ID.ToString()"> 
+            <div class="card-header d-flex justify-content-between" type="button" data-toggle="collapse" data-target="#collapseExample_@nirStage.ID.ToString()" aria-expanded="false" aria-controls="collapseExample_@nirStage.ID.ToString()">
                 <div>@nirStage.Name </div>
-                <div class="d-flex"> 
-                    <div class="px-2" > Сумма трудозатрат: </div> 
-                    <div class="px-2" id="stage-labor-volumes-total-@nirStage.ID.ToString()">0.0</div> 
+                <div class="d-flex">
+                    <div class="px-2"> Сумма трудозатрат: </div>
+                    <div class="px-2" id="stage-labor-volumes-total-@nirStage.ID.ToString()">0.0</div>
                 </div>
             </div>
             
             <div>
+                <div class="pb-1 bg-secondary text-white"></div>
                 <div class="collapse" id="collapseExample_@nirStage.ID.ToString()">
                     <div class="card-body px-2 py-0">
                         <nav class="nav py-1">
                             <form class="form-inline">
-                                <button type="button" class="btn btn-link btn-sm d-inline align-middle" data-toggle="modal" data-target="#staticBackdrop">
+                                <button type="button" class="btn btn-link btn-sm d-inline align-middle" data-toggle="modal" data-target="#staticBackdrop-@nirStage.ID">
                                     Добавить трудозатраты
                                 </button>
                             </form>
@@ -70,28 +71,28 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Работа</th>
-                                    <th scope="col">Объем(чм)</th>
+                                    <th scope="col">Минимальный объем(чм)</th>
+                                    <th scope="col">Максимальный объем(чм)</th>
+                                    <th scope="col">Трудозатраты(чм)</th>
                                     <th scope="col">Итог(чм)</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Соображения высшего порядка, а также курс на социально-ориентированный национальный проект способствует подготовке и реализации ключевых компонентов планируемого обновления. Повседневная практика показывает, что новая модель организационной деятельности обеспечивает широкому кругу специалистов участие в формировании позиций, занимаемых участниками в отношении поставленных задач.</td>
-                                    <td>Otto asdfafddsf</td>
-                                    <td>mdoasdf</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton asfasdfsadf</td>
-                                    <td>fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td colspan="2">Larry the Bird</td>
-                                    <td>twitter</td>
-                                </tr>
+                                @foreach(var laborItem in Model.RegistredLabors.Where(m => m.NiokrStageID == nirStage.ID))
+                                {
+                                    <tr>
+                                        <th scope="row">@laborItem.Labor.Code</th>
+                                        <td>@laborItem.Labor.Name</td>
+                                        <td>@laborItem.Labor.MinVolume</td>
+                                        <td>@laborItem.Labor.MaxVolume</td>
+                                        <td>
+                                            <div class="form-group">
+                                                <input asp-for="@laborItem.Volume" asp-route-laborID="@laborItem.LaborID" asp-route-nirStageID="@nirStage.ID" class="form-control" />
+                                            </div>
+                                        </td>
+                                        <td>@laborItem.TotalVolume</td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -144,7 +145,7 @@
 <!-- Modals -->
 @foreach (var nirStage in Model.NirStagesVM)
 {
-    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdrop-@nirStage.ID" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
