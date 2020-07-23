@@ -24,7 +24,9 @@ namespace LaborVolumeCalculator.Pages.NiokrStages
         public async Task OnGetAsync()
         {
             NiokrStage = await _context.NiokrStages
-                .Include(n => n.NiokrCategory).ToListAsync();
+                .Include(n => n.NiokrCategory)
+                .OrderBy(m => m.NiokrCategoryID).ThenBy(m => m.Name)
+                .ToListAsync();
         }
     }
 }
