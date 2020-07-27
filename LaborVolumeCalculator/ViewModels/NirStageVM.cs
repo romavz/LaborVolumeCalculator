@@ -1,4 +1,5 @@
 ﻿using LaborVolumeCalculator.Models.Dictionary;
+using LaborVolumeCalculator.Models.Registers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +25,9 @@ namespace LaborVolumeCalculator.ViewModels
             NiokrCategoryID = nirStage.NiokrCategoryID;
         }
 
-        public IOrderedEnumerable<Labor> Labors { get; set; }
 
-        public IOrderedEnumerable<Labor> ExceptedLabors { get; set; }
+        public IOrderedEnumerable<Labor> AvailableLabors { get; set; }
+
+        public IEnumerable<LaborVolumeReg> AttachedLaborVolumes { get; set; }
     }
 }

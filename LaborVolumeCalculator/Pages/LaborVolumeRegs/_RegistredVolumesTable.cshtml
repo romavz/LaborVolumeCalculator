@@ -1,0 +1,37 @@
+﻿
+@model LaborVolumeCalculator.ViewModels.NirStageVM
+@using LaborVolumeCalculator.Models.Dictionary;
+
+@{ 
+    var nirStage = Model;
+}
+    <table class="table table-sm my-1">
+        <thead class="card-header">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Работа</th>
+                <th scope="col">Минимальный объем(чм)</th>
+                <th scope="col">Максимальный объем(чм)</th>
+                <th scope="col">Трудозатраты(чм)</th>
+                <th scope="col">Итог(чм)</th>
+            </tr>
+        </thead>
+        <tbody id="LaborVolumesForNirStage_@nirStage.ID">
+            @foreach (var registerItem in nirStage.AttachedLaborVolumes)
+            {
+                <tr>
+                    <th scope="row">@registerItem.Labor.Code</th>
+                    <td>@registerItem.Labor.Name</td>
+                    <td>@registerItem.Labor.MinVolume</td>
+                    <td>@registerItem.Labor.MaxVolume</td>
+                    <td>
+                        <div class="form-group">
+                            <input asp-for="@registerItem.Volume" asp-route-laborID="@registerItem.LaborID" asp-route-nirStageID="@nirStage.ID" class="form-control" />
+                        </div>
+                    </td>
+                    <td>@registerItem.TotalVolume</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+

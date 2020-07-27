@@ -60,41 +60,19 @@
                     <div class="card-body px-2 py-0">
                         <nav class="nav py-1">
                             <form class="form-inline">
-                                <button type="button" class="btn btn-link btn-sm d-inline align-middle" data-toggle="modal" data-target="#staticBackdrop-@nirStage.ID">
+                                <button type="button" class="btn btn-link btn-sm d-inline align-middle" data-toggle="modal" data-target="#staticBackdropLabel-@nirStage.ID">
                                     Добавить трудозатраты
                                 </button>
                             </form>
                         </nav>
-
-                        <table class="table table-sm my-1">
-                            <thead class="card-header">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Работа</th>
-                                    <th scope="col">Минимальный объем(чм)</th>
-                                    <th scope="col">Максимальный объем(чм)</th>
-                                    <th scope="col">Трудозатраты(чм)</th>
-                                    <th scope="col">Итог(чм)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach(var laborItem in Model.RegistredLabors.Where(m => m.NiokrStageID == nirStage.ID))
-                                {
-                                    <tr>
-                                        <th scope="row">@laborItem.Labor.Code</th>
-                                        <td>@laborItem.Labor.Name</td>
-                                        <td>@laborItem.Labor.MinVolume</td>
-                                        <td>@laborItem.Labor.MaxVolume</td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input asp-for="@laborItem.Volume" asp-route-laborID="@laborItem.LaborID" asp-route-nirStageID="@nirStage.ID" class="form-control" />
-                                            </div>
-                                        </td>
-                                        <td>@laborItem.TotalVolume</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                        <div id="nirStageData_@nirStage.ID">
+                            @{ 
+                                await Html.RenderPartialAsync(
+                                    "../LaborVolumeRegs/_RegistredVolumesTable",
+                                    nirStage
+                                    );
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -145,7 +123,7 @@
 <!-- Modals -->
 @foreach (var nirStage in Model.NirStagesVM)
 {
-    <div class="modal fade" id="staticBackdrop-@nirStage.ID" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdropLabel-@nirStage.ID" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -154,28 +132,103 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body container">
-                        @foreach (var labor in nirStage.ExceptedLabors)
-                        {
-                            <div class="row justify-content-start">
-                                <div class="col-1 pr-0">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="labor-@labor.ID" />
-                                        <label class="custom-control-label" for="labor-@labor.ID">@labor.Code</label>
-                                    </div>
-                                </div>
-                                <div class="col-11 pl-0">
-                                    <label for="labor-@labor.ID">@labor.Name</label>
+                <div class="modal-body container" id="laborSelectionList-@nirStage.ID">
+                    @foreach (var labor in nirStage.AvailableLabors)
+                    {
+                        <div class="row justify-content-start" data-laborID="@labor.ID">
+                            <div class="col-1 pr-0">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="labor-@nirStage.ID-@labor.ID" />
+                                    <label class="custom-control-label" for="labor-@nirStage.ID-@labor.ID" name ="labor-Code">@labor.Code</label>
                                 </div>
                             </div>
-                        }
-                    </div>
+                            <label class="col-9 pl-0" for="labor-@nirStage.ID-@labor.ID" name="labor-Name">@labor.Name</label>
+                            <div class="col-1 px-0" name="labor-MinVolume">
+                                @labor.MinVolume
+                            </div>
+                            <div class="col-1 px-0" name ="labor-MaxVolume">
+                                @labor.MaxVolume
+                            </div>
+                        </div>
+                    }
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                    <button type="button" class="btn btn-primary">ОК</button>
+                    <button type="button" class="btn btn-primary nirStageModalBtnOK" data-nirStageID="@nirStage.ID">ОК</button>
                 </div>
             </div>
         </div>
     </div>
 }
 
+@section scripts{
+    <script>
+        class Labor {
+            ID = 0;
+            Code = "";
+            Name = "";
+            MinVolume = 0.0;
+            MaxVolume = 0.0;
+            Volume = 0.0;
+
+            constructor(id = 0, code = "", name = "", minVolume = 0.0, maxVolume = 0.0) {
+                this.ID = id;
+                this.Code = code;
+                this.Name = name;
+                this.MinVolume = minVolume;
+                this.MaxVolume = maxVolume;
+            }
+
+        }
+
+        class Helper {
+            constructor() { }
+
+            createLabor(row) {
+                return new Labor(
+                    parseInt(row.attr('data-laborID')),
+                    row.find("[name='labor-Code']").first().text().trim(),
+                    row.find("[name='labor-Name']").first().text().trim(),
+                    parseFloat(row.find("[name='labor-MinVolume']").first().text().trim().replace(",", ".")),
+                    parseFloat(row.find("[name='labor-MaxVolume']").first().text().trim().replace(",", "."))
+                );
+            }
+
+            forEachCheckedRow(selectList, func) {
+                let checkedItems = selectList.find("input:checked");
+                selectList.has(checkedItems).each(func);
+            }
+
+            addLaborsToNirStageTable(laborsArray) {
+
+            };
+
+            recalcNirStageTotalLaborsVolume(nirStageID) {
+
+            }
+
+            recalcNirTotalLaborsVolume() {
+
+            }
+        }
+
+        $(document).ready(function () {
+            let helper = new Helper();
+
+            $('.nirStageModalBtnOK').on('click', function (event) {
+                let okButton = $(event.target);
+                let nirStageID = okButton.attr('data-nirStageID');
+                let selectList = $("#laborSelectionList-" + nirStageID + " .row");
+                let selectedLabors = [];
+                helper.forEachCheckedRow(selectList, function (index, row) {
+                    selectedLabors.push(helper.createLabor($(row)));
+                    $(row).attr("hidden", true);
+                    $(row).find("input:checked").attr("checked", false);
+                });
+                // добавить в таблицу этапа отмеченные работы (и желательно отсортировать по коду)
+                // пересчитать итоги по таблице работ этапа НИР
+                // пересчитать итоги по всей НИР
+            });
+        });
+    </script>
+}

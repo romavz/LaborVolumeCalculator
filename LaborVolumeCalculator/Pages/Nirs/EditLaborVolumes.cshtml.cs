@@ -25,8 +25,6 @@ namespace LaborVolumeCalculator.Pages.Nirs
         public Nir Nir { get; set; }
         public IList<NirStageVM> NirStagesVM { get; set; }
 
-        public List<NirStage> FilledStages { get; set; } // чтоб заполненные эпапы показывать развернутыми
-
         public IOrderedEnumerable<NirLabor> NirLabors { get; set; }
 
         public List<LaborVolumeReg> RegistredLabors { get; set; }
@@ -47,11 +45,6 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 .OrderBy(m => m.Name)
                 .Select(nirStage => new NirStageVM(nirStage)).ToListAsync();
 
-            FilledStages = await (from laborReg in _context.LaborVolumeRegs
-                                  where laborReg.NiokrID == Nir.ID
-                                  join nirStage in _context.NirStages on laborReg.NiokrStageID equals nirStage.ID
-                                    select nirStage).ToListAsync();
-
             var a = _context.NirLabors.ToList();
             NirLabors = a.OrderBy(x => x.Code, LaborCodeComparer.Instance);
 
@@ -60,12 +53,14 @@ namespace LaborVolumeCalculator.Pages.Nirs
 
             foreach (var nirStage in NirStagesVM)
             {
-                nirStage.Labors = RegistredLabors
-                    .Where(m => m.NiokrStageID == nirStage.ID)
+                nirStage.AttachedLaborVolumes = RegistredLabors
+                    .Where(m => m.NiokrStageID == nirStage.ID);
+                
+                var attachedLabors = nirStage.AttachedLaborVolumes
                     .Select(m => (NirLabor)m.Labor)
                     .OrderBy(m => m.Code, LaborCodeComparer.Instance);
 
-                nirStage.ExceptedLabors = NirLabors.Except(nirStage.Labors)
+                nirStage.AvailableLabors = NirLabors.Except(attachedLabors)
                     .OrderBy(m => m.Code, LaborCodeComparer.Instance);
             }
 
@@ -75,5 +70,6 @@ namespace LaborVolumeCalculator.Pages.Nirs
             }
             return Page();
         }
+
     }
 }
