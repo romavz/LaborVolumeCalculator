@@ -11,10 +11,5 @@ namespace LaborVolumeCalculator.Models.Dictionary
         public Niokr(string name) : base(name)
         {
         }
-
-        //[DisplayName("Категория")]
-        public virtual string NiokrCategory { get; set; }
-
-        
     }
 }
