@@ -1,6 +1,6 @@
 ﻿
 @model LaborVolumeCalculator.ViewModels.NirStageVM
-@using LaborVolumeCalculator.Models.Dictionary;
+@using System.Globalization;
 
 @{ 
     var nirStage = Model;
@@ -14,22 +14,22 @@
                 <th scope="col">Максимальный объем(чм)</th>
                 <th scope="col">Трудозатраты(чм)</th>
                 <th scope="col">Итог(чм)</th>
+                <td></td>
             </tr>
         </thead>
-        <tbody id="LaborVolumesForNirStage_@nirStage.ID">
+        <tbody id="LaborVolumesForNirStage-@nirStage.ID" class="LaborVolumesForNirStage" data-nirStageID="@nirStage.ID">
             @foreach (var registerItem in nirStage.AttachedLaborVolumes)
             {
-                <tr>
-                    <th scope="row">@registerItem.Labor.Code</th>
-                    <td>@registerItem.Labor.Name</td>
-                    <td>@registerItem.Labor.MinVolume</td>
-                    <td>@registerItem.Labor.MaxVolume</td>
+                <tr data-laborID="@registerItem.LaborID">
+                    <th scope="row" name ="laborCode">@registerItem.Labor.Code</th>
+                    <td name="laborName">@registerItem.Labor.Name</td>
+                    <td name="laborMinVolume">@registerItem.Labor.MinVolume.ToString("0.0####", CultureInfo.InvariantCulture)</td>
+                    <td name="laborMaxVolume">@registerItem.Labor.MaxVolume.ToString("0.0####", CultureInfo.InvariantCulture)</td>
                     <td>
-                        <div class="form-group">
-                            <input asp-for="@registerItem.Volume" asp-route-laborID="@registerItem.LaborID" asp-route-nirStageID="@nirStage.ID" class="form-control" />
-                        </div>
+                        <input name="Volume" class="form-control" value="@registerItem.Volume.ToString("0.0####", System.Globalization.CultureInfo.InvariantCulture)" />
                     </td>
-                    <td>@registerItem.TotalVolume</td>
+                    <td name="totalVolume">@registerItem.TotalVolume</td>
+                    <td> <button type="button" class="btn btn-link btn-sm d-inline align-middle removeLaborButton" data-laborID="@registerItem.LaborID" data-nirStageID="@nirStage.ID">Удалить</button> </td>
                 </tr>
             }
         </tbody>

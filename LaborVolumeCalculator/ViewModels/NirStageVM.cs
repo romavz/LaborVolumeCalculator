@@ -25,9 +25,6 @@ namespace LaborVolumeCalculator.ViewModels
             NiokrCategoryID = nirStage.NiokrCategoryID;
         }
 
-
-        public IOrderedEnumerable<Labor> AvailableLabors { get; set; }
-
         public IEnumerable<LaborVolumeReg> AttachedLaborVolumes { get; set; }
     }
 }

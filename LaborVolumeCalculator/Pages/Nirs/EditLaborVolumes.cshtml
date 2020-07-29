@@ -1,6 +1,7 @@
 ﻿@page
 @model LaborVolumeCalculator.Pages.Nirs.EditLaborVolumesModel
 @using LaborVolumeCalculator.Models.Dictionary
+@using System.Globalization
 
 @{
     ViewData["Title"] = "Трудозатраты НИР";
@@ -25,8 +26,8 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Nir.NirInnovationRate)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nir.NirInnovationRate.ID)
+        <dd class="col-sm-10" id="nirInnovationRateValue">
+            @Model.Nir.NirInnovationRate.Value.ToString("0.0####", CultureInfo.InvariantCulture)
         </dd>
         <dt class="col-sm-2">
             Трудозатраты по НИР (ч*м)
@@ -41,32 +42,46 @@
     </p>
 </div>
 
-<div class="container-lg px-0" id ="NiokrStages">
+<div class="container-lg px-0" id="NiokrStages">
+    <table hidden id="nirStageTableRowHolder">
+        <tr data-laborID="0">
+            <th scope="row" name="laborCode"></th>
+            <td name="laborName"> </td>
+            <td name="laborMinVolume"> </td>
+            <td name="laborMaxVolume"> </td>
+            <td>
+                <input name="Volume" class="form-control" value="0.0" />
+            </td>
+            <td name="totalVolume"> </td>
+            <td><button type="button" class="btn btn-link btn-sm d-inline align-middle removeLaborButton" data-laborID="0" data-nirStageID="0">Удалить</button></td>
+        </tr>
+    </table>
+
     @foreach (var nirStage in Model.NirStagesVM)
     {
-        <div class="card d-flex mb-3">
-            
+        <div class="card d-flex mb-3" id="nirStageCard-@nirStage.ID" name="nirStageCard" data-nirStageID="@nirStage.ID">
+
             <div class="card-header d-flex justify-content-between" type="button" data-toggle="collapse" data-target="#collapseExample_@nirStage.ID.ToString()" aria-expanded="false" aria-controls="collapseExample_@nirStage.ID.ToString()">
                 <div>@nirStage.Name </div>
                 <div class="d-flex">
-                    <div class="px-2"> Сумма трудозатрат: </div>
-                    <div class="px-2" id="stage-labor-volumes-total-@nirStage.ID.ToString()">0.0</div>
+                    <div class="px-2">Сумма трудозатрат: </div>
+                    <div class="px-2" id="nirStageLaborsVolumeTotal-@nirStage.ID">0.0</div>
                 </div>
             </div>
-            
+
             <div>
                 <div class="pb-1 bg-secondary text-white"></div>
-                <div class="collapse" id="collapseExample_@nirStage.ID.ToString()">
+                <div class="collapse" id="collapseExample_@nirStage.ID">
                     <div class="card-body px-2 py-0">
                         <nav class="nav py-1">
                             <form class="form-inline">
-                                <button type="button" class="btn btn-link btn-sm d-inline align-middle" data-toggle="modal" data-target="#staticBackdropLabel-@nirStage.ID">
+                                <button type="button" class="btn btn-link btn-sm d-inline align-middle" data-toggle="modal" data-target="#laborsSelectionModal-@nirStage.ID">
                                     Добавить трудозатраты
                                 </button>
                             </form>
                         </nav>
                         <div id="nirStageData_@nirStage.ID">
-                            @{ 
+                            @{
                                 await Html.RenderPartialAsync(
                                     "../LaborVolumeRegs/_RegistredVolumesTable",
                                     nirStage
@@ -123,7 +138,7 @@
 <!-- Modals -->
 @foreach (var nirStage in Model.NirStagesVM)
 {
-    <div class="modal fade" id="staticBackdropLabel-@nirStage.ID" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="laborsSelectionModal-@nirStage.ID" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -133,9 +148,13 @@
                     </button>
                 </div>
                 <div class="modal-body container" id="laborSelectionList-@nirStage.ID">
-                    @foreach (var labor in nirStage.AvailableLabors)
+                    @{ var attachedLabors = nirStage.AttachedLaborVolumes.Select(m => (NirLabor)m.Labor); }
+
+                    @foreach (var labor in Model.NirLabors)
                     {
-                        <div class="row justify-content-start" data-laborID="@labor.ID">
+                        bool isHidden = attachedLabors.Contains(labor);
+
+                        <div class="row justify-content-start" data-laborID="@labor.ID" hidden="@isHidden")>
                             <div class="col-1 pr-0">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="labor-@nirStage.ID-@labor.ID" />
@@ -144,10 +163,10 @@
                             </div>
                             <label class="col-9 pl-0" for="labor-@nirStage.ID-@labor.ID" name="labor-Name">@labor.Name</label>
                             <div class="col-1 px-0" name="labor-MinVolume">
-                                @labor.MinVolume
+                                @labor.MinVolume.ToString("0.0####", CultureInfo.InvariantCulture)
                             </div>
                             <div class="col-1 px-0" name ="labor-MaxVolume">
-                                @labor.MaxVolume
+                                @labor.MaxVolume.ToString("0.0####", CultureInfo.InvariantCulture)
                             </div>
                         </div>
                     }
@@ -178,7 +197,6 @@
                 this.MinVolume = minVolume;
                 this.MaxVolume = maxVolume;
             }
-
         }
 
         class Helper {
@@ -189,8 +207,8 @@
                     parseInt(row.attr('data-laborID')),
                     row.find("[name='labor-Code']").first().text().trim(),
                     row.find("[name='labor-Name']").first().text().trim(),
-                    parseFloat(row.find("[name='labor-MinVolume']").first().text().trim().replace(",", ".")),
-                    parseFloat(row.find("[name='labor-MaxVolume']").first().text().trim().replace(",", "."))
+                    parseFloat(row.find("[name='labor-MinVolume']").first().text().trim()),
+                    parseFloat(row.find("[name='labor-MaxVolume']").first().text().trim()),
                 );
             }
 
@@ -199,8 +217,26 @@
                 selectList.has(checkedItems).each(func);
             }
 
-            addLaborsToNirStageTable(laborsArray) {
+            addLaborsToNirStageTable(laborsArray, nirStageID) {
+                let self = this;
+                let nirInnovationRate = parseFloat($('#nirInnovationRateValue').text().trim());
+                let table = $('#LaborVolumesForNirStage-' + nirStageID);
+                laborsArray.forEach(function (labor, index, array) {
+                    let row = $('#nirStageTableRowHolder').find('tr').first().clone(true, true);
+                    row.attr('data-laborID', labor.ID);
+                    row.children("[name='laborCode']").first().text(labor.Code);
+                    row.children("[name='laborName']").first().text(labor.Name);
+                    row.children("[name='laborMinVolume']").first().text(labor.MinVolume);
+                    row.children("[name='laborMaxVolume']").first().text(labor.MaxVolume);
+                    row.find("[name='Volume']").first().val(labor.MinVolume);
+                    row.children("[name='totalVolume']").first().text(labor.MinVolume * nirInnovationRate);
 
+                    let removeButton = row.find('.removeLaborButton').first();
+                    removeButton.on('click', self.onRemoveLabor_buttonHandler);
+                    removeButton.attr({ 'data-laborID': labor.ID, 'data-nirStageID': nirStageID });
+
+                    table.append(row);
+                });
             };
 
             recalcNirStageTotalLaborsVolume(nirStageID) {
@@ -210,6 +246,18 @@
             recalcNirTotalLaborsVolume() {
 
             }
+
+            closeLaborSelectionModal(nirStageID) {
+                $('#laborsSelectionModal-' + nirStageID).modal("hide");
+            }
+
+            onRemoveLabor_buttonHandler(event) {
+                let deleteButton = $(event.target);
+                let nirStageID = deleteButton.attr('data-nirStageID');
+                let laborID = deleteButton.attr('data-laborID');
+                $('#LaborVolumesForNirStage-' + nirStageID + ' tr').has(deleteButton).remove();
+                $("#laborSelectionList-" + nirStageID + ' .row[data-laborID="' + laborID + '"]').attr('hidden', false);
+            }
         }
 
         $(document).ready(function () {
@@ -218,17 +266,28 @@
             $('.nirStageModalBtnOK').on('click', function (event) {
                 let okButton = $(event.target);
                 let nirStageID = okButton.attr('data-nirStageID');
-                let selectList = $("#laborSelectionList-" + nirStageID + " .row");
+                let checkedRows = $("#laborSelectionList-" + nirStageID + " .row");
                 let selectedLabors = [];
-                helper.forEachCheckedRow(selectList, function (index, row) {
+                helper.forEachCheckedRow(checkedRows, function (index, row) {
                     selectedLabors.push(helper.createLabor($(row)));
                     $(row).attr("hidden", true);
-                    $(row).find("input:checked").attr("checked", false);
+                    $(row).find("input:checkbox").prop("checked", false);
                 });
-                // добавить в таблицу этапа отмеченные работы (и желательно отсортировать по коду)
-                // пересчитать итоги по таблице работ этапа НИР
-                // пересчитать итоги по всей НИР
+
+                helper.addLaborsToNirStageTable(selectedLabors, nirStageID);
+                helper.recalcNirStageTotalLaborsVolume(nirStageID);
+                helper.recalcNirTotalLaborsVolume();
+                helper.closeLaborSelectionModal(nirStageID);
             });
+
+            $("[name='nirStageCard']").each(function (index, nirCardElement) {
+                let nirCard = $(nirCardElement);
+                let nirStageID = nirCard.attr("data-nirStageID");
+                helper.recalcNirStageTotalLaborsVolume(nirStageID);
+                helper.recalcNirTotalLaborsVolume();
+            });
+
+            $('.removeLaborButton').on('click', helper.onRemoveLabor_buttonHandler);
         });
     </script>
 }

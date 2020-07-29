@@ -59,9 +59,6 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 var attachedLabors = nirStage.AttachedLaborVolumes
                     .Select(m => (NirLabor)m.Labor)
                     .OrderBy(m => m.Code, LaborCodeComparer.Instance);
-
-                nirStage.AvailableLabors = NirLabors.Except(attachedLabors)
-                    .OrderBy(m => m.Code, LaborCodeComparer.Instance);
             }
 
             if (Nir == null)
