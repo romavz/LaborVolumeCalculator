@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
+using LaborVolumeCalculator.Services;
 
 namespace LaborVolumeCalculator
 {
@@ -24,11 +25,14 @@ namespace LaborVolumeCalculator
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
             services.AddRazorPages();
 
             services.AddDbContext<LVCContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("LVCContext")));
             services.AddScoped<DbSeed>();
+
+            services.AddTransient<ILaborVolumeRegService, LaborVolumeRegService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +56,7 @@ namespace LaborVolumeCalculator
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

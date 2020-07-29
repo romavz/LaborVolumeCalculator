@@ -10,6 +10,7 @@
 <div>
     <h4>@Html.DisplayFor(model => model.Nir.Name)</h4>
     <hr />
+    <input type="hidden" asp-for="Nir.ID" />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Nir.NirInnovationProperty)
@@ -183,19 +184,18 @@
 @section scripts{
     <script>
         class Labor {
-            ID = 0;
-            Code = "";
-            Name = "";
-            MinVolume = 0.0;
-            MaxVolume = 0.0;
-            Volume = 0.0;
+            id = 0;
+            code = "";
+            name = "";
+            minVolume = 0.0;
+            maxVolume = 0.0;
 
             constructor(id = 0, code = "", name = "", minVolume = 0.0, maxVolume = 0.0) {
-                this.ID = id;
-                this.Code = code;
-                this.Name = name;
-                this.MinVolume = minVolume;
-                this.MaxVolume = maxVolume;
+                this.id = id;
+                this.code = code;
+                this.name = name;
+                this.minVolume = minVolume;
+                this.maxVolume = maxVolume;
             }
         }
 
@@ -222,22 +222,26 @@
                 let nirInnovationRate = parseFloat($('#nirInnovationRateValue').text().trim());
                 let table = $('#LaborVolumesForNirStage-' + nirStageID);
                 laborsArray.forEach(function (labor, index, array) {
-                    let row = $('#nirStageTableRowHolder').find('tr').first().clone(true, true);
-                    row.attr('data-laborID', labor.ID);
-                    row.children("[name='laborCode']").first().text(labor.Code);
-                    row.children("[name='laborName']").first().text(labor.Name);
-                    row.children("[name='laborMinVolume']").first().text(labor.MinVolume);
-                    row.children("[name='laborMaxVolume']").first().text(labor.MaxVolume);
-                    row.find("[name='Volume']").first().val(labor.MinVolume);
-                    row.children("[name='totalVolume']").first().text(labor.MinVolume * nirInnovationRate);
-
-                    let removeButton = row.find('.removeLaborButton').first();
-                    removeButton.on('click', self.onRemoveLabor_buttonHandler);
-                    removeButton.attr({ 'data-laborID': labor.ID, 'data-nirStageID': nirStageID });
-
+                    let row = self.createNirStageLaborsTableRecord(nirStageID, labor, labor.minVolume, labor.minVolume * nirInnovationRate);
                     table.append(row);
                 });
             };
+
+            createNirStageLaborsTableRecord(nirStageID, labor, volume, totalVolume) {
+                let row = $('#nirStageTableRowHolder').find('tr').first().clone(true, true);
+                row.attr('data-laborID', labor.id);
+                row.children("[name='laborCode']").first().text(labor.code);
+                row.children("[name='laborName']").first().text(labor.name);
+                row.children("[name='laborMinVolume']").first().text(labor.minVolume);
+                row.children("[name='laborMaxVolume']").first().text(labor.maxVolume);
+                row.find("[name='Volume']").first().val(volume);
+                row.children("[name='totalVolume']").first().text(totalVolume);
+
+                let removeButton = row.find('.removeLaborButton').first();
+                removeButton.on('click', self.onRemoveLabor_buttonHandler);
+                removeButton.attr({ 'data-laborID': labor.id, 'data-nirStageID': nirStageID });
+                return row;
+            }
 
             recalcNirStageTotalLaborsVolume(nirStageID) {
 
@@ -255,13 +259,34 @@
                 let deleteButton = $(event.target);
                 let nirStageID = deleteButton.attr('data-nirStageID');
                 let laborID = deleteButton.attr('data-laborID');
-                $('#LaborVolumesForNirStage-' + nirStageID + ' tr').has(deleteButton).remove();
-                $("#laborSelectionList-" + nirStageID + ' .row[data-laborID="' + laborID + '"]').attr('hidden', false);
+                $(`#LaborVolumesForNirStage-${nirStageID} tr`).has(deleteButton).remove();
+                $(`#laborSelectionList-${nirStageID} .row[data-laborID="${laborID}"]`).attr('hidden', false);
+            }
+
+            loadNirLabors() {
+                let self = this;
+
+                $('.LaborVolumesForNirStage').each(function (index, element) {
+                    let nirStageSection = $(element);
+                    let nirID = $('#Nir_ID').val();
+                    let nirStageID = nirStageSection.attr('data-nirStageID');
+
+                    $.get(`/api/laborVolumeReg?niokrID=${nirID}&niokrStageID=${nirStageID}`).done(function (laborVolumeRegs) {
+                        $.each(laborVolumeRegs, function (i, regRecord) {
+                            let row = self.createNirStageLaborsTableRecord(nirStageID, regRecord.labor, regRecord.volume, regRecord.totalVolume)
+                            nirStageSection.append(row);
+                        });
+                    });
+                });
+
             }
         }
 
         $(document).ready(function () {
             let helper = new Helper();
+
+            helper.loadNirLabors();
+            
 
             $('.nirStageModalBtnOK').on('click', function (event) {
                 let okButton = $(event.target);

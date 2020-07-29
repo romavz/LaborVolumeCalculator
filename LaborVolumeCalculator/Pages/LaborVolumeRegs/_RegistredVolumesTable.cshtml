@@ -18,20 +18,7 @@
             </tr>
         </thead>
         <tbody id="LaborVolumesForNirStage-@nirStage.ID" class="LaborVolumesForNirStage" data-nirStageID="@nirStage.ID">
-            @foreach (var registerItem in nirStage.AttachedLaborVolumes)
-            {
-                <tr data-laborID="@registerItem.LaborID">
-                    <th scope="row" name ="laborCode">@registerItem.Labor.Code</th>
-                    <td name="laborName">@registerItem.Labor.Name</td>
-                    <td name="laborMinVolume">@registerItem.Labor.MinVolume.ToString("0.0####", CultureInfo.InvariantCulture)</td>
-                    <td name="laborMaxVolume">@registerItem.Labor.MaxVolume.ToString("0.0####", CultureInfo.InvariantCulture)</td>
-                    <td>
-                        <input name="Volume" class="form-control" value="@registerItem.Volume.ToString("0.0####", System.Globalization.CultureInfo.InvariantCulture)" />
-                    </td>
-                    <td name="totalVolume">@registerItem.TotalVolume</td>
-                    <td> <button type="button" class="btn btn-link btn-sm d-inline align-middle removeLaborButton" data-laborID="@registerItem.LaborID" data-nirStageID="@nirStage.ID">Удалить</button> </td>
-                </tr>
-            }
+            
         </tbody>
     </table>
 
