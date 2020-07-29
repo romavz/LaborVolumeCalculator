@@ -244,11 +244,23 @@
             }
 
             recalcNirStageTotalLaborsVolume(nirStageID) {
+                let nirStageTotalVolume = 0;
+                let volumes = $(`#LaborVolumesForNirStage-${nirStageID} [name="totalVolume"]`);
 
+                volumes.each(function (index, element) {
+                    nirStageTotalVolume += parseFloat($(element).text().trim());
+                });
+
+                $(`#nirStageLaborsVolumeTotal-${nirStageID}`).text(nirStageTotalVolume);
             }
 
             recalcNirTotalLaborsVolume() {
+                let totalVolume = 0;
+                $("[id^='nirStageLaborsVolumeTotal']").each(function (index, element) {
+                    totalVolume += parseFloat($(element).text());
+                });
 
+                $('#nir-labor-volumes-total').text(totalVolume);
             }
 
             closeLaborSelectionModal(nirStageID) {
@@ -261,6 +273,10 @@
                 let laborID = deleteButton.attr('data-laborID');
                 $(`#LaborVolumesForNirStage-${nirStageID} tr`).has(deleteButton).remove();
                 $(`#laborSelectionList-${nirStageID} .row[data-laborID="${laborID}"]`).attr('hidden', false);
+
+                self = new Helper();
+                self.recalcNirStageTotalLaborsVolume(nirStageID);
+                self.recalcNirTotalLaborsVolume();
             }
 
             loadNirLabors() {
@@ -286,7 +302,7 @@
             let helper = new Helper();
 
             helper.loadNirLabors();
-            
+
 
             $('.nirStageModalBtnOK').on('click', function (event) {
                 let okButton = $(event.target);
