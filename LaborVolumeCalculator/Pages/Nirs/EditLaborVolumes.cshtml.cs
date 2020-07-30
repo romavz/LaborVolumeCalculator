@@ -22,6 +22,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
             _context = context;
         }
 
+        [BindProperty]
         public Nir Nir { get; set; }
         public IList<NirStageVM> NirStagesVM { get; set; }
 
@@ -68,5 +69,30 @@ namespace LaborVolumeCalculator.Pages.Nirs
             return Page();
         }
 
+        public async Task<IActionResult> OnPostAsync()
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!NirExists(Nir.ID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToPage("./Index");
+        }
+
+        private bool NirExists(int id)
+        {
+            return _context.Nirs.Any(e => e.ID == id);
+        }
     }
 }
