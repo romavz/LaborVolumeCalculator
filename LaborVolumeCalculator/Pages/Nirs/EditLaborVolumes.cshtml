@@ -281,9 +281,8 @@
                 $(`#LaborVolumesForNirStage-${nirStageID} tr`).has(deleteButton).remove();
                 $(`#laborSelectionList-${nirStageID} .row[data-laborID="${laborID}"]`).attr('hidden', false);
 
-                self = new Helper();
-                self.recalcNirStageTotalLaborsVolume(nirStageID);
-                self.recalcNirTotalLaborsVolume();
+                this.recalcNirStageTotalLaborsVolume(nirStageID);
+                this.recalcNirTotalLaborsVolume();
             }
 
             onVolumeEditKeyUp_handler(event) {
@@ -292,10 +291,9 @@
                 let editBox = $(event.target);
                 let nirStageID = editBox.attr('data-nirStageID');
 
-                self = new Helper();
-                self.recalcLaborTotalVolume(editBox);
-                self.recalcNirStageTotalLaborsVolume(nirStageID);
-                self.recalcNirTotalLaborsVolume();
+                this.recalcLaborTotalVolume(editBox);
+                this.recalcNirStageTotalLaborsVolume(nirStageID);
+                this.recalcNirTotalLaborsVolume();
             }
 
             loadNirLabors() {
@@ -347,8 +345,8 @@
                 helper.recalcNirTotalLaborsVolume();
             });
 
-            $('.removeLaborButton').on('click', helper.onRemoveLabor_buttonHandler);
-            $('.volumeEditBox').on('keyup', helper.onVolumeEditKeyUp_handler);
+            $('.removeLaborButton').on('click', helper.onRemoveLabor_buttonHandler.bind(helper));
+            $('.volumeEditBox').on('keyup', helper.onVolumeEditKeyUp_handler.bind(helper));
 
         });
     </script>
