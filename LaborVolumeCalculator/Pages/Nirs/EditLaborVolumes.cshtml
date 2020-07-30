@@ -51,7 +51,7 @@
             <td name="laborMinVolume"> </td>
             <td name="laborMaxVolume"> </td>
             <td>
-                <input name="Volume" class="form-control" value="0.0" />
+                <input name="Volume" class="form-control volumeEditBox" value="0.0" data-nirStageID="0"/>
             </td>
             <td name="totalVolume"> </td>
             <td><button type="button" class="btn btn-link btn-sm d-inline align-middle removeLaborButton" data-laborID="0" data-nirStageID="0">Удалить</button></td>
@@ -228,7 +228,7 @@
             };
 
             createNirStageLaborsTableRecord(nirStageID, labor, volume, totalVolume) {
-                let row = $('#nirStageTableRowHolder').find('tr').first().clone(true, true);
+                let row = $('#nirStageTableRowHolder tr').first().clone(true, true);
                 row.attr('data-laborID', labor.id);
                 row.children("[name='laborCode']").first().text(labor.code);
                 row.children("[name='laborName']").first().text(labor.name);
@@ -236,9 +236,9 @@
                 row.children("[name='laborMaxVolume']").first().text(labor.maxVolume);
                 row.find("[name='Volume']").first().val(volume);
                 row.children("[name='totalVolume']").first().text(totalVolume);
+                row.find('.volumeEditBox').attr('data-nirStageID', nirStageID);
 
                 let removeButton = row.find('.removeLaborButton').first();
-                removeButton.on('click', self.onRemoveLabor_buttonHandler);
                 removeButton.attr({ 'data-laborID': labor.id, 'data-nirStageID': nirStageID });
                 return row;
             }
@@ -263,6 +263,13 @@
                 $('#nir-labor-volumes-total').text(totalVolume);
             }
 
+            recalcLaborTotalVolume(editBox) {
+                let nirInnovationRate = parseFloat($('#nirInnovationRateValue').text().trim());
+                let newVolume = parseFloat(editBox.val());
+                let totalVolume = newVolume * nirInnovationRate;
+                editBox.closest('tr').children("[name='totalVolume']").text(totalVolume);
+            }
+
             closeLaborSelectionModal(nirStageID) {
                 $('#laborsSelectionModal-' + nirStageID).modal("hide");
             }
@@ -275,6 +282,18 @@
                 $(`#laborSelectionList-${nirStageID} .row[data-laborID="${laborID}"]`).attr('hidden', false);
 
                 self = new Helper();
+                self.recalcNirStageTotalLaborsVolume(nirStageID);
+                self.recalcNirTotalLaborsVolume();
+            }
+
+            onVolumeEditKeyUp_handler(event) {
+                if (event.key != 'Enter') { return; }
+
+                let editBox = $(event.target);
+                let nirStageID = editBox.attr('data-nirStageID');
+
+                self = new Helper();
+                self.recalcLaborTotalVolume(editBox);
                 self.recalcNirStageTotalLaborsVolume(nirStageID);
                 self.recalcNirTotalLaborsVolume();
             }
@@ -329,6 +348,8 @@
             });
 
             $('.removeLaborButton').on('click', helper.onRemoveLabor_buttonHandler);
+            $('.volumeEditBox').on('keyup', helper.onVolumeEditKeyUp_handler);
+
         });
     </script>
 }
