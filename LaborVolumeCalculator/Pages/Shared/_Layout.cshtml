@@ -20,6 +20,30 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Главная</a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            Справочники
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" asp-area="" asp-page="/NiokrStages/Index">Этапы НИOKР</a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <h5 class="dropdown-header">НИР</h5>
+                            <a class="dropdown-item" asp-area="" asp-page="/NirInnovationProperties/Index">Свойства новизны НИР</a>
+                            <a class="dropdown-item" asp-area="" asp-page="/NirScales/Index">Масштабы НИР</a>
+                            <a class="dropdown-item" asp-area="" asp-page="/NirInnovationRates/Index">Коэффициенты новизны НИР</a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <h5 class="dropdown-header">ОКР</h5>
+                            <a class="dropdown-item" asp-area="" asp-page="/OkrInnovationProperties/Index">Свойства новизны ОКР</a>
+                            <a class="dropdown-item" asp-area="" asp-page="/OkrInnovationRates/Index">Коэффициенты новизны ОКР</a>
+                            <a class="dropdown-item" asp-area="" asp-page="/DeviceCompositions/Index">Компоновки устройств</a>
+                            <a class="dropdown-item" asp-area="" asp-page="/DeviceCountRanges/Index">Количественные диапазоны</a>
+                            <a class="dropdown-item" asp-area="" asp-page="/DeviceComplexityRates/Index">Коэффициенты сложности устройств</a>
+                        </div>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/About">О проекте</a>
                     </li>
@@ -28,40 +52,22 @@
         </div>
     </nav>
 
-    <main class="flex-grow-1 flex-shrink-1 d-flex">
+    <!-- <main class="flex-grow-1 flex-shrink-1 d-flex"> -->
+    <main class="w-auto px-3">
         <div class="container-fluid px-0">
             <div class="row">
                 <div class="col-auto">
                     <div class="card mb-3" style="width: 18rem;">
                         <div class="card-header"> НИР </div>
                         <nav class="nav flex-column">
-                            <a class="nav-link" asp-area="" asp-page="/Nirs/Index">НИРы</a>
-                            <a class="nav-link" asp-area="" asp-page="/NirScales/Index">Масштабы НИР</a>
-                            <a class="nav-link" asp-area="" asp-page="/NirInnovationProperties/Index">Свойства новизны НИР</a>
-                            <a class="nav-link" asp-area="" asp-page="/NirInnovationRates/Index">Коэффициенты новизны НИР</a>
-                        </nav>
-                    </div>
+                            <a class="nav-link" asp-area="" asp-page="/Nirs/Index">Список НИР</a>
+                            <a class="nav-link" asp-area="" asp-page="#">Список ОКР</a>
 
-                    <div class="card mb-3" style="width: 18rem;">
-                        <div class="card-header"> ОКР </div>
-                        <nav class="nav flex-column">
-                            <a class="nav-link" asp-area="" asp-page="/OkrInnovationProperties/Index">Свойства новизны ОКР</a>
-                            <a class="nav-link" asp-area="" asp-page="/OkrInnovationRates/Index">Коэффициенты новизны ОКР</a>
-                            <a class="nav-link" asp-area="" asp-page="/DeviceCompositions/Index">Компоновки устройств</a>
-                            <a class="nav-link" asp-area="" asp-page="/DeviceCountRanges/Index">Количественные диапазоны</a>
-                            <a class="nav-link" asp-area="" asp-page="/DeviceComplexityRates/Index">Коэффициенты сложности устройств</a>
                         </nav>
                     </div>
-
-                    <div class="card mb-3" style="width: 18rem;">
-                        <div class="card-header"> Трудозатраты </div>
-                        <nav class="nav flex-column">
-                            <a class="nav-link" asp-area="" asp-page="/LaborGroups/Index">Группы работ</a>
-                            <a class="nav-link" asp-area="" asp-page="/Labors/Index">Работы</a>
-                        </nav>
-                    </div>
+                    
                 </div>
-                <div class="col">
+                <div class="col pl-0">
                     @RenderBody()
                 </div>
             </div>

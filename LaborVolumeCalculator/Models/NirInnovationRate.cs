@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Models
 {
-    [Description("Коэффициенты новизны НИР")]
+    [Display(Name ="Коэфициент новизны НИР", GroupName ="Коэффициенты новизны НИР")]
     public class NirInnovationRate
     {
         public NirInnovationRate()
@@ -25,16 +25,14 @@ namespace LaborVolumeCalculator.Models
             Value = value;
         }
 
-        [DisplayName("НИР")]
+        public int ID { get; set; }
+
         public int NirScaleID { get; set; }
 
-        [DisplayName("НИР")]
         public NirScale NirScale { get; set; }
 
-        [DisplayName("Свойство новизны НИР")]
         public int NirInnovationPropertyID { get; set; }
 
-        [DisplayName("Свойство новизны НИР")]
         public NirInnovationProperty NirInnovationProperty { get; set; }
         
         [DisplayName("Значение")]

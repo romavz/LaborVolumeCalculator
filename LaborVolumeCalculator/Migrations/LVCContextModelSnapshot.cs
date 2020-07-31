@@ -76,6 +76,21 @@ namespace LaborVolumeCalculator.Migrations
                     b.ToTable("DeviceCountRange");
                 });
 
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.DbEntityCountRange", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("DbEntityCountRanges");
+                });
+
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Labor", b =>
                 {
                     b.Property<int>("ID")
@@ -85,109 +100,30 @@ namespace LaborVolumeCalculator.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LaborGroupId")
-                        .HasColumnType("int");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("MaxVolume")
+                        .HasColumnType("real");
+
+                    b.Property<float>("MinVolume")
+                        .HasColumnType("real");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.HasIndex("LaborGroupId");
 
                     b.ToTable("Labor","Dictionary");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Labor");
                 });
 
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.LaborGroup", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Level")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ParentGroupId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.HasIndex("ParentGroupId");
-
-                    b.ToTable("LaborGroup","Dictionary");
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.LaborGroupRelation", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("LaborGroupId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ParentGroupId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("LaborGroupId");
-
-                    b.HasIndex("ParentGroupId");
-
-                    b.HasIndex("LaborGroupId", "ParentGroupId")
-                        .IsUnique()
-                        .HasFilter("LaborGroupId IS NOT NULL");
-
-                    b.ToTable("LaborGroupRelation","Dictionary");
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.LaborVolume", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("LaborID")
-                        .HasColumnType("int");
-
-                    b.Property<float>("MaxValue")
-                        .HasColumnType("real");
-
-                    b.Property<float>("MinValue")
-                        .HasColumnType("real");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("LaborID")
-                        .IsUnique();
-
-                    b.ToTable("LaborVolume","Dictionary");
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Nir", b =>
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Niokr", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -201,12 +137,89 @@ namespace LaborVolumeCalculator.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NiokrCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("UpdateTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Nir");
+                    b.ToTable("Niokr","Dictionary");
+
+                    b.HasDiscriminator<string>("NiokrCategory").HasValue("Niokr");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.NiokrCategory", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("NiokrCategory","Dictionary");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.NiokrStage", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NiokrCategoryID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("NiokrCategoryID");
+
+                    b.ToTable("NiokrStage","Dictionary");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("NiokrStage");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.PlatePointsCountRange", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("PlatePointsCountRanges");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.SoftwareDevEnv", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("SoftwareDevEnvs");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.NirInnovationProperty", b =>
@@ -233,21 +246,29 @@ namespace LaborVolumeCalculator.Migrations
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.NirInnovationRate", b =>
                 {
-                    b.Property<int>("NirScaleID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NirInnovationPropertyID")
-                        .HasColumnType("int");
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("NirInnovationPropertyID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NirScaleID")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Value")
                         .HasColumnType("DECIMAL(8, 4)");
 
-                    b.HasKey("NirScaleID", "NirInnovationPropertyID");
+                    b.HasKey("ID");
 
                     b.HasIndex("NirInnovationPropertyID");
+
+                    b.HasIndex("NirScaleID", "NirInnovationPropertyID")
+                        .IsUnique();
 
                     b.ToTable("NirInnovationRate");
                 });
@@ -292,20 +313,194 @@ namespace LaborVolumeCalculator.Migrations
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.OkrInnovationRate", b =>
                 {
-                    b.Property<int>("OkrInnovationPropertyID")
-                        .HasColumnType("int");
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("DeviceCompositionID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OkrInnovationPropertyID")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Value")
                         .HasColumnType("DECIMAL(8, 4)");
 
-                    b.HasKey("OkrInnovationPropertyID", "DeviceCompositionID");
+                    b.HasKey("ID");
 
                     b.HasIndex("DeviceCompositionID");
 
+                    b.HasIndex("OkrInnovationPropertyID", "DeviceCompositionID")
+                        .IsUnique();
+
                     b.ToTable("OkrInnovationRate");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Registers.LaborVolumeReg", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LaborID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NiokrID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NiokrStageID")
+                        .HasColumnType("int");
+
+                    b.Property<float>("TotalVolume")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Volume")
+                        .HasColumnType("real");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LaborID");
+
+                    b.HasIndex("NiokrID");
+
+                    b.HasIndex("NiokrStageID");
+
+                    b.ToTable("LaborVolumeRegs");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.DbDevLabor", b =>
+                {
+                    b.HasBaseType("LaborVolumeCalculator.Models.Dictionary.Labor");
+
+                    b.Property<int>("DbEntityCountRangeId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("DbEntityCountRangeId");
+
+                    b.HasDiscriminator().HasValue("DbDevLabor");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.HardwareDevLabor", b =>
+                {
+                    b.HasBaseType("LaborVolumeCalculator.Models.Dictionary.Labor");
+
+                    b.Property<int>("PlatePointsCountRangeID")
+                        .HasColumnType("int");
+
+                    b.HasIndex("PlatePointsCountRangeID");
+
+                    b.HasDiscriminator().HasValue("HardwareDevLabor");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.NirLabor", b =>
+                {
+                    b.HasBaseType("LaborVolumeCalculator.Models.Dictionary.Labor");
+
+                    b.HasDiscriminator().HasValue("NirLabor");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.OkrLabor", b =>
+                {
+                    b.HasBaseType("LaborVolumeCalculator.Models.Dictionary.Labor");
+
+                    b.Property<int>("OkrStageID")
+                        .HasColumnType("int");
+
+                    b.HasIndex("OkrStageID");
+
+                    b.HasDiscriminator().HasValue("OkrLabor");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.OntdLabor", b =>
+                {
+                    b.HasBaseType("LaborVolumeCalculator.Models.Dictionary.Labor");
+
+                    b.HasDiscriminator().HasValue("OntdLabor");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.SoftwareDevLabor", b =>
+                {
+                    b.HasBaseType("LaborVolumeCalculator.Models.Dictionary.Labor");
+
+                    b.Property<int>("SoftwareDevEnvId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("SoftwareDevEnvId");
+
+                    b.HasDiscriminator().HasValue("SoftwareDevLabor");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Nir", b =>
+                {
+                    b.HasBaseType("LaborVolumeCalculator.Models.Dictionary.Niokr");
+
+                    b.Property<int>("NirInnovationPropertyID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NirInnovationRateID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NirScaleID")
+                        .HasColumnType("int");
+
+                    b.HasIndex("NirInnovationPropertyID");
+
+                    b.HasIndex("NirInnovationRateID");
+
+                    b.HasIndex("NirScaleID");
+
+                    b.HasDiscriminator().HasValue("НИР");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Okr", b =>
+                {
+                    b.HasBaseType("LaborVolumeCalculator.Models.Dictionary.Niokr");
+
+                    b.Property<int>("DeviceComplexityRateID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeviceCompositionID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeviceCountRangeID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OkrInnovationPropertyID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OkrInnovationRateID")
+                        .HasColumnType("int");
+
+                    b.HasIndex("DeviceComplexityRateID");
+
+                    b.HasIndex("DeviceCompositionID");
+
+                    b.HasIndex("DeviceCountRangeID");
+
+                    b.HasIndex("OkrInnovationPropertyID");
+
+                    b.HasIndex("OkrInnovationRateID");
+
+                    b.HasDiscriminator().HasValue("ОКР");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.NirStage", b =>
+                {
+                    b.HasBaseType("LaborVolumeCalculator.Models.Dictionary.NiokrStage");
+
+                    b.HasDiscriminator().HasValue("NirStage");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.OkrStage", b =>
+                {
+                    b.HasBaseType("LaborVolumeCalculator.Models.Dictionary.NiokrStage");
+
+                    b.HasDiscriminator().HasValue("OkrStage");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.DeviceComplexityRate", b =>
@@ -323,40 +518,11 @@ namespace LaborVolumeCalculator.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Labor", b =>
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.NiokrStage", b =>
                 {
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.LaborGroup", "LaborGroup")
-                        .WithMany("Labors")
-                        .HasForeignKey("LaborGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.LaborGroup", b =>
-                {
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.LaborGroup", "ParentGroup")
+                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.NiokrCategory", "NiokrCategory")
                         .WithMany()
-                        .HasForeignKey("ParentGroupId");
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.LaborGroupRelation", b =>
-                {
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.LaborGroup", "LaborGroup")
-                        .WithMany("ParentGroups")
-                        .HasForeignKey("LaborGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.LaborGroup", "ParentGroup")
-                        .WithMany()
-                        .HasForeignKey("ParentGroupId");
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.LaborVolume", b =>
-                {
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.Labor", "Labor")
-                        .WithOne()
-                        .HasForeignKey("LaborVolumeCalculator.Models.Dictionary.LaborVolume", "LaborID")
+                        .HasForeignKey("NiokrCategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -388,6 +554,117 @@ namespace LaborVolumeCalculator.Migrations
                         .WithMany()
                         .HasForeignKey("OkrInnovationPropertyID")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Registers.LaborVolumeReg", b =>
+                {
+                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.Labor", "Labor")
+                        .WithMany()
+                        .HasForeignKey("LaborID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.Niokr", "Niokr")
+                        .WithMany()
+                        .HasForeignKey("NiokrID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.NiokrStage", "NiokrStage")
+                        .WithMany()
+                        .HasForeignKey("NiokrStageID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.DbDevLabor", b =>
+                {
+                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.DbEntityCountRange", "DbEntityCountRange")
+                        .WithMany()
+                        .HasForeignKey("DbEntityCountRangeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.HardwareDevLabor", b =>
+                {
+                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.PlatePointsCountRange", "PlatePointsCountRange")
+                        .WithMany()
+                        .HasForeignKey("PlatePointsCountRangeID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.OkrLabor", b =>
+                {
+                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.OkrStage", "OkrStage")
+                        .WithMany()
+                        .HasForeignKey("OkrStageID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.SoftwareDevLabor", b =>
+                {
+                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.SoftwareDevEnv", "SoftwareDevEnv")
+                        .WithMany()
+                        .HasForeignKey("SoftwareDevEnvId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Nir", b =>
+                {
+                    b.HasOne("LaborVolumeCalculator.Models.NirInnovationProperty", "NirInnovationProperty")
+                        .WithMany()
+                        .HasForeignKey("NirInnovationPropertyID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("LaborVolumeCalculator.Models.NirInnovationRate", "NirInnovationRate")
+                        .WithMany()
+                        .HasForeignKey("NirInnovationRateID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("LaborVolumeCalculator.Models.NirScale", "NirScale")
+                        .WithMany()
+                        .HasForeignKey("NirScaleID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Okr", b =>
+                {
+                    b.HasOne("LaborVolumeCalculator.Models.DeviceComplexityRate", "DeviceComplexityRate")
+                        .WithMany()
+                        .HasForeignKey("DeviceComplexityRateID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("LaborVolumeCalculator.Models.DeviceComposition", "DeviceComposition")
+                        .WithMany()
+                        .HasForeignKey("DeviceCompositionID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("LaborVolumeCalculator.Models.DeviceCountRange", "DeviceCountRange")
+                        .WithMany()
+                        .HasForeignKey("DeviceCountRangeID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("LaborVolumeCalculator.Models.OkrInnovationProperty", "OkrInnovationProperty")
+                        .WithMany()
+                        .HasForeignKey("OkrInnovationPropertyID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("LaborVolumeCalculator.Models.OkrInnovationRate", "OkrInnovationRate")
+                        .WithMany()
+                        .HasForeignKey("OkrInnovationRateID")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

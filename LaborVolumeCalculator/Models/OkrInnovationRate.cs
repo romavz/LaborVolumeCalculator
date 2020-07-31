@@ -20,6 +20,8 @@ namespace LaborVolumeCalculator.Models
             Value = value;
         }
 
+        public int ID { get; set; }
+
         [Display(Name = "Свойство новизны ОКР")]
         public int OkrInnovationPropertyID { get; set; }
 

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Models;
+using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Pages.Nirs
 {
@@ -19,11 +19,13 @@ namespace LaborVolumeCalculator.Pages.Nirs
             _context = context;
         }
 
-        public IList<Nir> Nirs { get;set; }
+        public IList<Nir> Nir { get;set; }
 
         public async Task OnGetAsync()
         {
-            Nirs = await _context.Nirs.ToListAsync();
+            Nir = await _context.Nirs
+                .Include(n => n.NirInnovationProperty)
+                .Include(n => n.NirScale).ToListAsync();
         }
     }
 }

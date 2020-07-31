@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Models;
+using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Pages.Nirs
 {
@@ -30,12 +30,16 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 return NotFound();
             }
 
-            Nir = await _context.Nirs.FirstOrDefaultAsync(m => m.ID == id);
+            Nir = await _context.Nirs
+                .Include(n => n.NirInnovationProperty)
+                .Include(n => n.NirScale).FirstOrDefaultAsync(m => m.ID == id);
 
             if (Nir == null)
             {
                 return NotFound();
             }
+           ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
+           ViewData["NirScaleID"] = new SelectList(_context.NirScales, "ID", "Name");
             return Page();
         }
 
@@ -47,6 +51,12 @@ namespace LaborVolumeCalculator.Pages.Nirs
             {
                 return Page();
             }
+
+            Nir.NirInnovationRateID = _context.NirInnovationRates
+                .First(
+                    x => x.NirInnovationPropertyID == Nir.NirInnovationPropertyID 
+                    && x.NirScaleID == Nir.NirScaleID
+                ).ID;
 
             _context.Attach(Nir).State = EntityState.Modified;
 

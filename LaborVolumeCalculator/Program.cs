@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,7 +29,7 @@ namespace LaborVolumeCalculator
                 catch (Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "Произошла ошибка во время первоначального заполнения БД.");
+                    logger.LogError(ex, "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РІРѕ РІСЂРµРјСЏ РїРµСЂРІРѕРЅР°С‡Р°Р»СЊРЅРѕРіРѕ Р·Р°РїРѕР»РЅРµРЅРёСЏ Р‘Р”.");
                     throw ex;
                 }
             }

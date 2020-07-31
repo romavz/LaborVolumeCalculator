@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Models;
+using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Pages.Nirs
 {
@@ -29,7 +29,9 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 return NotFound();
             }
 
-            Nir = await _context.Nirs.FirstOrDefaultAsync(m => m.ID == id);
+            Nir = await _context.Nirs
+                .Include(n => n.NirInnovationProperty)
+                .Include(n => n.NirScale).FirstOrDefaultAsync(m => m.ID == id);
 
             if (Nir == null)
             {

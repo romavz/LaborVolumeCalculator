@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Models;
+using LaborVolumeCalculator.Models.Dictionary;
+using Microsoft.EntityFrameworkCore;
 
 namespace LaborVolumeCalculator.Pages.Nirs
 {
@@ -21,6 +22,8 @@ namespace LaborVolumeCalculator.Pages.Nirs
 
         public IActionResult OnGet()
         {
+            ViewData["NirInnovationPropertyID"] = new SelectList(_context.NirInnovationProperties, "ID", "Name");
+            ViewData["NirScaleID"] = new SelectList(_context.NirScales, "ID", "Name");
             return Page();
         }
 
@@ -36,11 +39,17 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 return Page();
             }
 
-            _context.Nirs.Add(Nir);
+            var nirInnovationRate = await _context.NirInnovationRates
+                .Where(n => n.NirInnovationPropertyID == Nir.NirInnovationPropertyID)
+                .Where(n => n.NirScaleID == Nir.NirScaleID)
+                .FirstOrDefaultAsync();
 
+            Nir.NirInnovationRateID = nirInnovationRate.ID;
+
+            _context.Nirs.Add(Nir);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./EditLaborVolumes", new { id = Nir.ID });
         }
     }
 }
