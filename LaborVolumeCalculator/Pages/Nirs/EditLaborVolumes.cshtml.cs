@@ -28,6 +28,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
 
         public IOrderedEnumerable<NirLabor> NirLabors { get; set; }
 
+        [BindProperty]
         public List<LaborVolumeReg> RegistredLabors { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -71,6 +72,11 @@ namespace LaborVolumeCalculator.Pages.Nirs
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var niokrLaborVolumes = _context.LaborVolumeRegs.Where(m => m.NiokrID == Nir.ID);
+            _context.RemoveRange(niokrLaborVolumes);
+
+            await _context.AddRangeAsync(RegistredLabors);
+
             try
             {
                 await _context.SaveChangesAsync();

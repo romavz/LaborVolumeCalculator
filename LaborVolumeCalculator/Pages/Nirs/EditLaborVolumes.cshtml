@@ -129,21 +129,6 @@
     </div>
 }
 
-
-<table hidden id="nirStageTableRowHolder">
-    <tr data-laborID="0">
-        <th scope="row" name="laborCode"> </th>
-        <td name="laborName"> </td>
-        <td name="laborMinVolume"> </td>
-        <td name="laborMaxVolume"> </td>
-        <td>
-            <input name="Volume" class="form-control volumeEditBox" value="0.0" data-nirStageID="0" />
-        </td>
-        <td name="totalVolume"> </td>
-        <td><button type="button" class="btn btn-link btn-sm d-inline align-middle removeLaborButton" data-laborID="0" data-nirStageID="0">Удалить</button></td>
-    </tr>
-</table>
-
 @section scripts{
     <script>
         class Labor {
@@ -163,7 +148,9 @@
         }
 
         class Helper {
-            constructor() { }
+            constructor() {
+                this.index = 0;
+            }
 
             createLabor(row) {
                 return new Labor(
@@ -189,32 +176,52 @@
                     table.append(row);
                 });
             };
-
+            
             createNirStageLaborsTableRecord(nirStageID, labor, volume, totalVolume) {
-                let row = $('#nirStageTableRowHolder tr').first().clone(true, true);
-                row.attr('data-laborID', labor.id);
-                row.children("[name='laborCode']").first().text(labor.code);
-                row.children("[name='laborName']").first().text(labor.name);
-                row.children("[name='laborMinVolume']").first().text(labor.minVolume);
-                row.children("[name='laborMaxVolume']").first().text(labor.maxVolume);
-                row.find("[name='Volume']").first().val(volume);
-                row.children("[name='totalVolume']").first().text(totalVolume);
-                row.find('.volumeEditBox').attr('data-nirStageID', nirStageID);
+                this.index += 1;
+                let tableRow = $(
+                    `<tr data-laborID="${labor.id}">
+                        <td  hidden="hidden">
+                            <input type="hidden" name="RegistredLabors.Index" value="${this.index}" />
+                            <input type="hidden" name="RegistredLabors[${this.index}].ID" value="0" />
+                            <input type="hidden" name="RegistredLabors[${this.index}].NiokrID" value="@Model.Nir.ID"/>
+                            <input type="hidden" name="RegistredLabors[${this.index}].NiokrStageID" value="${nirStageID}"/>
+                            <input type="hidden" name="RegistredLabors[${this.index}].LaborID" value="${labor.id}"/>
+                            <input type="hidden" name="RegistredLabors[${this.index}].TotalVolume" value="${totalVolume}"/>
+                        </td>
+                        <th scope="row" name="laborCode">${labor.code}</th>
+                        <td name="laborName">${labor.name}</td>
+                        <td name="laborMinVolume">${labor.minVolume}</td>
+                        <td name="laborMaxVolume">${labor.maxVolume}</td>
+                        <td>
+                            <input name="RegistredLabors[${this.index}].Volume" class="form-control volumeEditBox" value="${volume}" data-nirStageID="${nirStageID}" />
+                        </td>
+                        <td name="TotalVolume">${totalVolume}</td>
+                        <td>
+                            <button type="button"
+                                    class="btn btn-link btn-sm d-inline align-middle removeLaborButton"
+                                    data-laborID="${labor.id}"
+                                    data-nirStageID="${nirStageID}">Удалить</button>
+                        </td>
+                    </tr>`);
 
-                let removeButton = row.find('.removeLaborButton').first();
-                removeButton.attr({ 'data-laborID': labor.id, 'data-nirStageID': nirStageID });
-                return row;
+                $(tableRow).on('click', '.removeLaborButton', this.onRemoveLabor_buttonHandler.bind(this));
+                $(tableRow).on('keydown change', '.volumeEditBox', this.onVolumeChange_handler.bind(this));
+
+                return tableRow;
             }
+
+
 
             recalcNirStageTotalLaborsVolume(nirStageID) {
                 let nirStageTotalVolume = 0;
-                let volumes = $(`#LaborVolumesForNirStage-${nirStageID} [name="totalVolume"]`);
+                let volumes = $(`#LaborVolumesForNirStage-${nirStageID} td[name$="TotalVolume"]`);
 
                 volumes.each(function (index, element) {
                     nirStageTotalVolume += parseFloat($(element).text().trim());
                 });
 
-                $(`#nirStageLaborsVolumeTotal-${nirStageID}`).text(nirStageTotalVolume);
+                $(`#nirStageLaborsVolumeTotal-${nirStageID}`).text(round(nirStageTotalVolume, 4));
                 this.recalcNirTotalLaborsVolume();
             }
 
@@ -224,24 +231,25 @@
                     totalVolume += parseFloat($(element).text());
                 });
 
-                $('#nir-labor-volumes-total').text(totalVolume);
+                $('#nir-labor-volumes-total').text(round(totalVolume, 4));
             }
 
             recalcLaborTotalVolume(editBox) {
                 let nirInnovationRate = parseFloat($('#nirInnovationRateValue').text().trim());
                 let newVolume = parseFloat(editBox.val());
-                let totalVolume = newVolume * nirInnovationRate;
-                editBox.closest('tr').children("[name='totalVolume']").text(totalVolume);
+                let totalVolume = round(newVolume * nirInnovationRate, 4);
+                let row = editBox.closest('tr')
+                row.find("input[name$='TotalVolume']").val(totalVolume);
+                row.find("td[name$='TotalVolume']").text(totalVolume);
 
-                let nirStageID = editbox.attr('data-nirStageID');
+                let nirStageID = editBox.attr('data-nirStageID');
                 this.recalcNirStageTotalLaborsVolume(nirStageID);
             }
 
             recalcTotals() {
                 let self = this;
                 $("[name='nirStageCard']").each(function (index, nirCardElement) {
-                    let nirCard = $(nirCardElement);
-                    let nirStageID = nirCard.attr("data-nirStageID");
+                    let nirStageID = $(nirCardElement).attr("data-nirStageID");
                     self.recalcNirStageTotalLaborsVolume(nirStageID);
                 });
             }
@@ -269,7 +277,7 @@
                 }
             }
 
-            loadNirLabors() {
+            loadNirLaborVolumes() {
                 let self = this;
 
                 $('.LaborVolumesForNirStage').each(function (index, element) {
@@ -277,23 +285,29 @@
                     let nirID = $('#Nir_ID').val();
                     let nirStageID = nirStageSection.attr('data-nirStageID');
 
-                    $.get(`/api/laborVolumeReg?niokrID=${nirID}&niokrStageID=${nirStageID}`).done(function (laborVolumeRegs) {
-                        $.each(laborVolumeRegs, function (i, regRecord) {
-                            let row = self.createNirStageLaborsTableRecord(nirStageID, regRecord.labor, regRecord.volume, regRecord.totalVolume)
-                            nirStageSection.append(row);
-                        });
+                    $.get(`/api/laborVolumeReg?niokrID=${nirID}&niokrStageID=${nirStageID}`)
+                        .done(function (laborVolumeRegs) {
+                            $.each(laborVolumeRegs, function (i, regRecord) {
+                                let row = self.createNirStageLaborsTableRecord(nirStageID, regRecord.labor, regRecord.volume, regRecord.totalVolume)
+                                nirStageSection.append(row);
+                            });
+
+                        self.recalcTotals();
                     });
                 });
 
             }
         }
 
+        function round(value, decimals) {
+            return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+        }
+
+
         $(document).ready(function () {
             let helper = new Helper();
 
-            helper.loadNirLabors();
-            helper.recalcTotals();
-
+            helper.loadNirLaborVolumes();
 
             $('.nirStageModalBtnOK').on('click', function (event) {
                 let okButton = $(event.target);
@@ -311,8 +325,11 @@
                 helper.closeLaborSelectionModal(nirStageID);
             });
 
-            $('.removeLaborButton').on('click', helper.onRemoveLabor_buttonHandler.bind(helper));
-            $('.volumeEditBox').on('keydown change', helper.onVolumeChange_handler.bind(helper));
+            $('form').submit(function (event) {
+                $(`input[name$='Volume']`).each(function (i, element) {
+                    $(element).val($(element).val().replace('.', ','));
+                });
+            });
         });
     </script>
 }
