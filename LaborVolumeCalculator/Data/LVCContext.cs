@@ -127,6 +127,7 @@ namespace LaborVolumeCalculator.Data
 
             modelBuilder.Entity<LaborVolumeReg>(e =>
             {
+                e.ToTable("LaborVolumeReg", Schema.Registers);
                 e.HasOne(r => r.Niokr).WithMany().OnDelete(DeleteBehavior.Cascade);
                 e.HasOne(r => r.NiokrStage).WithMany().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
