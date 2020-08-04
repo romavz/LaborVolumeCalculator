@@ -45,6 +45,10 @@ namespace LaborVolumeCalculator.Data
         public DbSet<DbDevLabor> DbDevLabors { get; set; }
         public DbSet<HardwareDevLabor> HardwareDevLabors { get; set; }
 
+        public DbSet<SoftwareDevLaborGroup> SoftwareDevLaborGroups { get; set; }
+        public DbSet<NirSoftwareDevLaborGroup> NirSoftwareDevLaborGroups { get; set; }
+        public DbSet<OkrSoftwareDevLaborGroup> OkrSoftwareDevLaborGroups { get; set; }
+
         public DbSet<NiokrCategory> NiokrCategories { get; set; }
         public DbSet<NiokrStage> NiokrStages { get; set; }
         public DbSet<NirStage> NirStages { get; set; }
@@ -117,8 +121,8 @@ namespace LaborVolumeCalculator.Data
 
             modelBuilder.Entity<OkrLabor>()         .HasOne(r => r.OkrStage)                .WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<DbDevLabor>()       .HasOne(r => r.DbEntityCountRange)      .WithMany().OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<SoftwareDevLabor>() .HasOne(r => r.SoftwareDevEnv)          .WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<HardwareDevLabor>() .HasOne(r => r.PlatePointsCountRange)   .WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<SoftwareDevLabor>() .HasOne(r => r.SoftwareDevEnv).WithMany().OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<NiokrCategory>().ToTable("NiokrCategory", Schema.Dictionary);
 
@@ -132,6 +136,19 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(r => r.NiokrStage).WithMany().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
             });
+
+            modelBuilder.Entity<SoftwareDevLaborGroup>(e => 
+            {   
+                e.ToTable("SoftwareDevLaborGroup", Schema.Dictionary);
+                e.Property(p => p.Code).IsRequired();
+                e.Property(p => p.Name).IsRequired();
+            });
+
+            modelBuilder.Entity<OkrSoftwareDevLaborGroup>(e => 
+            {
+                e.HasOne(r => r.OkrStage).WithMany().OnDelete(DeleteBehavior.Restrict);
+            });
+
         }
                 
         private class Schema

@@ -14,11 +14,10 @@ namespace LaborVolumeCalculator.Models.Dictionary
         public SoftwareDevLabor(string code, string name, SoftwareDevEnv softwareDevEnv, float minVolume, float maxVolume) : base(code, name, minVolume, maxVolume)
         {
             SoftwareDevEnv = softwareDevEnv ?? throw new ArgumentNullException("softwareDevEnv");
-            SoftwareDevEnvId = softwareDevEnv.ID;
+            SoftwareDevEnvID = softwareDevEnv.ID;
         }
 
-        public int SoftwareDevEnvId { get; set; }
-        [Display(Name ="Среда разработки ПО")]
+        public int SoftwareDevEnvID { get; set; }
         public SoftwareDevEnv SoftwareDevEnv { get; set; }
     }
 }
