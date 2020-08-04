@@ -13,7 +13,7 @@ namespace LaborVolumeCalculator.ViewModels
         {
         }
 
-        public NirStageVM(string name, NiokrCategory niokrCategory) : base(name, niokrCategory)
+        public NirStageVM(string name) : base(name)
         {
         }
 
@@ -21,8 +21,6 @@ namespace LaborVolumeCalculator.ViewModels
         {
             ID = nirStage.ID;
             Name = nirStage.Name;
-            NiokrCategory = nirStage.NiokrCategory;
-            NiokrCategoryID = nirStage.NiokrCategoryID;
         }
 
         public IEnumerable<LaborVolumeReg> AttachedLaborVolumes { get; set; }

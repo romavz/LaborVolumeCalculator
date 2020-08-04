@@ -11,7 +11,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
         {
         }
 
-        public NirStage(string name, NiokrCategory niokrCategory) : base(name, niokrCategory)
+        public NirStage(string name) : base(name)
         {
         }
     }

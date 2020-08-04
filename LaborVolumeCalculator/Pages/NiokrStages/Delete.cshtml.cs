@@ -29,8 +29,7 @@ namespace LaborVolumeCalculator.Pages.NiokrStages
                 return NotFound();
             }
 
-            NiokrStage = await _context.NiokrStages
-                .Include(n => n.NiokrCategory).FirstOrDefaultAsync(m => m.ID == id);
+            NiokrStage = await _context.NiokrStages.FirstOrDefaultAsync(m => m.ID == id);
 
             if (NiokrStage == null)
             {

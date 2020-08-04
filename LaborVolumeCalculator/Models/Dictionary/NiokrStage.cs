@@ -12,19 +12,14 @@ namespace LaborVolumeCalculator.Models.Dictionary
     {
         public NiokrStage() { }
 
-        public NiokrStage(string name, NiokrCategory niokrCategory) : this()
+        public NiokrStage(string name) : this()
         {
             Name = name ?? throw new ArgumentNullException("name");
-            NiokrCategory = niokrCategory ?? throw new ArgumentNullException("niokrCategory");
-            NiokrCategoryID = niokrCategory.ID;
         }
 
         public int ID { get; set; }
 
         [DisplayName("Называние")]
         public string Name { get; set; }
-
-        public int NiokrCategoryID { get; set; }
-        public NiokrCategory NiokrCategory { get; set; }
     }
 }

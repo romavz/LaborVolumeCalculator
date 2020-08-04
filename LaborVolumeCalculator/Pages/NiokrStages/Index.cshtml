@@ -18,9 +18,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.NiokrStages[0].Name)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NiokrStages[0].NiokrCategory)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -30,9 +27,6 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NiokrCategory.Name)
                 </td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.ID">Изменить</a> |
