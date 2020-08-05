@@ -61,6 +61,8 @@ namespace LaborVolumeCalculator.Data
 
         public DbSet<LaborVolumeReg> LaborVolumeRegs { get; set; }
 
+        public DbSet<LaborCategory> LaborCategories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Niokr>(e =>
@@ -119,6 +121,7 @@ namespace LaborVolumeCalculator.Data
             });
 
             modelBuilder.Entity<OkrLabor>()         .HasOne(r => r.OkrStage)                .WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<DevelopmentLabor>() .HasOne(r => r.LaborCategory)           .WithMany(r => r.Labors).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<DbDevLabor>()       .HasOne(r => r.DbEntityCountRange)      .WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<HardwareDevLabor>() .HasOne(r => r.PlatePointsCountRange)   .WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<SoftwareDevLabor>() .HasOne(r => r.SoftwareDevEnv).WithMany().OnDelete(DeleteBehavior.NoAction);
@@ -143,6 +146,13 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<OkrSoftwareDevLaborGroup>(e => 
             {
                 e.HasOne(r => r.OkrStage).WithMany().OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<LaborCategory>(e => 
+            {
+                e.ToTable("LaborCategory", Schema.Dictionary);
+                e.Property(p => p.Number).IsRequired();
+                e.Property(p => p.Name).IsRequired();
             });
 
         }

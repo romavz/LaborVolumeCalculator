@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name = "Трудозатраты на разработку АЧ", GroupName = "Трудозатраты на разработку АЧ")]
-    public class HardwareDevLabor : Labor
+    public class HardwareDevLabor : DevelopmentLabor
     {
         public HardwareDevLabor()
         {
         }
 
-        public HardwareDevLabor(string code, string name, PlatePointsCountRange pointsCountRange, float minVolume, float maxVolume) : base(code, name, minVolume, maxVolume)
+        public HardwareDevLabor(string code, string name, LaborCategory laborCategory, PlatePointsCountRange pointsCountRange, float minVolume, float maxVolume) 
+            : base(code, name, laborCategory, minVolume, maxVolume)
         {
             PlatePointsCountRange = pointsCountRange ?? throw new ArgumentNullException("pointsCountRange");
             PlatePointsCountRangeID = pointsCountRange.ID;

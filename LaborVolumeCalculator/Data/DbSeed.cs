@@ -131,7 +131,73 @@ namespace LaborVolumeCalculator.Data
             SeedOkrLabors(okrStages);
             SeedOkrSoftwareDevLaborGroups(okrStages);
 
+            SoftwareDevEnv[] devEnvironments = SeedSoftwareDevEnvironments();
+            LaborCategory[] laborCategories = SeedLaborsCategories();
+            SeedSoftwareDevLabors(laborCategories, devEnvironments);
+
             dbContext.SaveChanges();
+        }
+
+        private LaborCategory[] SeedLaborsCategories()
+        {
+            LaborCategory[] categories = 
+            {
+                new LaborCategory(1, "Обработка входных потоков"),
+                new LaborCategory(2, "Управление ПО"),
+                new LaborCategory(3, "Выходные потоки"),
+                new LaborCategory(4, "Специальные функции обработки данных"),
+                new LaborCategory(5, "Взаимодействие со сторонними ПО"),
+                new LaborCategory(6, "Взаимодействие с внешним оборудованием"),
+                new LaborCategory(7, "Сетевой взаимодействие"),
+                new LaborCategory(8, "Архитектура компоненты"),
+                new LaborCategory(9, "Создание базы данных"),
+                new LaborCategory(10, "Функционирование базы данных"),
+                new LaborCategory(11, "Разработка печатной платы")
+            };
+            dbContext.LaborCategories.AddRange(categories);
+
+            return categories;
+        }
+
+        private SoftwareDevEnv[] SeedSoftwareDevEnvironments()
+        {
+            SoftwareDevEnv[] environments = 
+            {
+                new SoftwareDevEnv("PHP/JavaScript"),
+                new SoftwareDevEnv("Perl/Ruby/Python"),
+                new SoftwareDevEnv("C++/C#/Java/Objective-C"),
+                new SoftwareDevEnv("ASM")
+            };
+            dbContext.SoftwareDevEnvs.AddRange(environments);
+            return environments;
+        }
+
+        private void SeedSoftwareDevLabors(LaborCategory[] laborCategories, SoftwareDevEnv[] devEnvironments)
+        {
+            List<SoftwareDevLabor> labors = new List<SoftwareDevLabor>();
+
+            void newLabor(string code, string name, LaborCategory category, SoftwareDevEnv[] devEnvironments, float[,]volumes)
+            {
+                int index = 0;
+                foreach (var env in devEnvironments)
+                {
+                    var labor = new SoftwareDevLabor(code, name, category, env, (float)volumes[index, 0], (float)volumes[index, 1]);
+                    labors.Add(labor);
+                    index++;
+                };
+            };
+
+            var category = laborCategories;
+            var env = devEnvironments;
+            newLabor("101", "Разбор файлов входных данных заданного формата", category[0], env[1..3], new [,]{ {0.5f, 1f}, {0.5f, 1.5f} });
+            newLabor("102", "Разрбор потока данных заданного формата", category[0], env[1..3], new [,]{ {0.5f, 1.5f}, {2, 2} });
+            newLabor("103", "Графический интерфейс ввода", category[0], new SoftwareDevEnv[]{ env[0], env[2] }, new [,]{ {1f, 2f}, {3, 4} });
+            newLabor("104", "Консольный интерфейс ввода", category[0], env, new [,]{ {1f, 1f}, {1, 2}, {2, 2}, {3, 4} });
+            newLabor("105", "Графический веб интерфейс (формы ввода данных)", category[0], env[0..1], new [,]{ {1f, 2f} });
+            newLabor("106", "Интерфейс управления миниатюрным устройством, оснащенным тачскрином", category[0], env[2..3], new float[,]{ {1,5f, 2f} });
+            newLabor("107", "Обработка входящий сообщений от системы обмена сообщениями", category[0], env[0..3], new float[,]{ {1.5f, 1.5f}, {1.5f, 1.5f}, {1.5f, 1.5f} });
+
+            dbContext.SoftwareDevLabors.AddRange(labors);
         }
 
         private void SeedOkrSoftwareDevLaborGroups(OkrStage[] okrStages)
