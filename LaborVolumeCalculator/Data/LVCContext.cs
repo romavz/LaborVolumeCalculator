@@ -63,6 +63,17 @@ namespace LaborVolumeCalculator.Data
 
         public DbSet<LaborCategory> LaborCategories { get; set; }
 
+        public DbSet<ArchitectureComplexityRate> ArchitectureComplexities { get; set; }
+        public DbSet<ComponentsInteractionArchitecture> ComponentsInteractionArchitectures { get; set; }
+        public DbSet<ComponentsMakroArchitecture> ComponentsMakroArchitectures { get; set; }
+        public DbSet<ComponentsMicroArchitecture> ComponentsMicroArchitectures { get; set; }
+
+        public DbSet<InfrastructureComplexityRate> InfrastructureComplexities { get; set; }
+        public DbSet<SolutionInnovationRate> SolutionInnovationRates { get; set; }
+        public DbSet<StandardModulesUsingRate> StandardModulesUsingRates { get; set; }
+        public DbSet<TestsCoverageLevel> TestsCoverageLevels { get; set; }
+        public DbSet<TestsScale> TestsScales { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Niokr>(e =>
@@ -154,7 +165,56 @@ namespace LaborVolumeCalculator.Data
                 e.Property(p => p.Number).IsRequired();
                 e.Property(p => p.Name).IsRequired();
             });
+            
+            modelBuilder.Entity<ArchitectureComplexityRate>(e => 
+            {
+                e.ToTable("ArchitectureComplexityRate", Schema.Dictionary);
+                e.HasOne(r => r.ComponentsInteractionArchitecture).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.ComponentsMakroArchitecture).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+            });
 
+            modelBuilder.Entity<ComponentsInteractionArchitecture>(e => 
+            {
+                e.ToTable("ComponentsInteractionArchitecture", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<ComponentsMakroArchitecture>(e => 
+            {
+                e.ToTable("ComponentsMakroArchitecture", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<ComponentsMicroArchitecture>(e =>
+            {
+                e.ToTable("ComponentsMicroArchitecture", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<InfrastructureComplexityRate>(e =>
+            {
+                e.ToTable("InfrastructureComplexityRate", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<SolutionInnovationRate>(e =>
+            {
+                e.ToTable("SolutionInnovationRate", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<StandardModulesUsingRate>(e => 
+            {
+                e.ToTable("StandardModulesUsingRate", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<TestsCoverageLevel>(e => 
+            {
+                e.ToTable("TestsCoverageLevel", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<TestsDevelopmentRate>(e => 
+            {
+                e.ToTable("TestsDevelopmentRate", Schema.Dictionary);
+                e.HasOne(r => r.ComponentsMicroArchitecture).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.TestsScale).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.TestsCoverageLevel).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+            });
         }
                 
         private class Schema
