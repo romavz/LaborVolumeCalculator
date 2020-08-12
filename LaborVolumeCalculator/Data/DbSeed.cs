@@ -135,6 +135,134 @@ namespace LaborVolumeCalculator.Data
             LaborCategory[] laborCategories = SeedLaborsCategories();
             SeedSoftwareDevLabors(laborCategories, devEnvironments);
 
+            SolutionInnovationRate[] inoRate = {
+                new SolutionInnovationRate("Разработка решения, предусматривающая применение принципиально новых методов разработки,"+
+                    " проведение научно-исследовательских работ", 1.6f),
+                new SolutionInnovationRate("Разработка типовых решений, оригитальных задач и систем, не имеющих аналогов", 1.3f),
+                new SolutionInnovationRate("Разработка проекта ис использование типовыхпроектных решений при условии их изменения", 1.1f),
+                new SolutionInnovationRate("Разработка проектов, имеющих аналогичные решения", 0.8f)
+            };
+            dbContext.AddRange(inoRate);
+
+            StandardModulesUsingRate[] standardRate = {
+                new StandardModulesUsingRate("60-80%", 0.5f),
+                new StandardModulesUsingRate("40-60%", 0.6f),
+                new StandardModulesUsingRate("25-40%", 0.7f),
+                new StandardModulesUsingRate("20-25%", 0.8f),
+                new StandardModulesUsingRate("0-20%", 1f)
+            };
+            dbContext.AddRange(standardRate);
+
+            InfrastructureComplexityRate[] infraRate = {
+                new InfrastructureComplexityRate("Стандартная инфраструктура разработки", 1f),
+                new InfrastructureComplexityRate("Инфраструктура, включающая сложные логические и составные взаимодействия либо" +
+                    " взаимодействия большого числа элементов", 1.25f),
+                new InfrastructureComplexityRate("Сложная виртуальная инфраструктура, содержащая взаимосвязанные виртуальные сети "+
+                    "и средства автоматизации управлением виртуальными машинами", 1.4f),
+                new InfrastructureComplexityRate("Инфраструктура с повышенными требованиями безопасности, на всех этапах выполнения проекта, "+
+                    "в том числе: обособление элементов, использование дополнительных средств защиты и т.д.", 1.6f),
+                new InfrastructureComplexityRate("Инфраструктура, включающая механическое взаимодействие компонентов", 1.9f)
+            };
+            dbContext.AddRange(infraRate);
+
+            ComponentsMakroArchitecture[] makroArch = {
+                new ComponentsMakroArchitecture("Процедурная"),
+                new ComponentsMakroArchitecture("Асинхронная"),
+                new ComponentsMakroArchitecture("Микроядерная")
+            };
+            dbContext.AddRange(makroArch);
+
+            ComponentsInteractionArchitecture[] interactArch = {
+                new ComponentsInteractionArchitecture("Монолитная"),
+                new ComponentsInteractionArchitecture("N-звенная(в том числе клиент-серверная)"),
+                new ComponentsInteractionArchitecture("Микросервисная"),
+                new ComponentsInteractionArchitecture("С общей распределенной памятью")
+            };
+            dbContext.AddRange(interactArch);
+            
+            ArchitectureComplexityRate[] acr = {
+                new ArchitectureComplexityRate(makroArch[0], interactArch[0], 1.15f),
+                new ArchitectureComplexityRate(makroArch[0], interactArch[1], 1.1f),
+                new ArchitectureComplexityRate(makroArch[0], interactArch[2], 1f),
+                new ArchitectureComplexityRate(makroArch[0], interactArch[3], 1.15f),
+                new ArchitectureComplexityRate(makroArch[1], interactArch[0], 1.1f),
+                new ArchitectureComplexityRate(makroArch[1], interactArch[1], 1.05f),
+                new ArchitectureComplexityRate(makroArch[1], interactArch[2], 1f),
+                new ArchitectureComplexityRate(makroArch[1], interactArch[3], 1.15f),
+                new ArchitectureComplexityRate(makroArch[2], interactArch[0], 1f),
+                new ArchitectureComplexityRate(makroArch[2], interactArch[1], 1f),
+                new ArchitectureComplexityRate(makroArch[2], interactArch[2], 0.9f),
+                new ArchitectureComplexityRate(makroArch[2], interactArch[3], 1.1f)
+            };
+            dbContext.AddRange(acr);
+
+            ComponentsMicroArchitecture[] microArch = {
+                new ComponentsMicroArchitecture("Процедурная"),
+                new ComponentsMicroArchitecture("Объектно-ориентированная"),
+                new ComponentsMicroArchitecture("Функциональная"),
+                new ComponentsMicroArchitecture("Смешанная")
+            };
+            dbContext.AddRange(microArch);
+
+            TestsScale[] testsScales = {
+                new TestsScale("Модульное"),
+                new TestsScale("Функциональное"),
+                new TestsScale("Интеграционное")
+            };
+            dbContext.AddRange(testsScales);
+
+            TestsCoverageLevel[] testCovers = {
+                new TestsCoverageLevel("0-40%"),
+                new TestsCoverageLevel("40-60%"),
+                new TestsCoverageLevel("60-80%")
+            };
+            dbContext.AddRange(testCovers);
+
+
+            TestsDevelopmentRateBuilder tdrb = new TestsDevelopmentRateBuilder(microArch[0], testsScales[0], testCovers[0]);
+            TestsDevelopmentRate[] testDevRates = {
+                tdrb.Create(1.1f),
+                tdrb.Create(testCovers[1], 1.2f),
+                tdrb.Create(testCovers[2], 1.5f),
+                tdrb.WithTestsScale(testsScales[1]).Create(testCovers[0], 1.05f),
+                tdrb.Create(testCovers[1], 1.1f),
+                tdrb.Create(testCovers[2], 1.3f),
+                tdrb.WithTestsScale(testsScales[2]).Create(testCovers[0], 1.2f),
+                tdrb.Create(testCovers[1], 1.3f),
+                tdrb.Create(testCovers[2], 1.6f),
+                
+                tdrb.Create(microArch[1], testsScales[0], testCovers[0], 1f),
+                tdrb.Create(testCovers[1], 1.05f),
+                tdrb.Create(testCovers[2], 1.2f),
+                tdrb.WithTestsScale(testsScales[1]).Create(testCovers[0], 1.05f),
+                tdrb.Create(testCovers[1], 1.1f),
+                tdrb.Create(testCovers[2], 1.3f),
+                tdrb.WithTestsScale(testsScales[2]).Create(testCovers[0], 1.2f),
+                tdrb.Create(testCovers[1], 1.3f),
+                tdrb.Create(testCovers[2], 1.6f),
+
+                tdrb.Create(microArch[2], testsScales[0], testCovers[0], 1f),
+                tdrb.Create(testCovers[1], 1.05f),
+                tdrb.Create(testCovers[2], 1.2f),
+                tdrb.WithTestsScale(testsScales[1]).Create(testCovers[0], 1.05f),
+                tdrb.Create(testCovers[1], 1.05f),
+                tdrb.Create(testCovers[2], 1.2f),
+                tdrb.WithTestsScale(testsScales[2]).Create(testCovers[0], 1.2f),
+                tdrb.Create(testCovers[1], 1.3f),
+                tdrb.Create(testCovers[2], 1.6f),
+
+                tdrb.Create(microArch[3], testsScales[0], testCovers[0], 1.1f),
+                tdrb.Create(testCovers[1], 1.2f),
+                tdrb.Create(testCovers[2], 1.5f),
+                tdrb.WithTestsScale(testsScales[1]).Create(testCovers[0], 1.1f),
+                tdrb.Create(testCovers[1], 1.2f),
+                tdrb.Create(testCovers[2], 1.5f),
+                tdrb.WithTestsScale(testsScales[2]).Create(testCovers[0], 1.2f),
+                tdrb.Create(testCovers[1], 1.3f),
+                tdrb.Create(testCovers[2], 1.6f)
+            };
+            dbContext.AddRange(testDevRates);
+
             dbContext.SaveChanges();
         }
 
@@ -483,6 +611,55 @@ namespace LaborVolumeCalculator.Data
             };
             dbContext.OkrStages.AddRange(okrStages);
             return okrStages;
+        }
+
+    }
+
+    internal class TestsDevelopmentRateBuilder
+    {
+        public TestsDevelopmentRateBuilder(ComponentsMicroArchitecture componentsMicroArchitecture, TestsScale testsScale, TestsCoverageLevel testsCoverageLevel)
+        {
+            ComponentsMicroArchitecture = componentsMicroArchitecture;
+            TestsScale = testsScale;
+            TestsCoverageLevel = testsCoverageLevel;
+        }
+
+        private ComponentsMicroArchitecture ComponentsMicroArchitecture { get; set; }
+
+        private TestsScale TestsScale { get; set; }
+        private TestsCoverageLevel TestsCoverageLevel { get; set; }
+
+        public TestsDevelopmentRate Create(float value)
+        {
+            return new TestsDevelopmentRate(ComponentsMicroArchitecture, TestsScale, TestsCoverageLevel, value);
+        }
+
+        public TestsDevelopmentRateBuilder WithMicroArch(ComponentsMicroArchitecture arch)
+        {
+            this.ComponentsMicroArchitecture = arch;
+            return this;
+        }
+
+        public TestsDevelopmentRateBuilder WithTestsScale(TestsScale scale)
+        {
+            this.TestsScale = scale;
+            return this;
+        }
+
+        public TestsDevelopmentRateBuilder WithTestsCoverLevel(TestsCoverageLevel level)
+        {
+            this.TestsCoverageLevel = level;
+            return this;
+        }
+
+        public TestsDevelopmentRate Create(TestsCoverageLevel level, float value)
+        {
+            return this.WithTestsCoverLevel(level).Create(value);
+        }
+
+        public TestsDevelopmentRate Create(ComponentsMicroArchitecture arch, TestsScale scale, TestsCoverageLevel coverLevel, float value)
+        {
+            return this.WithMicroArch(arch).WithTestsScale(scale).WithTestsCoverLevel(coverLevel).Create(value);
         }
 
     }

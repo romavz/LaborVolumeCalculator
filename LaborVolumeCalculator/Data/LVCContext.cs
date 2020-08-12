@@ -15,7 +15,7 @@ namespace LaborVolumeCalculator.Data
 {
     public class LVCContext : DbContext
     {
-        public LVCContext (DbContextOptions<LVCContext> options)
+        public LVCContext(DbContextOptions<LVCContext> options)
             : base(options)
         {
             new TimeUpdateService(this.ChangeTracker);
@@ -63,7 +63,7 @@ namespace LaborVolumeCalculator.Data
 
         public DbSet<LaborCategory> LaborCategories { get; set; }
 
-        public DbSet<ArchitectureComplexityRate> ArchitectureComplexities { get; set; }
+        public DbSet<ArchitectureComplexityRate> ArchitectureComplexityRates { get; set; }
         public DbSet<ComponentsInteractionArchitecture> ComponentsInteractionArchitectures { get; set; }
         public DbSet<ComponentsMakroArchitecture> ComponentsMakroArchitectures { get; set; }
         public DbSet<ComponentsMicroArchitecture> ComponentsMicroArchitectures { get; set; }
@@ -73,6 +73,9 @@ namespace LaborVolumeCalculator.Data
         public DbSet<StandardModulesUsingRate> StandardModulesUsingRates { get; set; }
         public DbSet<TestsCoverageLevel> TestsCoverageLevels { get; set; }
         public DbSet<TestsScale> TestsScales { get; set; }
+
+        public DbSet<SoftwareDevLaborGroupReg> SoftwareDevLaborGroupRegs { get; set; }
+        public DbSet<TestsDevelopmentRate> TestsDevelopmentRates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -208,6 +211,18 @@ namespace LaborVolumeCalculator.Data
                 e.ToTable("TestsCoverageLevel", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
             });
+            modelBuilder.Entity<TestsScale>(e => 
+            {
+                e.ToTable("TestsScale", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<SoftwareDevLaborGroupReg>(e => 
+            {
+                e.ToTable("SoftwareDevLaborGroupReg", Schema.Registers)
+                    .HasIndex(key => new{ key.NiokrID, key.NiokrStageID, key.SoftwareDevLaborGroupID })
+                    .IsUnique();
+            });
+            
             modelBuilder.Entity<TestsDevelopmentRate>(e => 
             {
                 e.ToTable("TestsDevelopmentRate", Schema.Dictionary);
