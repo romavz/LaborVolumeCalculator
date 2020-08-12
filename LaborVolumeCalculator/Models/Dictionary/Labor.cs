@@ -39,21 +39,4 @@ namespace LaborVolumeCalculator.Models.Dictionary
         [Display(Name = "Маскимум")]
         public float MaxVolume { get; set; }
     }
-
-    public class LaborCodeComparer : IComparer<String>
-    {
-        static LaborCodeComparer()
-        {
-            Instance = new LaborCodeComparer();
-        }
-
-        public static LaborCodeComparer Instance { get; private set; }
-
-        public int Compare([AllowNull] String x, [AllowNull] String y)
-        {
-            int a = int.Parse(x.Replace(".", string.Empty));
-            int b = int.Parse(y.Replace(".", string.Empty));
-            return a.CompareTo(b);
-        }
-    }
 }

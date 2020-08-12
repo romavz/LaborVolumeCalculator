@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.ViewModels;
 using LaborVolumeCalculator.Models.Dictionary;
+using LaborVolumeCalculator.Utils;
 
 namespace LaborVolumeCalculator.Services
 {
@@ -32,7 +33,7 @@ namespace LaborVolumeCalculator.Services
                     m.NiokrID == niokrID
                     && m.NiokrStageID == niokrStageID)
                 .ToList()
-                .OrderBy(m => m.Labor.Code, LaborCodeComparer.Instance);
+                .OrderBy(m => m.Labor.Code, CodeComparer.Instance);
         }
     }
 }
