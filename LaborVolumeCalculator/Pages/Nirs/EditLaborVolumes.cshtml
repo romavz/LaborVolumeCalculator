@@ -89,24 +89,27 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div id="softwareDevLaborGroupsContainer-@nirStage.ID" class="flex-container d-none mb-2" hidden="true">
-                            <div class="flex-row card-header px-0 py-1">
-                                <div class="col">
-                                    <div class="d-flex">
-                                        <div class="mx-2">#</div>
-                                        <div class="mx-2">Комплексные работы по разработке СПО</div>
-                                        <div class="ml-auto mx-2">Сумма трудозатрат:</div>
-                                        <div class="totals mx-2"> 0 </div>
+                        <div id="softwareDevLaborGroupsContainer-@nirStage.ID" class="container-fluid d-none mb-2" hidden="true">
+                            <div class="row card-header px-0 py-1">
+                                <div class="col-auto">#</div>
+                                <div class="col">Комплексные работы по разработке СПО</div>
+                                <div class="col-sm-2 rates">
+                                    <div class="row no-gutters justify-content-between">
+                                        <div class="col rate"> КНР </div>
+                                        <div class="col rate"> ИСМ </div>
+                                        <div class="col rate"> ИФК </div>
+                                        <div class="col rate"> Ка </div>
+                                        <div class="col rate"> Кт </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="row no-gutters">
+                                        <div class="col text-right">Сумма трудозатрат:</div>
+                                        <div class="col-3 text-right totalVolume"> 0 </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" data-software-dev-labor-group-id="0">
-                                <div class="col-1 code">
-
-                                </div>
-                                <div class="col name"></div>
-                                <div class="col-2 total-volume"></div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div> <!-- card-->
@@ -171,7 +174,7 @@
                 let rows = [];
                 softwareLaborGroups.forEach(function(item, index, array) {
                     let row = `
-                        <div class="row justify-content-start"">
+                        <div class="row justify-content-start">
                             <div class="json-data" hidden>${JSON.stringify(item)}</div>
                             <div hidden class="itemID">${item.id}</div>
                             <div class="col-1 pr-0">
@@ -181,7 +184,8 @@
                                 </div>
                             </div>
                             <label class="col-11 pl-0 item-Name" for="sdgLabor-${item.id}">${item.name}</label>
-                        </div>`;
+                        </div>`
+                        ;
                     rows.push(row);
                 });
                 return rows.join(' ');
@@ -193,8 +197,51 @@
                 element.attr('hidden', false);
             }
 
+            btnOkHandler(event){
+                self = this;
+                let okButton = $(event.target);
+                let nirStageID = okButton.data('nirStageID');
+                let checkedRow = $("#addSoftwareLaborGroupSelectionBody .row").has("input:checked").first();
+                let softwareGroupsTable = $(`#softwareDevLaborGroupsContainer-${nirStageID}`);
+                
+                if (checkedRow.length > 0) 
+                { 
+                    self.show(softwareGroupsTable);
+                }
+                // let tableBody = softwareGroupsTable.find('.body');
+                let groupData = JSON.parse($(checkedRow).find('.json-data').text());
+                let tableRow = self.createSoftwareGroupsTableRow(groupData);
+                softwareGroupsTable.append(tableRow);
+                $('#softwareDevLaborGroupSelectionForm').modal('hide');
+            }            
+
             createSoftwareGroupsTableRow(groupData){
-                let row = `<td></td>`;
+                let row = 
+                `<div class="row" data-software-dev-labor-group-id="0">
+                    <div class="col">
+                        <div class="row" id="softwareGroupe-${groupData.id}">
+                            <div class="col-auto code">${groupData.code}</div>
+                            <div class="col name">${groupData.name}</div>
+                            <div class="col-sm-2 rates">
+                                <div class="row no-gutters justify-content-between">
+                                    <div class="col rate" data-id="">1</div>
+                                    <div class="col rate" data-id="">1.2</div>
+                                    <div class="col rate" data-id="">0.5</div>
+                                    <div class="col rate" data-id="">0.8</div>
+                                    <div class="col rate" data-id="">1.05</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="row no-gutters">
+                                    <div class="col text-right">Сумма трудозатрат:</div>
+                                    <div class="col-3 text-right totalVolume"> 0 </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>`;
+                return row;
             }
         }
     </script>
@@ -239,42 +286,13 @@
                 $.get('./editLaborVolumes?handler=SoftwareDevLaborGroupSelectionForm')
                     .done( function(modalForm){
                         $('#softwareDevLaborGroupSelectionForm').replaceWith(modalForm);
+                        $('#softwareDevLaborGroupSelectionForm .btnOK').data('nirStageID', nirStageID);
+                        $('#softwareDevLaborGroupSelectionForm .btnOK').click(softwareHelper.btnOkHandler.bind(softwareHelper));
                         $('#softwareDevLaborGroupSelectionForm').modal('show');
                     });
-                /*
-                $.get({
-                    url: `/api/NirSoftwareDevLaborGroup/GetAllButThis`,
-                    data: excepted_ids
-                })
-                .done(function (laborGroups) {
-                    let table = $('#SoftwareLaborGroupSelectionBody');
-                    table.empty();
-                    let tableContent = softwareHelper.getSoftwareGroupsSelectionModalContent(laborGroups, nirStageID);
-                    table.append(tableContent);
-                    $('#softwareLaborGroupModal .btnOK').data('nirStageID', nirStageID);
-                    $('#softwareLaborGroupModal').modal('show');
-                });
-                */
             });
 
-            $('#softwareLaborGroupModal .btnOK').click( function(event){
-                let okButton = $(event.target);
-                let nirStageID = okButton.data('nirStageID');
-                let checkedRows = $("#SoftwareLaborGroupSelectionBody .row").has("input:checked");
-                let softwareGroupsTable = $(`#softwareDevLaborGroupsContainer-${nirStageID}`);
-                
-                if (checkedRows.length > 0) 
-                { 
-                    softwareHelper.show(softwareGroupsTable);
-                }
-                let tableBody = softwareGroupsTable.find('.body');
-                checkedRows.each(function(index, row){
-                    let groupData = JSON.parse($(row).find('.json-data').text());
-                    let tableRow = softwareHelper.createSoftwareGroupsTableRow(groupData);
-                    tableBody.append(tableRow);
-                });
-                $('#softwareLaborGroupModal').modal('hide');
-            });
+            
         });
     </script>
 }

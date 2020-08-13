@@ -1,5 +1,7 @@
 @model LaborVolumeCalculator.Pages.Nirs.EditLaborVolumesModel;
 @using LaborVolumeCalculator.Models.Dictionary
+@using System.Text.Json;
+@using System.Text.Json.Serialization;
 
 <div class="modal fade" id="softwareDevLaborGroupSelectionForm" tabindex="-1" aria-labelledby="softwareDevLaborGroupSelectionFormLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -16,11 +18,25 @@
                 
                 <label asp-for="SoftwareDevLaborGroupReg.SoftwareDevLaborGroup" class="control-label"></label>
                 <div class="form-group">
+                    @{
+                        var serializeOpts = new JsonSerializerOptions()
+                        {
+                            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                            WriteIndented = true
+                        };
+                    }
                     @foreach (var item in (IEnumerable<SoftwareDevLaborGroup>)Model.ViewData["SoftwareDevLaborGroups"])
                     {
-                        <div class="custom-control custom-radio">
-                            <input type="radio" id="softDevLaborGroup-@item.ID" name="softDevLaborGroup" class="custom-control-input">
-                            <label class="custom-control-label" for="softDevLaborGroup-@item.ID">@item.Name</label>
+                        <div class="row justify-content-start">
+                            <div class="json-data" hidden>@(JsonSerializer.Serialize(item, serializeOpts))</div>
+                            <div hidden class="itemID">@item.ID</div>
+                            <div class="col-1 pr-0">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="softDevLaborGroup-@item.ID" name="softDevLaborGroup" class="custom-control-input">
+                                    <label class="custom-control-label item-Code" for="softDevLaborGroup-@item.ID">@item.Code</label>
+                                </div>
+                            </div>
+                            <label class="col item-Name" for="softDevLaborGroup-@item.ID">@item.Name</label>
                         </div>
                     }
                 </div>
@@ -36,7 +52,7 @@
                                     <label class="custom-control-label" for="solutionInnovationRate-@item.ID">@item.Value</label>
                                 </div>
                             </div>
-                            <label class="col"for="solutionInnovationRate-@item.ID">@item.Name</label>
+                            <label class="col" for="solutionInnovationRate-@item.ID">@item.Name</label>
                         </div>
                     }
                 </div>
@@ -121,14 +137,14 @@
                     <div class="container-fluid">
                         <div class="row border bg-secondary-light">
                             <div class="col-sm-3 border-right">Макроархитектура компонент </div>
-                            <div class="col">
-                                <div class="row border-bottom">
+                            <div class="col px-0">
+                                <div class="row border-bottom no-gutters">
                                     <div class="col text-center"> Архитектура взаимодействия компонент </div>
                                 </div>
-                                <div class="row">
+                                <div class="row no-gutters">
                                     @foreach (var item in (IEnumerable<ComponentsInteractionArchitecture>)Model.ViewData["ComponentsInteractionArchitectures"])
                                     {
-                                        <div class="col border-right text-center">@item.Name</div>
+                                        <div class="col-sm-3 px-1 border-right text-center">@item.Name</div>
                                     }
                                 </div>
                             </div>
@@ -136,17 +152,21 @@
                         <div class="body" data-toggle="buttons">
                             @foreach (var macroArchitecture in (IEnumerable<ComponentsMakroArchitecture>)Model.ViewData["ComponentsMakroArchitectures"])
                             {
-                                <div class="row border-left border-right border-bottom btn-group-toggle">
+                                <div class="row border-left border-right border-bottom">
                                     <div class="col-sm-3 border-right">@macroArchitecture.Name</div>
-                                    @foreach (var interactionArchitecture in (IEnumerable<ComponentsInteractionArchitecture>)Model.ViewData["ComponentsInteractionArchitectures"])
-                                    {
-                                        var rate = ((ArchitectureComplexityRate[])Model.ViewData["ArchitectureComplexityRates"])
-                                            .Where(m => m.ComponentsInteractionArchitectureID == interactionArchitecture.ID && m.ComponentsMakroArchitectureID == macroArchitecture.ID)
-                                            .FirstOrDefault();
-                                        
-                                        <div class="col-sm btn btn-outline-secondary border-0 p-0 d-flex align-items-center justify-content-center">
-                                            <input type="radio" name="acr" id="acr-@rate.ID"> @rate.Value </div>
-                                    }
+                                    <div class="col">
+                                        <div class="row btn-group-toggle">
+                                            @foreach (var interactionArchitecture in (IEnumerable<ComponentsInteractionArchitecture>)Model.ViewData["ComponentsInteractionArchitectures"])
+                                            {
+                                                var rate = ((ArchitectureComplexityRate[])Model.ViewData["ArchitectureComplexityRates"])
+                                                    .Where(m => m.ComponentsInteractionArchitectureID == interactionArchitecture.ID && m.ComponentsMakroArchitectureID == macroArchitecture.ID)
+                                                    .FirstOrDefault();
+                                                
+                                                <div class="col-sm-3 btn btn-outline-secondary border-0 p-0 d-flex align-items-center justify-content-center">
+                                                    <input type="radio" name="acr" id="acr-@rate.ID"> @rate.Value </div>
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
                             }
                         </div>

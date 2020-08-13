@@ -81,7 +81,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 .ToList()
                 .OrderBy(m => m.Code, CodeComparer.Instance);
 
-            ViewData["SoftwareDevLaborGroups"] = _context.NirSoftwareDevLaborGroups.ToArray();
+            ViewData["SoftwareDevLaborGroups"] = _context.NirSoftwareDevLaborGroups.ToArray().OrderBy(m => m.Code, CodeComparer.Instance);
 
             ViewData["ComponentsInteractionArchitectures"] = _context.ComponentsInteractionArchitectures.OrderBy(m => m.Name).ToArray();
             ViewData["ComponentsMakroArchitectures"] = _context.ComponentsMakroArchitectures.OrderBy(m => m.Name).ToArray();
