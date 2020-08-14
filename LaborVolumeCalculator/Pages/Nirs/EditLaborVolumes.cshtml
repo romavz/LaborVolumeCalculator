@@ -95,16 +95,17 @@
                                 <div class="col">Комплексные работы по разработке СПО</div>
                                 <div class="col-sm-2 rates">
                                     <div class="row no-gutters justify-content-between">
-                                        <div class="col rate"> КНР </div>
-                                        <div class="col rate"> ИСМ </div>
-                                        <div class="col rate"> ИФК </div>
-                                        <div class="col rate"> Ка </div>
-                                        <div class="col rate"> Кт </div>
+                                        <div class="col rate text-center"> КНР </div>
+                                        <div class="col rate text-center"> ИСМ </div>
+                                        <div class="col rate text-center"> ИФК </div>
+                                        <div class="col rate text-center"> Ка </div>
+                                        <div class="col rate text-center"> Кт </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
-                                    <div class="row no-gutters">
-                                        <div class="col text-right">Сумма трудозатрат:</div>
+                                    <div class="row">
+                                        <div class="col"></div>
+                                        <div class="col-auto text-right">Сумма:</div>
                                         <div class="col-3 text-right totalVolume"> 0 </div>
                                     </div>
                                 </div>
@@ -210,35 +211,36 @@
                 }
                 // let tableBody = softwareGroupsTable.find('.body');
                 let groupData = JSON.parse($(checkedRow).find('.json-data').text());
-                let tableRow = self.createSoftwareGroupsTableRow(groupData);
+                let tableRow = self.createSoftwareGroupsTableRow(groupData, nirStageID);
                 softwareGroupsTable.append(tableRow);
                 $('#softwareDevLaborGroupSelectionForm').modal('hide');
             }            
 
-            createSoftwareGroupsTableRow(groupData){
+            createSoftwareGroupsTableRow(groupData, nirStageID){
                 let row = 
-                `<div class="row" data-software-dev-labor-group-id="0">
-                    <div class="col">
-                        <div class="row" id="softwareGroupe-${groupData.id}">
-                            <div class="col-auto code">${groupData.code}</div>
-                            <div class="col name">${groupData.name}</div>
-                            <div class="col-sm-2 rates">
-                                <div class="row no-gutters justify-content-between">
-                                    <div class="col rate" data-id="">1</div>
-                                    <div class="col rate" data-id="">1.2</div>
-                                    <div class="col rate" data-id="">0.5</div>
-                                    <div class="col rate" data-id="">0.8</div>
-                                    <div class="col rate" data-id="">1.05</div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="row no-gutters">
-                                    <div class="col text-right">Сумма трудозатрат:</div>
-                                    <div class="col-3 text-right totalVolume"> 0 </div>
-                                </div>
-                            </div>
+                `<div class="row" id="softwareGroupe-${groupData.id}">
+                    <div class="col-auto code">${groupData.code}</div>
+                    <div class="col name">${groupData.name}</div>
+                    <div class="col-sm-2 rates">
+                        <div class="row no-gutters justify-content-between">
+                            <div class="col rate btn py-0 btn-uotline border-0" data-id="">1</div>
+                            <div class="col rate btn py-0 btn-uotline border-0" data-id="">1.2</div>
+                            <div class="col rate btn py-0 btn-uotline border-0" data-id="">0.5</div>
+                            <div class="col rate btn py-0 btn-uotline border-0" data-id="">0.8</div>
+                            <div class="col rate btn py-0 btn-uotline border-0" data-id="">1.05</div>
                         </div>
                     </div>
+                    <div class="col-sm-2 px-0">
+                        <div class="row no-gutters">
+                            <div class="col-auto"><button type="button" class="btn btn-primary py-0"> + </div>
+                            <div class="col text-right totalVolume"> 0 </div>
+                            <div class="col-auto d-flex justify-content-center">
+                                <button type="button"
+                                    class="btn btn-link py-0 border-0 d-inline align-middle removeLaborButton"
+                                    data-softwareGroupLaborID="${groupData.id}"
+                                    data-nirStageID="${nirStageID}"> Удалить </button>
+                            </div>
+                        </div>
                     </div>
                 </div>`;
                 return row;
