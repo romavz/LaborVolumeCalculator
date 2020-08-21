@@ -3,18 +3,24 @@ import { Component } from 'vue-property-decorator';
 
 interface NirStage {
     id: number;
-    code: string;
     name: string;
 }
 
 @Component({
-    template: "Превед",
     components: {
         // тут можно добавить локльные компоненты
       },
 })
 export default class NirComponent extends Vue {
     nirStages: NirStage[] = [
-        { id: 0, code: "1", name: "Stage 1" }
+        { id: 0, name: "Stage 1" }
     ];
+
+    mounted() {
+        fetch('/api/Nir/NirStages')
+            .then(response => response.json())
+            .then(data => {
+                this.nirStages = data;
+            });
+    }
 }

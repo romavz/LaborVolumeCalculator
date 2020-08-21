@@ -1,7 +1,11 @@
 import Vue from 'vue';
 import Nir from './components/nir/nir';
+import VueRouter from 'vue-router';
+
+ Vue.use(VueRouter);
 
 new Vue({
-    el: '#nir',
-    render: h => h(Nir)
+    el: '#root',
+    router: new VueRouter({ mode: 'history' }),
+    render: h => h(require('./components/nir/nir.vue.html'))
 });

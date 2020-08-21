@@ -1,28 +1,78 @@
 <template>
-    <div>
-        <h1>Weather forecast</h1>
+    <div id='root' class="container-fluid">
+        <div v-if="nirStages.length" class="container-lg px-0" id="NiokrStages">
+            <div v-for="nirStage in nirStages">
+                <div class="card d-flex mb-3" id="nirStageCard-@nirStage.ID" name="nirStageCard" data-nirStageID="@nirStage.ID">
 
-        <p>This component demonstrates fetching data from the server.</p>
+                    <div class="card-header d-flex justify-content-between" type="button" data-toggle="collapse" data-target="#collapseExample_@nirStage.ID.ToString()" aria-expanded="false" aria-controls="collapseExample_@nirStage.ID.ToString()">
+                        <div> {{ nirStage.name }} </div>
+                        <div class="d-flex">
+                            <div class="px-2">Сумма трудозатрат: </div>
+                            <div class="px-2" id="nirStageLaborsVolumeTotal-@nirStage.ID">0.0</div>
+                        </div>
+                    </div>
 
-        <table v-if="nirStages.length" class="table">
-            <thead>
-                <tr>
-                    <th>id</th>
-                    <th>code</th>
-                    <th>name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="item in nirStages">
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.code }}</td>
-                    <td>{{ item.name }}</td>
-                </tr>
-            </tbody>
-        </table>
+                    <div class="pb-1 bg-secondary text-white"></div>
+                    <div class="card-body collapse px-2 py-0" id="collapseExample_@nirStage.ID">
+                        <nav class="nav py-1">
+                            <div class="btn-group" role="group" aria-label="laborsManagamentButtons">
+                                <button type="button" class="btn btn-primary btn-sm d-inline align-middle" data-toggle="modal" data-target="#laborsSelectionModal-@nirStage.ID">
+                                    Добавить трудозатраты НИР
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm d-inline align-middle addSoftwareGroupBtn" data-nirStageID="@nirStage.ID">
+                                    Добавить Разработку СПО
+                                </button>
+                            </div>
+                        </nav>
+                        <div id="nirStageData_@nirStage.ID" class="d-none mb-1">
+                            <table class="table table-sm my-1">
+                                <thead class="card-header">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Работа</th>
+                                        <th scope="col">Минимальный объем(чм)</th>
+                                        <th scope="col">Максимальный объем(чм)</th>
+                                        <th scope="col">Трудозатраты(чм)</th>
+                                        <th scope="col">Итог(чм)</th>
+                                        <th> </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="LaborVolumesForNirStage-@nirStage.ID" class="LaborVolumesForNirStage" data-nirStageID="@nirStage.ID">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="softwareDevLaborGroupsContainer-@nirStage.ID" class="container-fluid d-none mb-2" hidden="true">
+                            <div class="row card-header px-0 py-1">
+                                <div class="col-auto">#</div>
+                                <div class="col">Комплексные работы по разработке СПО</div>
+                                <div class="col-sm-2 rates">
+                                    <div class="row no-gutters justify-content-between">
+                                        <div class="col rate text-center"> КНР </div>
+                                        <div class="col rate text-center"> ИСМ </div>
+                                        <div class="col rate text-center"> ИФК </div>
+                                        <div class="col rate text-center"> Ка </div>
+                                        <div class="col rate text-center"> Кт </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="row">
+                                        <div class="col"></div>
+                                        <div class="col-auto text-right">Сумма:</div>
+                                        <div class="col-3 text-right totalVolume"> 0 </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div> <!-- card-->
+            </div>
+        </div>
+
 
         <p v-else><em>Loading...</em></p>
     </div>
 </template>
 
-<script src="./nir.ts"></script>
+<script src="./nir.ts""></script>
