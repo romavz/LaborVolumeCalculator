@@ -12,9 +12,7 @@ interface NirStage {
       },
 })
 export default class NirComponent extends Vue {
-    nirStages: NirStage[] = [
-        { id: 0, name: "Stage 1" }
-    ];
+    nirStages: NirStage[] = [];
 
     mounted() {
         fetch('/api/Nir/NirStages')

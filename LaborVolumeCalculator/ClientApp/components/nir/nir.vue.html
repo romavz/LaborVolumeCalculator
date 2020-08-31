@@ -2,29 +2,29 @@
     <div id='root' class="container-fluid">
         <div v-if="nirStages.length" class="container-lg px-0" id="NiokrStages">
             <div v-for="nirStage in nirStages">
-                <div class="card d-flex mb-3" id="nirStageCard-@nirStage.ID" name="nirStageCard" data-nirStageID="@nirStage.ID">
+                <div class="card d-flex mb-3" v-bind:id="'nirStageCard-' + nirStage.id" name="nirStageCard" v-bind:data-nirStageID="nirStage.id">
 
-                    <div class="card-header d-flex justify-content-between" type="button" data-toggle="collapse" data-target="#collapseExample_@nirStage.ID.ToString()" aria-expanded="false" aria-controls="collapseExample_@nirStage.ID.ToString()">
+                    <div class="card-header d-flex justify-content-between" type="button" data-toggle="collapse" v-bind:data-target="'#collapseExample_' + nirStage.id" aria-expanded="false" v-bind:aria-controls="'collapseExample_' + nirStage.id">
                         <div> {{ nirStage.name }} </div>
                         <div class="d-flex">
                             <div class="px-2">Сумма трудозатрат: </div>
-                            <div class="px-2" id="nirStageLaborsVolumeTotal-@nirStage.ID">0.0</div>
+                            <div class="px-2" v-bind:id="'nirStageLaborsVolumeTotal-' + nirStage.id">0.0</div>
                         </div>
                     </div>
 
                     <div class="pb-1 bg-secondary text-white"></div>
-                    <div class="card-body collapse px-2 py-0" id="collapseExample_@nirStage.ID">
+                    <div class="card-body collapse px-2 py-0" v-bind:id="'collapseExample_' + nirStage.id">
                         <nav class="nav py-1">
                             <div class="btn-group" role="group" aria-label="laborsManagamentButtons">
-                                <button type="button" class="btn btn-primary btn-sm d-inline align-middle" data-toggle="modal" data-target="#laborsSelectionModal-@nirStage.ID">
+                                <button type="button" class="btn btn-primary btn-sm d-inline align-middle" data-toggle="modal" v-bind:data-target="'#laborsSelectionModal-' + nirStage.id">
                                     Добавить трудозатраты НИР
                                 </button>
-                                <button type="button" class="btn btn-primary btn-sm d-inline align-middle addSoftwareGroupBtn" data-nirStageID="@nirStage.ID">
+                                <button type="button" class="btn btn-primary btn-sm d-inline align-middle addSoftwareGroupBtn" v-bind:data-nirStageID="nirStage.id">
                                     Добавить Разработку СПО
                                 </button>
                             </div>
                         </nav>
-                        <div id="nirStageData_@nirStage.ID" class="d-none mb-1">
+                        <div v-bind:id="'nirStageData_' + nirStage.id" class="d-none mb-1">
                             <table class="table table-sm my-1">
                                 <thead class="card-header">
                                     <tr>
@@ -37,12 +37,12 @@
                                         <th> </th>
                                     </tr>
                                 </thead>
-                                <tbody id="LaborVolumesForNirStage-@nirStage.ID" class="LaborVolumesForNirStage" data-nirStageID="@nirStage.ID">
+                                <tbody v-bind:id="'LaborVolumesForNirStage-' + nirStage.id" class="LaborVolumesForNirStage" v-bind:data-nirStageID="nirStage.id">
                                     
                                 </tbody>
                             </table>
                         </div>
-                        <div id="softwareDevLaborGroupsContainer-@nirStage.ID" class="container-fluid d-none mb-2" hidden="true">
+                        <div v-bind:id="'softwareDevLaborGroupsContainer-' + nirStage.id" class="container-fluid d-none mb-2" hidden="true">
                             <div class="row card-header px-0 py-1">
                                 <div class="col-auto">#</div>
                                 <div class="col">Комплексные работы по разработке СПО</div>
