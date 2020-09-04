@@ -1,15 +1,12 @@
 import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
-
-interface NirStage {
-    id: number;
-    name: string;
-}
+import { Component, Prop } from 'vue-property-decorator';
+import NirStage from './nirStage';
 
 @Component({
     components: {
-        // тут можно добавить локльные компоненты
+        'nir-stage-card': require('./components/nirStageCard.vue.html'),
       },
+    
 })
 export default class NirComponent extends Vue {
     nirStages: NirStage[] = [];

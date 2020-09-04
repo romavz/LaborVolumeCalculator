@@ -1,0 +1,169 @@
+<template>
+    <div class="modal fade" v-bind:id="'softwareDevLaborGroupSelectionForm-' + nirStage.id" tabindex="-1" aria-labelledby="softwareDevLaborGroupSelectionFormLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="softwareDevLaborGroupSelectionFormLabel">Комплексные работы по разработке СПО</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="addSoftwareLaborGroupSelectionBody">
+                <form>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <label asp-for="SoftwareDevLaborGroupReg.SoftwareDevLaborGroup" class="control-label"> Группа работ разработки СПО </label>
+                    <div class="form-group">
+                    <template v-for="item in softwareDevLaborGroups">
+                        <div class="row justify-content-start">
+                            <div class="json-data" hidden>{{ item }}</div>
+                            <div hidden class="itemID">{{ item.id }}</div>
+                            <div class="col-1 pr-0">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" v-bind:id="'softDevLaborGroup-' + item.id" name="softDevLaborGroup" class="custom-control-input">
+                                    <label class="custom-control-label item-Code" v-bind:for="'softDevLaborGroup-' + item.id">{{ item.code }}</label>
+                                </div>
+                            </div>
+                            <label class="col item-Name" v-bind:for="'softDevLaborGroup-' + item.id">{{ item.name }}</label>
+                        </div>
+                    </template>
+                    </div>
+                    
+                    <slot name="solution-innovation-rate">
+                        <div class="form-group">
+                            <label asp-for="SoftwareDevLaborGroupReg.SolutionInnovationRate" class="control-label"> Коэффициент новизны </label>
+                            <template v-for="item in solutionInnovationRates">
+                                <div class="row justify-content-start">
+                                    <div class="col-1 pr-0">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" v-bind:id="'solutionInnovationRate-' + item.id" name="solutionInnovationRate" class="custom-control-input">
+                                            <label class="custom-control-label" v-bind:for="'solutionInnovationRate-' + item.id">{{ item.value }}</label>
+                                        </div>
+                                    </div>
+                                    <label class="col" v-bind:for="'solutionInnovationRate-' +item.id">{{ item.name }}</label>
+                                </div>
+                            </template>
+                        </div>
+                    </slot>
+
+                    <slot name="standard-module-using-rate">
+                        <div class="form-group row d-flex align-items-center">
+                            <label asp-for="SoftwareDevLaborGroupReg.StandardModulesUsingRate" class="control-label col-auto" > Коэффициент использования стандартных модулей </label>
+                            <div class="col-sm-3">
+                                <!-- <select name="StandardModulesUsingRateID" class="form-control form-control-sm" asp-items='(IEnumerable<SelectListItem>)Model.ViewData["StandardModulesUsingRateID"]'></select> -->
+                            </div>
+                        </div>
+                    </slot>
+                    
+                    <slot name="tests-development-rate">
+                        <div class="form-group">
+                            <label asp-for="SoftwareDevLaborGroupReg.TestsDevelopmentRate" class="control-label"> Коэффициент разработки тестов </label>
+                            <div class="container-fluid">
+                                <div class="row border bg-secondary-light">
+                                    <div class="col-sm-3 border-right">Микро архитектура модулей</div>
+                                    <div class="col">
+                                        <div class="row border-bottom">
+                                            <div class="col text-center"> Уровень тестирования</div>
+                                        </div>
+                                        <div class="row">
+                                            <template v-for="scale in testsScales">
+                                                <div class="col border-right text-center">{{ scale.name }}</div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row border-left border-bottom bg-secondary-light">
+                                    <div class="col-sm-3 border-right">Уровень покрытия кода тестами</div>
+                                    <template v-for="scale in testsScales">
+                                        <template v-for="item in testCoverageLevels">
+                                            <div class="col border-right px-0 d-flex align-items-center justify-content-center"> {{ item.name }} </div>
+                                        </template>
+                                    </template>
+                                </div>
+        
+                                <div class="body" data-toggle="buttons">
+                                    <template v-for="microArch in componentsMicroarchitectures">
+                                        <div class="row border-left border-right border-bottom btn-group-toggle">
+                                            <div class="col-sm-3 border-right">{{ microArch.name }}</div>
+                                            <template v-for="scale in testsScales">
+                                                <template v-for="coverLevel in testCoverageLevels">                                                    
+                                                    <div class="col-sm-1 btn btn-outline-secondary border-0 p-0 d-flex align-items-center justify-content-center">
+                                                        <input type="radio" name="options" v-bind:id="'option-' + getTestDevelopmnetRate(microArch.id, scale.id, coverLevel.id).id"> {{ getTestDevelopmnetRate(microArch.id, scale.id, coverLevel.id).value }} </div>
+                                                </template>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </slot>
+                    
+                    <slot name="infrastructure-complexity-rate">
+                        <div class="form-group">
+                            <label asp-for="SoftwareDevLaborGroupReg.InfrastructureComplexityRate" class="control-label">Инфраструктурный коэффициент</label>
+                            <template v-for="item in infrastructureComplexityRates">
+                                <div class="row justify-content-start">
+                                    <div class="col-1 mr-2">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" v-bind:id="'infrastructureComplexityRate-'+ item.id" name="infrastructureComplexityRate" class="custom-control-input">
+                                            <label class="custom-control-label" v-bind:for="'infrastructureComplexityRate-' + item.id">{{ item.value }}</label>
+                                        </div>
+                                    </div>
+                                    <label class="col"for="'infrastructureComplexityRate-' + item.id">{{ item.name }}</label>
+                                </div>
+                            </template>
+                        </div>
+                    </slot>
+                    
+                    <slot name="architecture-complexity-rate">
+                        <div class="form-group">
+                            <label asp-for="SoftwareDevLaborGroupReg.ArchitectureComplexityRate" class="control-label">Архитектурный коэффициент</label>
+                            <div class="container-fluid">
+                                <div class="row border bg-secondary-light">
+                                    <div class="col-sm-3 border-right">Макроархитектура компонент </div>
+                                    <div class="col px-0">
+                                        <div class="row border-bottom no-gutters">
+                                            <div class="col text-center"> Архитектура взаимодействия компонент </div>
+                                        </div>
+                                        <div class="row no-gutters">
+                                            <template v-for="item in componentsInteractionArchitectures">
+                                                <div class="col-sm-3 px-1 border-right text-center">{{ item.name }}</div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="body" data-toggle="buttons">
+                                    <template v-for="macroArchitecture in componentsMakroArchitectures">
+                                        <div class="row border-left border-right border-bottom">
+                                            <div class="col-sm-3 border-right">{{ macroArchitecture.name }}</div>
+                                            <div class="col">
+                                                <div class="row btn-group-toggle">
+                                                    <template v-for="interactionArchitecture in componentsInteractionArchitectures">
+                                                        var rate = ((ArchitectureComplexityRate[])Model.ViewData["ArchitectureComplexityRates"])
+                                                            .Where(m => m.ComponentsInteractionArchitectureID == interactionArchitecture.ID && m.ComponentsMakroArchitectureID == macroArchitecture.ID)
+                                                            .FirstOrDefault();
+                                                        
+                                                        <div class="col-sm-3 btn btn-outline-secondary border-0 p-0 d-flex align-items-center justify-content-center">
+                                                            <input type="radio" name="acr" v-bind:id="'acr-' + getArcitectureComplexityRate(interactionArchitecture.id, macroArchitecture.ID).id"> {{ getArcitectureComplexityRate(interactionArchitecture.id, macroArchitecture.ID).value }} </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </slot>
+    
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="close">Отмена</button>
+              <button type="button" class="btn btn-primary btnOK" data-nirStageID="0">ОК</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</template>
+
+<script src="./addSoftwareDevLaborGroupModal.ts"></script>

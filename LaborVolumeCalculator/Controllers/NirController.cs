@@ -24,5 +24,11 @@ namespace LaborVolumeCalculator.Controllers
                 .OrderBy(m => m.Name)
                 .ToList();
         }
+
+        [HttpGet("[action]")]
+        public NirStage NirStage(int id)
+        {
+            return _context.NirStages.FirstOrDefault(x => x.ID == id);
+        }
     }
 }
