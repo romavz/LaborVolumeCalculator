@@ -45,43 +45,10 @@
             </p>
         </div>
 
-        <div class="container-lg px-0" id="NiokrStages">
-
-            @foreach (var nirStage in Model.NirStagesVM)
-            {
-                <div class="card d-flex mb-3" id="nirStageCard-@nirStage.ID" name="nirStageCard" data-nirStageID="@nirStage.ID">
-
-                    <div class="card-header d-flex justify-content-between" type="button" data-toggle="collapse" data-target="#collapseExample_@nirStage.ID.ToString()" aria-expanded="false" aria-controls="collapseExample_@nirStage.ID.ToString()">
-                        <div>@nirStage.Name </div>
-                        <div class="d-flex">
-                            <div class="px-2">Сумма трудозатрат: </div>
-                            <div class="px-2" id="nirStageLaborsVolumeTotal-@nirStage.ID">0.0</div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="pb-1 bg-secondary text-white"></div>
-                        <div class="collapse" id="collapseExample_@nirStage.ID">
-                            <div class="card-body px-2 py-0">
-                                <nav class="nav py-1">
-                                    <button type="button" class="btn btn-link btn-sm d-inline align-middle" data-toggle="modal" data-target="#laborsSelectionModal-@nirStage.ID">
-                                        Добавить трудозатраты
-                                    </button>
-                                </nav>
-                                <div id="nirStageData_@nirStage.ID">
-                                    @{
-                                        await Html.RenderPartialAsync(
-                                            "../LaborVolumeRegs/_RegistredVolumesTable",
-                                            nirStage
-                                            );
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> <!-- card-->
-            }
+        <div id='root'>
+            
         </div>
+
     </form>
 
 <!-- Modals -->
@@ -129,183 +96,95 @@
     </div>
 }
 
+<div id="softwareDevLaborGroupSelectionForm"></div>
+
 @section scripts{
+    <script src="~/js/nirLaborVolumesEditor.js"></script>
+    <script src="~/dist/load_nir.js" asp-append-version="true"></script>
+
     <script>
-        class Labor {
-            id = 0;
-            code = "";
-            name = "";
-            minVolume = 0.0;
-            maxVolume = 0.0;
-
-            constructor(id = 0, code = "", name = "", minVolume = 0.0, maxVolume = 0.0) {
-                this.id = id;
-                this.code = code;
-                this.name = name;
-                this.minVolume = minVolume;
-                this.maxVolume = maxVolume;
-            }
-        }
-
-        class Helper {
-            constructor() {
-                this.index = 0;
-            }
-
-            createLabor(row) {
-                return new Labor(
-                    parseInt(row.attr('data-laborID')),
-                    row.find("[name='labor-Code']").first().text().trim(),
-                    row.find("[name='labor-Name']").first().text().trim(),
-                    parseFloat(row.find("[name='labor-MinVolume']").first().text().trim()),
-                    parseFloat(row.find("[name='labor-MaxVolume']").first().text().trim()),
-                );
-            }
-
-            forEachCheckedRow(selectList, func) {
-                let checkedItems = selectList.find("input:checked");
-                selectList.has(checkedItems).each(func);
-            }
-
-            addLaborsToNirStageTable(laborsArray, nirStageID) {
-                let self = this;
-                let nirInnovationRate = parseFloat($('#nirInnovationRateValue').text().trim());
-                let table = $('#LaborVolumesForNirStage-' + nirStageID);
-                laborsArray.forEach(function (labor, index, array) {
-                    let row = self.createNirStageLaborsTableRecord(nirStageID, labor, labor.minVolume, labor.minVolume * nirInnovationRate);
-                    table.append(row);
+        class SoftwareDevLaborGroupHelper {
+            constructor() {}
+            getSoftwareGroupsSelectionModalContent(softwareLaborGroups, nirStageID){
+                let rows = [];
+                softwareLaborGroups.forEach(function(item, index, array) {
+                    let row = `
+                        <div class="row justify-content-start">
+                            <div class="json-data" hidden>${JSON.stringify(item)}</div>
+                            <div hidden class="itemID">${item.id}</div>
+                            <div class="col-1 pr-0">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="sdgLabor-${item.id}" />
+                                    <label class="custom-control-label item-Code" for="sdgLabor-${item.id}">${item.code}</label>
+                                </div>
+                            </div>
+                            <label class="col-11 pl-0 item-Name" for="sdgLabor-${item.id}">${item.name}</label>
+                        </div>`
+                        ;
+                    rows.push(row);
                 });
-            };
-            
-            createNirStageLaborsTableRecord(nirStageID, labor, volume, totalVolume) {
-                this.index += 1;
-                let tableRow = $(
-                    `<tr data-laborID="${labor.id}">
-                        <td  hidden="hidden">
-                            <input type="hidden" name="RegistredLabors.Index" value="${this.index}" />
-                            <input type="hidden" name="RegistredLabors[${this.index}].ID" value="0" />
-                            <input type="hidden" name="RegistredLabors[${this.index}].NiokrID" value="@Model.Nir.ID"/>
-                            <input type="hidden" name="RegistredLabors[${this.index}].NiokrStageID" value="${nirStageID}"/>
-                            <input type="hidden" name="RegistredLabors[${this.index}].LaborID" value="${labor.id}"/>
-                            <input type="hidden" name="RegistredLabors[${this.index}].TotalVolume" value="${totalVolume}"/>
-                        </td>
-                        <th scope="row" name="laborCode">${labor.code}</th>
-                        <td name="laborName">${labor.name}</td>
-                        <td name="laborMinVolume">${labor.minVolume}</td>
-                        <td name="laborMaxVolume">${labor.maxVolume}</td>
-                        <td>
-                            <input name="RegistredLabors[${this.index}].Volume" class="form-control volumeEditBox" value="${volume}" data-nirStageID="${nirStageID}" />
-                        </td>
-                        <td name="TotalVolume">${totalVolume}</td>
-                        <td>
-                            <button type="button"
-                                    class="btn btn-link btn-sm d-inline align-middle removeLaborButton"
-                                    data-laborID="${labor.id}"
-                                    data-nirStageID="${nirStageID}">Удалить</button>
-                        </td>
-                    </tr>`);
-
-                $(tableRow).on('click', '.removeLaborButton', this.onRemoveLabor_buttonHandler.bind(this));
-                $(tableRow).on('keydown change', '.volumeEditBox', this.onVolumeChange_handler.bind(this));
-
-                return tableRow;
+                return rows.join(' ');
             }
 
-
-
-            recalcNirStageTotalLaborsVolume(nirStageID) {
-                let nirStageTotalVolume = 0;
-                let volumes = $(`#LaborVolumesForNirStage-${nirStageID} td[name$="TotalVolume"]`);
-
-                volumes.each(function (index, element) {
-                    nirStageTotalVolume += parseFloat($(element).text().trim());
-                });
-
-                $(`#nirStageLaborsVolumeTotal-${nirStageID}`).text(round(nirStageTotalVolume, 4));
-                this.recalcNirTotalLaborsVolume();
+            show(element){
+                element = $(element);
+                element.removeClass('d-none');
+                element.attr('hidden', false);
             }
 
-            recalcNirTotalLaborsVolume() {
-                let totalVolume = 0;
-                $("[id^='nirStageLaborsVolumeTotal']").each(function (index, element) {
-                    totalVolume += parseFloat($(element).text());
-                });
-
-                $('#nir-labor-volumes-total').text(round(totalVolume, 4));
-            }
-
-            recalcLaborTotalVolume(editBox) {
-                let nirInnovationRate = parseFloat($('#nirInnovationRateValue').text().trim());
-                let newVolume = parseFloat(editBox.val());
-                let totalVolume = round(newVolume * nirInnovationRate, 4);
-                let row = editBox.closest('tr')
-                row.find("input[name$='TotalVolume']").val(totalVolume);
-                row.find("td[name$='TotalVolume']").text(totalVolume);
-
-                let nirStageID = editBox.attr('data-nirStageID');
-                this.recalcNirStageTotalLaborsVolume(nirStageID);
-            }
-
-            recalcTotals() {
-                let self = this;
-                $("[name='nirStageCard']").each(function (index, nirCardElement) {
-                    let nirStageID = $(nirCardElement).attr("data-nirStageID");
-                    self.recalcNirStageTotalLaborsVolume(nirStageID);
-                });
-            }
-
-
-            closeLaborSelectionModal(nirStageID) {
-                $('#laborsSelectionModal-' + nirStageID).modal("hide");
-            }
-
-            onRemoveLabor_buttonHandler(event) {
-                let deleteButton = $(event.target);
-                let nirStageID = deleteButton.attr('data-nirStageID');
-                let laborID = deleteButton.attr('data-laborID');
-                $(`#LaborVolumesForNirStage-${nirStageID} tr`).has(deleteButton).remove();
-                $(`#laborSelectionList-${nirStageID} .row[data-laborID="${laborID}"]`).attr('hidden', false);
-
-                this.recalcNirStageTotalLaborsVolume(nirStageID);
-            }
-
-            onVolumeChange_handler(event) {
-                if (event.key == 'Enter' || event.type == 'change') {
-                    event.preventDefault();
-                    let editBox = $(event.target);
-                    this.recalcLaborTotalVolume(editBox);
+            btnOkHandler(event){
+                self = this;
+                let okButton = $(event.target);
+                let nirStageID = okButton.data('nirStageID');
+                let checkedRow = $("#addSoftwareLaborGroupSelectionBody .row").has("input:checked").first();
+                let softwareGroupsTable = $(`#softwareDevLaborGroupsContainer-${nirStageID}`);
+                
+                if (checkedRow.length > 0) 
+                { 
+                    self.show(softwareGroupsTable);
                 }
-            }
+                // let tableBody = softwareGroupsTable.find('.body');
+                let groupData = JSON.parse($(checkedRow).find('.json-data').text());
+                let tableRow = self.createSoftwareGroupsTableRow(groupData, nirStageID);
+                softwareGroupsTable.append(tableRow);
+                $('#softwareDevLaborGroupSelectionForm').modal('hide');
+            }            
 
-            loadNirLaborVolumes() {
-                let self = this;
-
-                $('.LaborVolumesForNirStage').each(function (index, element) {
-                    let nirStageSection = $(element);
-                    let nirID = $('#Nir_ID').val();
-                    let nirStageID = nirStageSection.attr('data-nirStageID');
-
-                    $.get(`/api/laborVolumeReg?niokrID=${nirID}&niokrStageID=${nirStageID}`)
-                        .done(function (laborVolumeRegs) {
-                            $.each(laborVolumeRegs, function (i, regRecord) {
-                                let row = self.createNirStageLaborsTableRecord(nirStageID, regRecord.labor, regRecord.volume, regRecord.totalVolume)
-                                nirStageSection.append(row);
-                            });
-
-                        self.recalcTotals();
-                    });
-                });
-
+            createSoftwareGroupsTableRow(groupData, nirStageID){
+                let row = 
+                `<div class="row" id="softwareGroupe-${groupData.id}">
+                    <div class="col-auto code">${groupData.code}</div>
+                    <div class="col name">${groupData.name}</div>
+                    <div class="col-sm-2 rates">
+                        <div class="row no-gutters justify-content-between">
+                            <div class="col rate btn py-0 btn-uotline border-0" data-id="">1</div>
+                            <div class="col rate btn py-0 btn-uotline border-0" data-id="">1.2</div>
+                            <div class="col rate btn py-0 btn-uotline border-0" data-id="">0.5</div>
+                            <div class="col rate btn py-0 btn-uotline border-0" data-id="">0.8</div>
+                            <div class="col rate btn py-0 btn-uotline border-0" data-id="">1.05</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 px-0">
+                        <div class="row no-gutters">
+                            <div class="col-auto"><button type="button" class="btn btn-primary py-0"> + </div>
+                            <div class="col text-right totalVolume"> 0 </div>
+                            <div class="col-auto d-flex justify-content-center">
+                                <button type="button"
+                                    class="btn btn-link py-0 border-0 d-inline align-middle removeLaborButton"
+                                    data-softwareGroupLaborID="${groupData.id}"
+                                    data-nirStageID="${nirStageID}"> Удалить </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                return row;
             }
         }
+    </script>
 
-        function round(value, decimals) {
-            return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
-        }
-
-
+    <script>
         $(document).ready(function () {
-            let helper = new Helper();
+            let helper = new NirLaborEditHelper();
 
             helper.loadNirLaborVolumes();
 
@@ -320,9 +199,13 @@
                     $(row).find("input:checkbox").prop("checked", false);
                 });
 
-                helper.addLaborsToNirStageTable(selectedLabors, nirStageID);
-                helper.recalcNirStageTotalLaborsVolume(nirStageID);
-                helper.closeLaborSelectionModal(nirStageID);
+                if (selectedLabors.length > 0)
+                { 
+                    helper.addLaborsToNirStageTable(selectedLabors, nirStageID);
+                    $(`#nirStageData_${nirStageID}`).removeClass('d-none'); 
+                    helper.recalcNirStageTotalLaborsVolume(nirStageID);
+                    helper.closeLaborSelectionModal(nirStageID);
+                }
             });
 
             $('form').submit(function (event) {
@@ -330,6 +213,24 @@
                     $(element).val($(element).val().replace('.', ','));
                 });
             });
+
+            let softwareHelper = new SoftwareDevLaborGroupHelper();
+            $('.addSoftwareGroupBtn').click(function(event){
+                let nirStageID = $(event.target).attr('data-nirStageID');
+                // получить с сервера все группы работ по разработке СПО, кроме указанных в запросе
+                let excepted_ids = "";
+                $.get('./editLaborVolumes?handler=SoftwareDevLaborGroupSelectionForm')
+                    .done( function(modalForm){
+                        $('#softwareDevLaborGroupSelectionForm').replaceWith(modalForm);
+                        $('#softwareDevLaborGroupSelectionForm .btnOK').data('nirStageID', nirStageID);
+                        $('#softwareDevLaborGroupSelectionForm .btnOK').click(softwareHelper.btnOkHandler.bind(softwareHelper));
+                        $('#softwareDevLaborGroupSelectionForm').modal('show');
+                    });
+            });
+
+            
         });
     </script>
+
+    
 }

@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name = "Трудозартраты на разработку БД", GroupName = "Трудозатраты на разработку БД")]
-    public class DbDevLabor : Labor
+    public class DbDevLabor : DevelopmentLabor
     {
         public DbDevLabor() { }
 
-        public DbDevLabor(string code, string name, DbEntityCountRange dbEntityCountRange, float minVolume, float maxVolume) : base(code, name, minVolume, maxVolume)
+        public DbDevLabor(string code, string name, LaborCategory laborCategory, DbEntityCountRange dbEntityCountRange, float minVolume, float maxVolume) 
+            : base(code, name, laborCategory, minVolume, maxVolume)
         {
             DbEntityCountRange = dbEntityCountRange ?? throw new ArgumentNullException("dbEntityCountRange");
             DbEntityCountRangeId = dbEntityCountRange.ID;

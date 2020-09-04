@@ -15,7 +15,7 @@ namespace LaborVolumeCalculator.Data
 {
     public class LVCContext : DbContext
     {
-        public LVCContext (DbContextOptions<LVCContext> options)
+        public LVCContext(DbContextOptions<LVCContext> options)
             : base(options)
         {
             new TimeUpdateService(this.ChangeTracker);
@@ -45,7 +45,10 @@ namespace LaborVolumeCalculator.Data
         public DbSet<DbDevLabor> DbDevLabors { get; set; }
         public DbSet<HardwareDevLabor> HardwareDevLabors { get; set; }
 
-        public DbSet<NiokrCategory> NiokrCategories { get; set; }
+        public DbSet<SoftwareDevLaborGroup> SoftwareDevLaborGroups { get; set; }
+        public DbSet<NirSoftwareDevLaborGroup> NirSoftwareDevLaborGroups { get; set; }
+        public DbSet<OkrSoftwareDevLaborGroup> OkrSoftwareDevLaborGroups { get; set; }
+
         public DbSet<NiokrStage> NiokrStages { get; set; }
         public DbSet<NirStage> NirStages { get; set; }
         public DbSet<OkrStage> OkrStages { get; set; }
@@ -57,6 +60,22 @@ namespace LaborVolumeCalculator.Data
         public DbSet<DbEntityCountRange> DbEntityCountRanges { get; set; }
 
         public DbSet<LaborVolumeReg> LaborVolumeRegs { get; set; }
+
+        public DbSet<LaborCategory> LaborCategories { get; set; }
+
+        public DbSet<ArchitectureComplexityRate> ArchitectureComplexityRates { get; set; }
+        public DbSet<ComponentsInteractionArchitecture> ComponentsInteractionArchitectures { get; set; }
+        public DbSet<ComponentsMakroArchitecture> ComponentsMakroArchitectures { get; set; }
+        public DbSet<ComponentsMicroArchitecture> ComponentsMicroArchitectures { get; set; }
+
+        public DbSet<InfrastructureComplexityRate> InfrastructureComplexities { get; set; }
+        public DbSet<SolutionInnovationRate> SolutionInnovationRates { get; set; }
+        public DbSet<StandardModulesUsingRate> StandardModulesUsingRates { get; set; }
+        public DbSet<TestsCoverageLevel> TestsCoverageLevels { get; set; }
+        public DbSet<TestsScale> TestsScales { get; set; }
+
+        public DbSet<SoftwareDevLaborGroupReg> SoftwareDevLaborGroupRegs { get; set; }
+        public DbSet<TestsDevelopmentRate> TestsDevelopmentRates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -116,21 +135,100 @@ namespace LaborVolumeCalculator.Data
             });
 
             modelBuilder.Entity<OkrLabor>()         .HasOne(r => r.OkrStage)                .WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<DevelopmentLabor>() .HasOne(r => r.LaborCategory)           .WithMany(r => r.Labors).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<DbDevLabor>()       .HasOne(r => r.DbEntityCountRange)      .WithMany().OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<SoftwareDevLabor>() .HasOne(r => r.SoftwareDevEnv)          .WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<HardwareDevLabor>() .HasOne(r => r.PlatePointsCountRange)   .WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<SoftwareDevLabor>() .HasOne(r => r.SoftwareDevEnv).WithMany().OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<NiokrCategory>().ToTable("NiokrCategory", Schema.Dictionary);
-
-            modelBuilder.Entity<NiokrStage>().ToTable("NiokrStage", Schema.Dictionary)
-                .HasOne(s => s.NiokrCategory)
-                .WithMany();
+            modelBuilder.Entity<NiokrStage>().ToTable("NiokrStage", Schema.Dictionary);
 
             modelBuilder.Entity<LaborVolumeReg>(e =>
             {
+                e.ToTable("LaborVolumeReg", Schema.Registers);
                 e.HasOne(r => r.Niokr).WithMany().OnDelete(DeleteBehavior.Cascade);
                 e.HasOne(r => r.NiokrStage).WithMany().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<SoftwareDevLaborGroup>(e => 
+            {   
+                e.ToTable("SoftwareDevLaborGroup", Schema.Dictionary);
+                e.Property(p => p.Code).IsRequired();
+                e.Property(p => p.Name).IsRequired();
+            });
+
+            modelBuilder.Entity<OkrSoftwareDevLaborGroup>(e => 
+            {
+                e.HasOne(r => r.OkrStage).WithMany().OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<LaborCategory>(e => 
+            {
+                e.ToTable("LaborCategory", Schema.Dictionary);
+                e.Property(p => p.Number).IsRequired();
+                e.Property(p => p.Name).IsRequired();
+            });
+            
+            modelBuilder.Entity<ArchitectureComplexityRate>(e => 
+            {
+                e.ToTable("ArchitectureComplexityRate", Schema.Dictionary);
+                e.HasOne(r => r.ComponentsInteractionArchitecture).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.ComponentsMakroArchitecture).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<ComponentsInteractionArchitecture>(e => 
+            {
+                e.ToTable("ComponentsInteractionArchitecture", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<ComponentsMakroArchitecture>(e => 
+            {
+                e.ToTable("ComponentsMakroArchitecture", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<ComponentsMicroArchitecture>(e =>
+            {
+                e.ToTable("ComponentsMicroArchitecture", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<InfrastructureComplexityRate>(e =>
+            {
+                e.ToTable("InfrastructureComplexityRate", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<SolutionInnovationRate>(e =>
+            {
+                e.ToTable("SolutionInnovationRate", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<StandardModulesUsingRate>(e => 
+            {
+                e.ToTable("StandardModulesUsingRate", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<TestsCoverageLevel>(e => 
+            {
+                e.ToTable("TestsCoverageLevel", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<TestsScale>(e => 
+            {
+                e.ToTable("TestsScale", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+            });
+            modelBuilder.Entity<SoftwareDevLaborGroupReg>(e => 
+            {
+                e.ToTable("SoftwareDevLaborGroupReg", Schema.Registers)
+                    .HasIndex(key => new{ key.NiokrID, key.NiokrStageID, key.SoftwareDevLaborGroupID })
+                    .IsUnique();
+            });
+            
+            modelBuilder.Entity<TestsDevelopmentRate>(e => 
+            {
+                e.ToTable("TestsDevelopmentRate", Schema.Dictionary);
+                e.HasOne(r => r.ComponentsMicroArchitecture).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.TestsScale).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.TestsCoverageLevel).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
             });
         }
                 

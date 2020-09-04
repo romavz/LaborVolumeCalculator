@@ -10,6 +10,8 @@ using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.Models.Registers;
 using System.Security.Cryptography.X509Certificates;
 using LaborVolumeCalculator.ViewModels;
+using LaborVolumeCalculator.Utils;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LaborVolumeCalculator.Pages.Nirs
 {
@@ -48,7 +50,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 .Select(nirStage => new NirStageVM(nirStage)).ToListAsync();
 
             var a = _context.NirLabors.ToList();
-            NirLabors = a.OrderBy(x => x.Code, LaborCodeComparer.Instance);
+            NirLabors = a.OrderBy(x => x.Code, CodeComparer.Instance);
 
             RegistredLabors = await _context.LaborVolumeRegs.Include(m => m.Labor)
                 .Where(m => m.NiokrID == Nir.ID).ToListAsync();
@@ -60,7 +62,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 
                 var attachedLabors = nirStage.AttachedLaborVolumes
                     .Select(m => (NirLabor)m.Labor)
-                    .OrderBy(m => m.Code, LaborCodeComparer.Instance);
+                    .OrderBy(m => m.Code, CodeComparer.Instance);
             }
 
             if (Nir == null)
@@ -68,6 +70,30 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 return NotFound();
             }
             return Page();
+        }
+
+        public SoftwareDevLaborGroupReg SoftwareDevLaborGroupReg { get; set; }
+        public PartialViewResult OnGetSoftwareDevLaborGroupSelectionForm(int[] excepts)
+        {
+            var sdlGroups = _context.NirSoftwareDevLaborGroups;
+            var result = sdlGroups
+                .Except(sdlGroups.Where(m => excepts.Contains(m.ID)))
+                .ToList()
+                .OrderBy(m => m.Code, CodeComparer.Instance);
+
+            ViewData["SoftwareDevLaborGroups"] = _context.NirSoftwareDevLaborGroups.ToArray().OrderBy(m => m.Code, CodeComparer.Instance);
+
+            ViewData["ComponentsInteractionArchitectures"] = _context.ComponentsInteractionArchitectures.OrderBy(m => m.Name).ToArray();
+            ViewData["ComponentsMakroArchitectures"] = _context.ComponentsMakroArchitectures.OrderBy(m => m.Name).ToArray();
+            ViewData["ComponentsMicroArchitectures"] = _context.ComponentsMicroArchitectures.OrderBy(m => m.ID).ToArray();
+            ViewData["InfrastructureComplexityRates"] = _context.InfrastructureComplexities.OrderBy(m => m.Value).ToArray();
+            ViewData["SolutionInnovationRates"] = _context.SolutionInnovationRates.ToArray();
+            ViewData["StandardModulesUsingRateID"] = _context.StandardModulesUsingRates.OrderBy(m => m.Name).Select(m => new SelectListItem($"{m.Name} - {m.Value}", $"{m.ID}")).ToList<SelectListItem>();
+            ViewData["TestsCoverageLevels"] = _context.TestsCoverageLevels.OrderBy(m => m.Name).ToArray();
+            ViewData["TestsScales"] = _context.TestsScales.OrderByDescending(m => m.ID).ToArray();
+            ViewData["TestsDevelopmentRates"] = _context.TestsDevelopmentRates.ToArray();
+            ViewData["ArchitectureComplexityRates"] = _context.ArchitectureComplexityRates.ToArray();
+            return Partial("_SoftwareDevLaborGroupSelectionForm", this);
         }
 
         public async Task<IActionResult> OnPostAsync()

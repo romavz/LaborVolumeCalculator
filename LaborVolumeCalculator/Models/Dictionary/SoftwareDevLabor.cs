@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name ="Трудозатраты на разработку ПО", GroupName = "Трудозатраты на разработку ПО")]
-    public class SoftwareDevLabor : Labor
+    public class SoftwareDevLabor : DevelopmentLabor
     {
         public SoftwareDevLabor() : base() { }
         
-        public SoftwareDevLabor(string code, string name, SoftwareDevEnv softwareDevEnv, float minVolume, float maxVolume) : base(code, name, minVolume, maxVolume)
+        public SoftwareDevLabor(string code, string name, LaborCategory laborCategory, SoftwareDevEnv softwareDevEnv, float minVolume, float maxVolume) 
+            : base(code, name, laborCategory, minVolume, maxVolume)
         {
             SoftwareDevEnv = softwareDevEnv ?? throw new ArgumentNullException("softwareDevEnv");
-            SoftwareDevEnvId = softwareDevEnv.ID;
+            SoftwareDevEnvID = softwareDevEnv.ID;
         }
 
-        public int SoftwareDevEnvId { get; set; }
-        [Display(Name ="Среда разработки ПО")]
+        public int SoftwareDevEnvID { get; set; }
         public SoftwareDevEnv SoftwareDevEnv { get; set; }
     }
 }
