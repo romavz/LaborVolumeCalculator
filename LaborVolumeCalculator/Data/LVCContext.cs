@@ -53,6 +53,8 @@ namespace LaborVolumeCalculator.Data
         public DbSet<NirStage> NirStages { get; set; }
         public DbSet<OkrStage> OkrStages { get; set; }
 
+        public DbSet<NiokrStageReg> NiokrStageRegs { get; set; }
+
         public DbSet<SoftwareDevEnv> SoftwareDevEnvs { get; set; }
 
         public DbSet<PlatePointsCountRange> PlatePointsCountRanges { get; set; }
@@ -141,6 +143,14 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<SoftwareDevLabor>() .HasOne(r => r.SoftwareDevEnv).WithMany().OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<NiokrStage>().ToTable("NiokrStage", Schema.Dictionary);
+
+            modelBuilder.Entity<NiokrStageReg>(e => {
+                e.ToTable("NiokrStageReg", Schema.Registers);
+                e.HasOne(r => r.Niokr).WithMany().OnDelete(DeleteBehavior.Cascade);
+                e.HasOne(r => r.NiokrStage).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasIndex(key => new { key.NiokrID, key.NiokrStageID })
+                .IsUnique();
+            });
 
             modelBuilder.Entity<LaborVolumeReg>(e =>
             {

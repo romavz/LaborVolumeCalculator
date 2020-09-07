@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
-    public class NirController
+    [ApiController]
+    public class NirController : ControllerBase
     {
         private readonly LVCContext _context;
 
@@ -17,18 +20,30 @@ namespace LaborVolumeCalculator.Controllers
             _context = context;
         }
 
-        [HttpGet("[action]")]
-        public IList<NirStage> NirStages()
+        [HttpGet("{nirId}/[action]")]
+        public async Task<ActionResult<IEnumerable<NirStage>>> Stages(int nirId)
         {
-            return _context.NirStages
-                .OrderBy(m => m.Name)
-                .ToList();
+            var nirStage = await _context.Nirs.FindAsync(nirId);
+
+            if (nirStage == null)
+            {
+                return NotFound();
+            }
+
+            return await _context.NiokrStageRegs
+                .Include(stageReg => stageReg.NiokrStage)
+                .Where(reg => reg.NiokrID == nirId)
+                .Select(reg => (NirStage)reg.NiokrStage)
+                .OrderBy(stage => stage.Name)
+                .ToListAsync();
         }
 
+        // Данный метод устарел, будет удален в следующей итерации, после исправления клиентской части. 
+        // Вместо этого необходимо пользоваться методом Stages(nirId)
         [HttpGet("[action]")]
-        public NirStage NirStage(int id)
+        public async Task<ActionResult<IEnumerable<NirStage>>> NirStages()
         {
-            return _context.NirStages.FirstOrDefault(x => x.ID == id);
+            return await _context.NirStages.ToListAsync();
         }
     }
 }
