@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
+using LaborVolumeCalculator.Models.Registers;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -35,9 +36,10 @@ namespace LaborVolumeCalculator.Controllers
                 .Where(reg => reg.NiokrID == nirId)
                 .Select(reg => (NirStage)reg.NiokrStage)
                 .OrderBy(stage => stage.Name)
+                .AsNoTracking()
                 .ToListAsync();
         }
-
+       
         // Данный метод устарел, будет удален в следующей итерации, после исправления клиентской части. 
         // Вместо этого необходимо пользоваться методом Stages(nirId)
         [HttpGet("[action]")]
