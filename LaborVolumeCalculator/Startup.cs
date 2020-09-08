@@ -34,6 +34,7 @@ namespace LaborVolumeCalculator
             services.AddScoped<DbSeed>();
 
             services.AddTransient<ILaborVolumeRegService, LaborVolumeRegService>();
+            services.AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,11 +55,16 @@ namespace LaborVolumeCalculator
 
             app.UseAuthorization();
 
+             // Register the Swagger generator and the Swagger UI middlewares
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
+
         }
     }
 }

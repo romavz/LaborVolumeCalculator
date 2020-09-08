@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using LaborVolumeCalculator.Models.Registers;
 
 namespace LaborVolumeCalculator.Models.Dictionary
 {

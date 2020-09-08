@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaborVolumeCalculator.Controllers
 {
-    [Route("api/NirSoftwareDevLaborGroup")]
-    public class NirSoftwareDevLaborGroupController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class NirSoftwareDevLaborGroupController : ControllerBase
     {
         private readonly LVCContext _context;
 
@@ -18,7 +19,7 @@ namespace LaborVolumeCalculator.Controllers
             this._context = context;
         }
 
-        [Route("GetAllButThis")]
+        [HttpGet("[action]")]
         public IEnumerable<NirSoftwareDevLaborGroup> GetAllButThis(int[] ids)
         {
             var allGroups = _context.NirSoftwareDevLaborGroups;
@@ -28,10 +29,5 @@ namespace LaborVolumeCalculator.Controllers
                 .OrderBy(m => m.Code, CodeComparer.Instance);
         }
 
-        [HttpGet]
-        public string Get(string msg)
-        {
-            return msg;
-        }
     }
 }
