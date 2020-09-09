@@ -31,10 +31,10 @@ namespace LaborVolumeCalculator.Controllers
                 return NotFound();
             }
 
-            return await _context.NiokrStageRegs
-                .Include(stageReg => stageReg.NiokrStage)
-                .Where(reg => reg.NiokrID == nirId)
-                .Select(reg => (NirStage)reg.NiokrStage)
+            return await _context.NirStageRegs
+                .Include(reg => reg.NirStage)
+                .Where(reg => reg.NirID == nirId)
+                .Select(reg => reg.NirStage)
                 .OrderBy(stage => stage.Name)
                 .AsNoTracking()
                 .ToListAsync();

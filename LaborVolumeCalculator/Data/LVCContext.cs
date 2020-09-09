@@ -53,7 +53,8 @@ namespace LaborVolumeCalculator.Data
         public DbSet<NirStage> NirStages { get; set; }
         public DbSet<OkrStage> OkrStages { get; set; }
 
-        public DbSet<NiokrStageReg> NiokrStageRegs { get; set; }
+        public DbSet<NirStageReg> NirStageRegs { get; set; }
+        public DbSet<OkrStageReg> OkrStageRegs { get; set; }
 
         public DbSet<SoftwareDevEnv> SoftwareDevEnvs { get; set; }
 
@@ -144,12 +145,22 @@ namespace LaborVolumeCalculator.Data
 
             modelBuilder.Entity<NiokrStage>().ToTable("NiokrStage", Schema.Dictionary);
 
-            modelBuilder.Entity<NiokrStageReg>(e => {
-                e.ToTable("NiokrStageReg", Schema.Registers);
-                e.HasOne(r => r.Niokr).WithMany().OnDelete(DeleteBehavior.Cascade);
-                e.HasOne(r => r.NiokrStage).WithMany().OnDelete(DeleteBehavior.Restrict);
-                e.HasIndex(key => new { key.NiokrID, key.NiokrStageID })
-                .IsUnique();
+            modelBuilder.Entity<NirStageReg>(e => {
+                e.ToTable("NirStageReg", Schema.Registers);
+                e.Property(p => p.NirID).IsRequired();
+                e.Property(p => p.NirStageID).IsRequired();
+                e.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.NirStage).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasIndex(key => new { key.NirID, key.NirStageID }).IsUnique();
+            });
+
+            modelBuilder.Entity<OkrStageReg>(e => {
+                e.ToTable("OkrStageReg", Schema.Registers);
+                e.Property(p => p.OkrID).IsRequired();
+                e.Property(p => p.OkrStageID).IsRequired();
+                e.HasOne(r => r.Okr).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.OkrStage).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasIndex(key => new { key.OkrID, key.OkrStageID }).IsUnique();
             });
 
             modelBuilder.Entity<LaborVolumeReg>(e =>
