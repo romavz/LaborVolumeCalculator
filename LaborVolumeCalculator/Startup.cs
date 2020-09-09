@@ -9,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Services;
 
 namespace LaborVolumeCalculator
 {
@@ -33,7 +32,6 @@ namespace LaborVolumeCalculator
                     options.UseSqlServer(Configuration.GetConnectionString("LVCContext")));
             services.AddScoped<DbSeed>();
 
-            services.AddTransient<ILaborVolumeRegService, LaborVolumeRegService>();
             services.AddSwaggerDocument();
         }
 

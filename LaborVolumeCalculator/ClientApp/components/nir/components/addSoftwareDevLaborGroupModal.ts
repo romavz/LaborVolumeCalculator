@@ -31,7 +31,7 @@ export default class addSoftwareDevLaborGroupModalComponent extends Vue {
     }
 
     loadSoftwareDevLaborGroups() {
-        fetch("/api/NirSoftwareDevLaborGroup/GetAllButThis")
+        fetch("/api/NirSoftwareDevLaborGroup")
             .then(response => response.json() as Promise<ISoftwareDevLaborGroup[]>)
             .then(data => {
                 this.softwareDevLaborGroups = data;

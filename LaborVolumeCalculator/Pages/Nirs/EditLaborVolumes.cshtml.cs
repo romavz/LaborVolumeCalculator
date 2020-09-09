@@ -31,7 +31,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
         public IOrderedEnumerable<NirLabor> NirLabors { get; set; }
 
         [BindProperty]
-        public List<LaborVolumeReg> RegistredLabors { get; set; }
+        public List<NirLaborVolumeReg> RegistredLabors { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -52,16 +52,16 @@ namespace LaborVolumeCalculator.Pages.Nirs
             var a = _context.NirLabors.ToList();
             NirLabors = a.OrderBy(x => x.Code, CodeComparer.Instance);
 
-            RegistredLabors = await _context.LaborVolumeRegs.Include(m => m.Labor)
-                .Where(m => m.NiokrID == Nir.ID).ToListAsync();
+            RegistredLabors = await _context.NirLaborVolumeRegs.Include(m => m.Labor)
+                .Where(m => m.NirID == Nir.ID).ToListAsync();
 
             foreach (var nirStage in NirStagesVM)
             {
                 nirStage.AttachedLaborVolumes = RegistredLabors
-                    .Where(m => m.NiokrStageID == nirStage.ID);
+                    .Where(m => m.StageID == nirStage.ID);
                 
                 var attachedLabors = nirStage.AttachedLaborVolumes
-                    .Select(m => (NirLabor)m.Labor)
+                    .Select(m => m.Labor)
                     .OrderBy(m => m.Code, CodeComparer.Instance);
             }
 
@@ -98,7 +98,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var niokrLaborVolumes = _context.LaborVolumeRegs.Where(m => m.NiokrID == Nir.ID);
+            var niokrLaborVolumes = _context.NirLaborVolumeRegs.Where(m => m.NirID == Nir.ID);
             _context.RemoveRange(niokrLaborVolumes);
 
             await _context.AddRangeAsync(RegistredLabors);
