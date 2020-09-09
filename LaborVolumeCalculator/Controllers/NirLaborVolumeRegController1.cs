@@ -1,38 +1,34 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Models.Registers;
-using LaborVolumeCalculator.Utils;
-using LaborVolumeCalculator.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using LaborVolumeCalculator.Data;
+using LaborVolumeCalculator.Models.Registers;
 
 namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NirLaborVolumeRegController : ControllerBase
+    public class NirLaborVolumeRegController1 : ControllerBase
     {
         private readonly LVCContext _context;
 
-        public NirLaborVolumeRegController(LVCContext context)
+        public NirLaborVolumeRegController1(LVCContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
-
-        // GET: api/NirLaborVolumeRegController
+        // GET: api/NirLaborVolumeRegController1
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirLaborVolumeReg>>> GetNirLaborVolumeRegs()
         {
             return await _context.NirLaborVolumeRegs.ToListAsync();
         }
 
-        // GET: api/NirLaborVolumeRegController/5
+        // GET: api/NirLaborVolumeRegController1/5
         [HttpGet("{id}")]
         public async Task<ActionResult<NirLaborVolumeReg>> GetNirLaborVolumeReg(int id)
         {
@@ -46,22 +42,7 @@ namespace LaborVolumeCalculator.Controllers
             return nirLaborVolumeReg;
         }
 
-        //GET api/NirLaborVolumeReg/GetNirLaborsRegs? nirID = 3 & StageID = 1
-        [HttpGet("[action]")]
-        public async Task<ActionResult<IEnumerable<NirLaborVolumeReg>>> GetNirLaborsRegs(int nirID, int StageID)
-        {
-            var laborVolumes = await _context.NirLaborVolumeRegs
-                .AsNoTracking()
-                .Include(m => m.Labor)
-                .Where(m =>
-                    m.NirID == nirID
-                    && m.StageID == StageID)
-                .ToListAsync();
-
-            return await Task.Run(() => laborVolumes.OrderBy(m => m.Labor.Code, CodeComparer.Instance).ToArray());
-        }
-
-        // PUT: api/NirLaborVolumeRegController/5
+        // PUT: api/NirLaborVolumeRegController1/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
@@ -93,7 +74,7 @@ namespace LaborVolumeCalculator.Controllers
             return NoContent();
         }
 
-        // POST: api/NirLaborVolumeRegController
+        // POST: api/NirLaborVolumeRegController1
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
@@ -105,7 +86,7 @@ namespace LaborVolumeCalculator.Controllers
             return CreatedAtAction("GetNirLaborVolumeReg", new { id = nirLaborVolumeReg.ID }, nirLaborVolumeReg);
         }
 
-        // DELETE: api/NirLaborVolumeRegController/5
+        // DELETE: api/NirLaborVolumeRegController1/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<NirLaborVolumeReg>> DeleteNirLaborVolumeReg(int id)
         {
@@ -125,15 +106,5 @@ namespace LaborVolumeCalculator.Controllers
         {
             return _context.NirLaborVolumeRegs.Any(e => e.ID == id);
         }
-    
-        
-        // [HttpPost("[action]")]
-        // public async Task<ActionResult<IEnumerable<LaborVolumeReg>>> AddTypycalLabors(int niokrID, int niokrStageID)
-        // {
-            
-
-        //     // CreatedAtAction("GetByNiokrStage", new { niokrID, niokrStageID }, result )
-        // }
-
     }
 }

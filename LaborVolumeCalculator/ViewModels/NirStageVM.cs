@@ -23,6 +23,6 @@ namespace LaborVolumeCalculator.ViewModels
             Name = nirStage.Name;
         }
 
-        public IEnumerable<LaborVolumeReg> AttachedLaborVolumes { get; set; }
+        public IEnumerable<NirLaborVolumeReg> AttachedLaborVolumes { get; set; }
     }
 }
