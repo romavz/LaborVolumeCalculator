@@ -28,6 +28,25 @@ namespace LaborVolumeCalculator.Controllers
             return await _context.NirStageRegs.ToListAsync();
         }
 
+        // GET: api/NirStageReg/GetNirStageRegs/5
+        [HttpGet("[action]/{nirId}")]
+        public async Task<ActionResult<IEnumerable<NirStageReg>>> GetNirStageRegs(int nirId)
+        {
+            var nirStageReg = await _context.NirStageRegs
+                .Include(r => r.NirStage)
+                .Where(r => r.NirID == nirId)
+                .AsNoTracking()
+                .ToListAsync();
+
+            if (nirStageReg == null)
+            {
+                return NotFound();
+            }
+
+            return nirStageReg;
+        }
+
+
         // GET: api/NirStageReg/5
         [HttpGet("{id}")]
         public async Task<ActionResult<NirStageReg>> GetNirStageReg(int id)
