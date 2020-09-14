@@ -33,6 +33,7 @@ namespace LaborVolumeCalculator
             services.AddScoped<DbSeed>();
 
             services.AddSwaggerDocument();
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +51,8 @@ namespace LaborVolumeCalculator
             app.UseStaticFiles();
 
             app.UseRouting();
+            // разрешить крос доменные запросы (CORS)
+            app.UseCors(builder => builder.WithOrigins("http://localhost:8080"));
 
             app.UseAuthorization();
 
