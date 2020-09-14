@@ -81,6 +81,8 @@ namespace LaborVolumeCalculator.Data
         public DbSet<SoftwareDevLaborGroupReg> SoftwareDevLaborGroupRegs { get; set; }
         public DbSet<TestsDevelopmentRate> TestsDevelopmentRates { get; set; }
 
+        public DbSet<NirStageDefaultLabor> NirStageDefaultLabors { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Niokr>(e =>
@@ -260,6 +262,14 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(r => r.ComponentsMicroArchitecture).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.TestsScale).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.TestsCoverageLevel).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<NirStageDefaultLabor>(e => {
+                e.ToTable("NirStageDefaultLabors", Schema.Dictionary);
+                e.Property(p => p.StageID).IsRequired();
+                e.Property(p => p.LaborID).IsRequired();
+                e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
             });
         }
                 
