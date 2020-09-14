@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using LaborVolumeCalculator.Data;
+using LaborVolumeCalculator.DTO;
+using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.Models.Registers;
 using LaborVolumeCalculator.Utils;
 using LaborVolumeCalculator.ViewModels;
@@ -18,23 +21,25 @@ namespace LaborVolumeCalculator.Controllers
     public class NirLaborVolumeRegController : ControllerBase
     {
         private readonly LVCContext _context;
+        private readonly IMapper _mapper;
 
-        public NirLaborVolumeRegController(LVCContext context)
+        public NirLaborVolumeRegController(LVCContext context, IMapper mapper)
         {
             this._context = context;
+            this._mapper = mapper;
         }
 
 
         // GET: api/NirLaborVolumeRegController
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<NirLaborVolumeReg>>> GetNirLaborVolumeRegs()
+        public async Task<ActionResult<IEnumerable<NirLaborVolumeRegDto>>> GetNirLaborVolumeRegs()
         {
-            return await _context.NirLaborVolumeRegs.ToListAsync();
+            return await _context.NirLaborVolumeRegs.Select(item => _mapper.Map<NirLaborVolumeRegDto>(item)).ToListAsync();
         }
 
         // GET: api/NirLaborVolumeRegController/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<NirLaborVolumeReg>> GetNirLaborVolumeReg(int id)
+        public async Task<ActionResult<NirLaborVolumeRegDto>> GetNirLaborVolumeReg(int id)
         {
             var nirLaborVolumeReg = await _context.NirLaborVolumeRegs.FindAsync(id);
 
@@ -43,22 +48,23 @@ namespace LaborVolumeCalculator.Controllers
                 return NotFound();
             }
 
-            return nirLaborVolumeReg;
+            return _mapper.Map<NirLaborVolumeRegDto>(nirLaborVolumeReg);
         }
 
-        //GET api/NirLaborVolumeReg/GetNirLaborsRegs? nirID = 3 & StageID = 1
+        //GET api/NirLaborVolumeReg/GetRegs? nirID = 3 & StageID = 1
         [HttpGet("[action]")]
-        public async Task<ActionResult<IEnumerable<NirLaborVolumeReg>>> GetNirLaborsRegs(int nirID, int StageID)
+        public async Task<ActionResult<IEnumerable<NirLaborVolumeRegDto>>> GetRegs(int nirID, int stageID)
         {
-            var laborVolumes = await _context.NirLaborVolumeRegs
-                .AsNoTracking()
+            var laborVolumeRegs = await _context.NirLaborVolumeRegs
                 .Include(m => m.Labor)
                 .Where(m =>
                     m.NirID == nirID
-                    && m.StageID == StageID)
+                    && m.StageID == stageID)
+                .AsNoTracking()
                 .ToListAsync();
-
-            return await Task.Run(() => laborVolumes.OrderBy(m => m.Labor.Code, CodeComparer.Instance).ToArray());
+            
+            var orderedRegs = laborVolumeRegs.OrderBy(m => m.Labor.Code, CodeComparer.Instance);
+            return ConvertToDto(orderedRegs).ToArray();
         }
 
         // PUT: api/NirLaborVolumeRegController/5
@@ -125,15 +131,95 @@ namespace LaborVolumeCalculator.Controllers
         {
             return _context.NirLaborVolumeRegs.Any(e => e.ID == id);
         }
-    
-        
-        // [HttpPost("[action]")]
-        // public async Task<ActionResult<IEnumerable<LaborVolumeReg>>> AddTypycalLabors(int niokrID, int niokrStageID)
-        // {
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult<IEnumerable<NirLaborVolumeRegDto>>> AddDefaultLabors(int nirID, int stageID)
+        {
+            var nir = await _context.Nirs
+                .Include(nir => nir.NirInnovationRate)
+                .FirstAsync(nir => nir.ID == nirID);
+
+            var stage = await _context.NirStages
+                .FirstAsync(stage => stage.ID == stageID);
+
+            var defaultLabors = _context.NirStageDefaultLabors
+                .Include(item => item.Labor)
+                .Where(item => item.StageID == stageID)
+                .Select(item => item.Labor);
+
+            if (nir == null || stage == null) return BadRequest();
+
+            var regBuilder = new NirLaborVolumeRegBuilder(nir, stage, volumeRate: 0.8f);
+
+            var registredLaborsIDs = _context.NirLaborVolumeRegs.Include(reg => reg.Labor).Select(item => (int?)item.LaborID);
+
+            var laborsRequest = (
+                from defLabor in defaultLabors
+                join registredID in registredLaborsIDs on defLabor.ID equals registredID into gReged
+                from subLabor in gReged.DefaultIfEmpty()
+                where subLabor == null
+                select defLabor
+                ).Distinct();
+
+            var needToInsertLabors = await laborsRequest.ToListAsync();
+
+            var laborVolumeRegs = needToInsertLabors.Select(labor => regBuilder.Create(labor)).ToList();
+
+            if (laborVolumeRegs.Count() < 1) return Ok();
+
+            try
+            {
+                await _context.AddRangeAsync(laborVolumeRegs);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest();
+            }
             
+            var inserted = await _context.NirLaborVolumeRegs
+                .Include(r => r.Labor)
+                .Where(item => laborVolumeRegs.Select(reg => reg.LaborID).Contains(item.LaborID))
+                .ToListAsync();
+            
+            var result = ConvertToDto(inserted);
 
-        //     // CreatedAtAction("GetByNiokrStage", new { niokrID, niokrStageID }, result )
-        // }
+            return CreatedAtAction("GetRegs", new { nirID = nirID, stageID = stageID }, result);
+        }
 
+        private IEnumerable<NirLaborVolumeRegDto> ConvertToDto(IEnumerable<NirLaborVolumeReg> laborVolumeRegs)
+        {
+            return _mapper.Map<IEnumerable<NirLaborVolumeReg>, IEnumerable<NirLaborVolumeRegDto>>(laborVolumeRegs);
+        }
+    }
+
+    internal class NirLaborVolumeRegBuilder
+    {
+        private readonly Nir nir;
+        private readonly NirStage stage;
+
+        private float volumeRate;
+
+        public NirLaborVolumeRegBuilder(Nir nir, NirStage stage, float volumeRate = 1.0f)
+        {
+            this.nir = nir;
+            this.stage = stage;
+            this.volumeRate = volumeRate;
+        }
+
+        public NirLaborVolumeReg Create(NirLabor labor)
+        {
+            float volume = labor.MaxVolume * this.volumeRate;
+            if (volume < labor.MinVolume) volume = labor.MinVolume;
+            
+            return new NirLaborVolumeReg {
+                NirID = nir.ID, 
+                StageID = stage.ID, 
+                LaborID = labor.ID, 
+                Labor = labor,
+                Volume = volume,
+                TotalVolume = volume * (float)nir.NirInnovationRate.Value
+            };
+        }
     }
 }
