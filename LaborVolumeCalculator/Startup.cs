@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
+using AutoMapper;
 
 namespace LaborVolumeCalculator
 {
@@ -25,7 +26,11 @@ namespace LaborVolumeCalculator
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));    // для конвертации объектов EF в DTO и обратно
+            services.AddControllers().AddNewtonsoftJson(options =>
+                // Чтоб в JSON не выгружались циклические ссылки
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddRazorPages();
 
             services.AddDbContext<LVCContext>(options =>

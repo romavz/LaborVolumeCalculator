@@ -49,15 +49,15 @@ namespace LaborVolumeCalculator.Data
             dbContext.NirInnovationProperties.AddRange(nirProps);
 
             dbContext.NirInnovationRates.AddRange(
-                new NirInnovationRate(nirScales[0], nirProps[0], (decimal)1.3 ),
-                new NirInnovationRate(nirScales[0], nirProps[1], (decimal)1.7 ),
-                new NirInnovationRate(nirScales[0], nirProps[2], (decimal)2.9 ),
-                new NirInnovationRate(nirScales[1], nirProps[0], (decimal)1.0 ),
-                new NirInnovationRate(nirScales[1], nirProps[1], (decimal)1.4 ),
-                new NirInnovationRate(nirScales[1], nirProps[2], (decimal)2.5 ),
-                new NirInnovationRate(nirScales[2], nirProps[0], (decimal)1.2 ),
-                new NirInnovationRate(nirScales[2], nirProps[1], (decimal)1.7 ),
-                new NirInnovationRate(nirScales[2], nirProps[2], (decimal)2.7 )
+                new NirInnovationRate(nirScales[0], nirProps[0], (decimal)1.3),
+                new NirInnovationRate(nirScales[0], nirProps[1], (decimal)1.7),
+                new NirInnovationRate(nirScales[0], nirProps[2], (decimal)2.9),
+                new NirInnovationRate(nirScales[1], nirProps[0], (decimal)1.0),
+                new NirInnovationRate(nirScales[1], nirProps[1], (decimal)1.4),
+                new NirInnovationRate(nirScales[1], nirProps[2], (decimal)2.5),
+                new NirInnovationRate(nirScales[2], nirProps[0], (decimal)1.2),
+                new NirInnovationRate(nirScales[2], nirProps[1], (decimal)1.7),
+                new NirInnovationRate(nirScales[2], nirProps[2], (decimal)2.7)
             );
 
             var dcREFU = new DeviceComposition("РЭФУ");
@@ -73,15 +73,15 @@ namespace LaborVolumeCalculator.Data
             dbContext.DeviceCountRange.AddRange(dcRange_1_5, dcRange_6_10, dcRange_11_20);
 
             dbContext.DeviceComplexityRates.AddRange(
-                new DeviceComplexityRate(dcREFU,    dcRange_1_5,    (decimal)1.0),
-                new DeviceComplexityRate(dcREFU,    dcRange_6_10,   (decimal)1.5),
-                new DeviceComplexityRate(dcREFU,    dcRange_11_20,  (decimal)2.0),
-                new DeviceComplexityRate(dcREU,     dcRange_1_5,    (decimal)1.0),
-                new DeviceComplexityRate(dcREU,     dcRange_6_10,   (decimal)1.25),
-                new DeviceComplexityRate(dcREU,     dcRange_11_20,  (decimal)1.5),
-                new DeviceComplexityRate(dcSREU,    dcRange_1_5,    (decimal)1.0),
-                new DeviceComplexityRate(dcSREU,    dcRange_6_10,   (decimal)1.4),
-                new DeviceComplexityRate(dcSREU,    dcRange_11_20,  (decimal)1.8)
+                new DeviceComplexityRate(dcREFU, dcRange_1_5, (decimal)1.0),
+                new DeviceComplexityRate(dcREFU, dcRange_6_10, (decimal)1.5),
+                new DeviceComplexityRate(dcREFU, dcRange_11_20, (decimal)2.0),
+                new DeviceComplexityRate(dcREU, dcRange_1_5, (decimal)1.0),
+                new DeviceComplexityRate(dcREU, dcRange_6_10, (decimal)1.25),
+                new DeviceComplexityRate(dcREU, dcRange_11_20, (decimal)1.5),
+                new DeviceComplexityRate(dcSREU, dcRange_1_5, (decimal)1.0),
+                new DeviceComplexityRate(dcSREU, dcRange_6_10, (decimal)1.4),
+                new DeviceComplexityRate(dcSREU, dcRange_11_20, (decimal)1.8)
             );
 
             OkrInnovationProperty[] okrInoProps =
@@ -106,9 +106,9 @@ namespace LaborVolumeCalculator.Data
 
             dbContext.OkrInnovationProperties.AddRange(okrInoProps);
 
-            double[] refuRatesValues =  { 3.0, 2.5, 2.0, 1.8, 1.6, 1.4, 1.2, 1.0, 0.9, 0.8, 0.7, 0.6, 0.5 };
-            double[] reuRatesValues =   { 3.0, 2.5, 2.0, 1.5, 1.4, 1.3, 1.2, 1.1, 1.0, 0.9, 0.9, 0.8, 0.7, 0.6 };
-            double[] sreuRatesValues =  { 4.0, 3.0, 2.5, 2.0, 1.5, 1.4, 1.3, 1.2, 1.1, 1.05, 1.0, 0.95, 0.9, 0.85, 0.8, 0.7 };
+            double[] refuRatesValues = { 3.0, 2.5, 2.0, 1.8, 1.6, 1.4, 1.2, 1.0, 0.9, 0.8, 0.7, 0.6, 0.5 };
+            double[] reuRatesValues = { 3.0, 2.5, 2.0, 1.5, 1.4, 1.3, 1.2, 1.1, 1.0, 0.9, 0.9, 0.8, 0.7, 0.6 };
+            double[] sreuRatesValues = { 4.0, 3.0, 2.5, 2.0, 1.5, 1.4, 1.3, 1.2, 1.1, 1.05, 1.0, 0.95, 0.9, 0.85, 0.8, 0.7 };
 
             var REFU_ratesBinder = new InnovationRatesBinder(dcREFU, okrInoProps.TakeLast(13));
             IEnumerable<OkrInnovationRate> refuRates = REFU_ratesBinder.Bind(refuRatesValues);
@@ -122,10 +122,10 @@ namespace LaborVolumeCalculator.Data
             IEnumerable<OkrInnovationRate> sreuRates = SREU_ratesBinder.Bind(sreuRatesValues);
             dbContext.OkrInnovationRates.AddRange(sreuRates);
 
-            SeedNirStages();
+            NirStage[] nirStages = SeedNirStages();
             OkrStage[] okrStages = SeedOkrStages();
 
-            SeedNirLabors();
+            NirLabor[] nirLabors = SeedNirLabors();
             SeedNirSoftwareDevLaborGroups();
 
             SeedOkrLabors(okrStages);
@@ -179,7 +179,7 @@ namespace LaborVolumeCalculator.Data
                 new ComponentsInteractionArchitecture("С общей распределенной памятью")
             };
             dbContext.AddRange(interactArch);
-            
+
             ArchitectureComplexityRate[] acr = {
                 new ArchitectureComplexityRate(makroArch[0], interactArch[0], 1.15f),
                 new ArchitectureComplexityRate(makroArch[0], interactArch[1], 1.1f),
@@ -230,7 +230,7 @@ namespace LaborVolumeCalculator.Data
                 tdrb.WithTestsScale(testsScales[2]).Create(testCovers[0], 1.2f),
                 tdrb.Create(testCovers[1], 1.3f),
                 tdrb.Create(testCovers[2], 1.6f),
-                
+
                 tdrb.Create(microArch[1], testsScales[0], testCovers[0], 1f),
                 tdrb.Create(testCovers[1], 1.05f),
                 tdrb.Create(testCovers[2], 1.2f),
@@ -263,12 +263,33 @@ namespace LaborVolumeCalculator.Data
             };
             dbContext.AddRange(testDevRates);
 
+            SeedNirStageDefaultLabors(nirStages, nirLabors);
+
             dbContext.SaveChanges();
+        }
+
+        private void SeedNirStageDefaultLabors(NirStage[] nirStages, NirLabor[] nirLabors)
+        {
+            NirLabor getLabor(string code) {
+                return nirLabors.First(l => l.Code == code);
+            }
+
+            var nslb = new NirStageDefaultLaborsBuilder(nirStages[0]);
+            NirStageDefaultLabor[] nirStageDefaultLabors = new NirStageDefaultLabor[] {
+                nslb.Create(getLabor("5")),
+                nslb.Create(getLabor("6")),
+                nslb.Create(getLabor("1")),
+                nslb.Create(getLabor("2")),
+                nslb.Create(getLabor("9")),
+                nslb.Create(getLabor("25")),
+                nslb.Create(getLabor("29"))
+            };
+            dbContext.AddRange(nirStageDefaultLabors);
         }
 
         private LaborCategory[] SeedLaborsCategories()
         {
-            LaborCategory[] categories = 
+            LaborCategory[] categories =
             {
                 new LaborCategory(1, "Обработка входных потоков"),
                 new LaborCategory(2, "Управление ПО"),
@@ -289,7 +310,7 @@ namespace LaborVolumeCalculator.Data
 
         private SoftwareDevEnv[] SeedSoftwareDevEnvironments()
         {
-            SoftwareDevEnv[] environments = 
+            SoftwareDevEnv[] environments =
             {
                 new SoftwareDevEnv("PHP/JavaScript"),
                 new SoftwareDevEnv("Perl/Ruby/Python"),
@@ -304,7 +325,7 @@ namespace LaborVolumeCalculator.Data
         {
             List<SoftwareDevLabor> labors = new List<SoftwareDevLabor>();
 
-            void newLabor(string code, string name, LaborCategory category, SoftwareDevEnv[] devEnvironments, float[,]volumes)
+            void newLabor(string code, string name, LaborCategory category, SoftwareDevEnv[] devEnvironments, float[,] volumes)
             {
                 int index = 0;
                 foreach (var env in devEnvironments)
@@ -317,13 +338,13 @@ namespace LaborVolumeCalculator.Data
 
             var category = laborCategories;
             var env = devEnvironments;
-            newLabor("101", "Разбор файлов входных данных заданного формата", category[0], env[1..3], new [,]{ {0.5f, 1f}, {0.5f, 1.5f} });
-            newLabor("102", "Разрбор потока данных заданного формата", category[0], env[1..3], new [,]{ {0.5f, 1.5f}, {2, 2} });
-            newLabor("103", "Графический интерфейс ввода", category[0], new SoftwareDevEnv[]{ env[0], env[2] }, new [,]{ {1f, 2f}, {3, 4} });
-            newLabor("104", "Консольный интерфейс ввода", category[0], env, new [,]{ {1f, 1f}, {1, 2}, {2, 2}, {3, 4} });
-            newLabor("105", "Графический веб интерфейс (формы ввода данных)", category[0], env[0..1], new [,]{ {1f, 2f} });
-            newLabor("106", "Интерфейс управления миниатюрным устройством, оснащенным тачскрином", category[0], env[2..3], new float[,]{ {1,5f, 2f} });
-            newLabor("107", "Обработка входящий сообщений от системы обмена сообщениями", category[0], env[0..3], new float[,]{ {1.5f, 1.5f}, {1.5f, 1.5f}, {1.5f, 1.5f} });
+            newLabor("101", "Разбор файлов входных данных заданного формата", category[0], env[1..3], new[,] { { 0.5f, 1f }, { 0.5f, 1.5f } });
+            newLabor("102", "Разрбор потока данных заданного формата", category[0], env[1..3], new[,] { { 0.5f, 1.5f }, { 2, 2 } });
+            newLabor("103", "Графический интерфейс ввода", category[0], new SoftwareDevEnv[] { env[0], env[2] }, new[,] { { 1f, 2f }, { 3, 4 } });
+            newLabor("104", "Консольный интерфейс ввода", category[0], env, new[,] { { 1f, 1f }, { 1, 2 }, { 2, 2 }, { 3, 4 } });
+            newLabor("105", "Графический веб интерфейс (формы ввода данных)", category[0], env[0..1], new[,] { { 1f, 2f } });
+            newLabor("106", "Интерфейс управления миниатюрным устройством, оснащенным тачскрином", category[0], env[2..3], new float[,] { { 1, 5f, 2f } });
+            newLabor("107", "Обработка входящий сообщений от системы обмена сообщениями", category[0], env[0..3], new float[,] { { 1.5f, 1.5f }, { 1.5f, 1.5f }, { 1.5f, 1.5f } });
 
             dbContext.SoftwareDevLabors.AddRange(labors);
         }
@@ -336,7 +357,7 @@ namespace LaborVolumeCalculator.Data
                 return new OkrSoftwareDevLaborGroup(code, name, okrStages[stageIndex - 1]);
             };
 
-            OkrSoftwareDevLaborGroup[] OkrSoftwareGroups = new OkrSoftwareDevLaborGroup[] 
+            OkrSoftwareDevLaborGroup[] OkrSoftwareGroups = new OkrSoftwareDevLaborGroup[]
             {
                 newOkrGroup("2.7", "Разрабока состава, уточнение функций и перечня задач СПО"),
                 newOkrGroup("2.13", "Разработка СПО функционирования комплекса, СРЭУ"),
@@ -476,7 +497,8 @@ namespace LaborVolumeCalculator.Data
 
         private void SeedNirSoftwareDevLaborGroups()
         {
-            Func<string, string, NirSoftwareDevLaborGroup> newNirGroup = (code, name) => {
+            Func<string, string, NirSoftwareDevLaborGroup> newNirGroup = (code, name) =>
+            {
                 return new NirSoftwareDevLaborGroup(code, name);
             };
 
@@ -492,7 +514,7 @@ namespace LaborVolumeCalculator.Data
             dbContext.SoftwareDevLaborGroups.AddRange(NirSoftwareGroups);
         }
 
-        private void SeedNirLabors()
+        private NirLabor[] SeedNirLabors()
         {
             NirLabor[] nirLabors = new NirLabor[]
             {
@@ -583,9 +605,10 @@ namespace LaborVolumeCalculator.Data
             };
 
             dbContext.NirLabors.AddRange(nirLabors);
+            return nirLabors;
         }
 
-        private void SeedNirStages()
+        private NirStage[] SeedNirStages()
         {
             NirStage[] nirStages = new NirStage[]
             {
@@ -595,6 +618,7 @@ namespace LaborVolumeCalculator.Data
                 new NirStage("Этап 4."),
             };
             dbContext.NirStages.AddRange(nirStages);
+            return nirStages;
         }
 
         private OkrStage[] SeedOkrStages()
@@ -682,13 +706,32 @@ namespace LaborVolumeCalculator.Data
             IEnumerator<OkrInnovationProperty> innovationProperties = okrInnovationProperties.GetEnumerator();
             innovationProperties.MoveNext();
 
-            foreach(var rateValue in rateValues)
+            foreach (var rateValue in rateValues)
             {
                 rates.Add(new OkrInnovationRate(innovationProperties.Current, deviceComposition, (decimal)rateValue));
                 innovationProperties.MoveNext();
             }
 
             return rates;
+        }
+    }
+
+    internal class NirStageDefaultLaborsBuilder
+    {
+        private NirStage _nirStage;
+        public NirStageDefaultLaborsBuilder(NirStage stage)
+        {
+            this._nirStage = stage;
+        }
+
+        public NirStageDefaultLaborsBuilder WithStage(NirStage stage) {
+            _nirStage = stage;
+            return this;
+        }
+
+        public NirStageDefaultLabor Create(NirLabor labor) 
+        {
+            return new NirStageDefaultLabor(_nirStage, labor);
         }
     }
 }
