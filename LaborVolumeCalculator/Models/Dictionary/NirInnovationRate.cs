@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LaborVolumeCalculator.Models
+namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name ="Коэфициент новизны НИР", GroupName ="Коэффициенты новизны НИР")]
     public class NirInnovationRate
@@ -16,7 +16,7 @@ namespace LaborVolumeCalculator.Models
             CreateTime = DateTime.Now;
         }
 
-        public NirInnovationRate(NirScale nirScale, NirInnovationProperty innovationProperty, decimal value):this()
+        public NirInnovationRate(NirScale nirScale, NirInnovationProperty innovationProperty, double value):this()
         {
             NirScale = nirScale;
             NirScaleID = nirScale.ID;
@@ -37,7 +37,7 @@ namespace LaborVolumeCalculator.Models
         
         [DisplayName("Значение")]
         [Column(TypeName = "DECIMAL(8, 4)")]
-        public decimal Value { get; set; }
+        public double Value { get; set; }
      
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]

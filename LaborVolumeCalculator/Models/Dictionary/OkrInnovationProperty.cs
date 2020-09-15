@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace LaborVolumeCalculator.Models
+namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name = "Свойство новизны ОКР", GroupName = "Свойства новизны ОКР")]
     public class OkrInnovationProperty

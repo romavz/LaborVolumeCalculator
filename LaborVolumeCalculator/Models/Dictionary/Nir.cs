@@ -14,8 +14,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
 
         public Nir(string name) : base(name) { }
 
-        public int NirInnovationRateID { get; set; }
-        public NirInnovationRate NirInnovationRate { get; set; }
+        public double NirInnovationRateValue { get; set; }
 
         public int NirInnovationPropertyID { get; set; }
 

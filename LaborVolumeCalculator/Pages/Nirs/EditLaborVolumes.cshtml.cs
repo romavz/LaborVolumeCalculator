@@ -42,7 +42,6 @@ namespace LaborVolumeCalculator.Pages.Nirs
 
             Nir = await _context.Nirs
                 .Include(n => n.NirInnovationProperty)
-                .Include(n => n.NirInnovationRate)
                 .Include(n => n.NirScale).FirstOrDefaultAsync(m => m.ID == id);
 
             NirStagesVM = await _context.NirStages

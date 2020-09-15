@@ -3,14 +3,14 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LaborVolumeCalculator.Models
+namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name = "Коэффициент новизны ОКР", GroupName = "Коэффициенты новозны ОКР")]
     public class OkrInnovationRate
     {
         public OkrInnovationRate() { }
 
-        public OkrInnovationRate(OkrInnovationProperty okrInnovationProperty, DeviceComposition deviceComposition, decimal value): this()
+        public OkrInnovationRate(OkrInnovationProperty okrInnovationProperty, DeviceComposition deviceComposition, double value): this()
         {
             OkrInnovationProperty = okrInnovationProperty;
             OkrInnovationPropertyID = okrInnovationProperty.ID;
@@ -35,6 +35,6 @@ namespace LaborVolumeCalculator.Models
         public DeviceComposition DeviceComposition { get; set; }
 
         [DisplayName("Значение")]
-        public decimal Value { get; set; }
+        public double Value { get; set; }
     }
 }

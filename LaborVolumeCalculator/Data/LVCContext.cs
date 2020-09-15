@@ -95,7 +95,7 @@ namespace LaborVolumeCalculator.Data
 
             modelBuilder.Entity<Nir>(e =>
             {
-                e.HasOne(n => n.NirInnovationRate).WithMany().OnDelete(DeleteBehavior.NoAction);
+                e.Property(n => n.NirInnovationRateValue).IsRequired();
                 e.HasOne(n => n.NirInnovationProperty).WithMany().OnDelete(DeleteBehavior.NoAction);
                 e.HasOne(n => n.NirScale).WithMany().OnDelete(DeleteBehavior.NoAction);
             });
@@ -151,19 +151,19 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<NirStageReg>(e => {
                 e.ToTable("NirStageReg", Schema.Registers);
                 e.Property(p => p.NirID).IsRequired();
-                e.Property(p => p.NirStageID).IsRequired();
+                e.Property(p => p.StageID).IsRequired();
                 e.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.Restrict);
-                e.HasOne(r => r.NirStage).WithMany().OnDelete(DeleteBehavior.Restrict);
-                e.HasIndex(key => new { key.NirID, key.NirStageID }).IsUnique();
+                e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasIndex(key => new { key.NirID, key.StageID }).IsUnique();
             });
 
             modelBuilder.Entity<OkrStageReg>(e => {
                 e.ToTable("OkrStageReg", Schema.Registers);
                 e.Property(p => p.OkrID).IsRequired();
-                e.Property(p => p.OkrStageID).IsRequired();
+                e.Property(p => p.StageID).IsRequired();
                 e.HasOne(r => r.Okr).WithMany().OnDelete(DeleteBehavior.Restrict);
-                e.HasOne(r => r.OkrStage).WithMany().OnDelete(DeleteBehavior.Restrict);
-                e.HasIndex(key => new { key.OkrID, key.OkrStageID }).IsUnique();
+                e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasIndex(key => new { key.OkrID, key.StageID }).IsUnique();
             });
 
             modelBuilder.Entity<NirLaborVolumeReg>(e =>

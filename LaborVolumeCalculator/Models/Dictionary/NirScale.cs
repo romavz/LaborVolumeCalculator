@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LaborVolumeCalculator.Models
+namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name = "Масштаб НИР", GroupName = "Масштабы НИР")]
     public class NirScale : BasicModel

@@ -52,11 +52,11 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 return Page();
             }
 
-            Nir.NirInnovationRateID = _context.NirInnovationRates
+            Nir.NirInnovationRateValue = _context.NirInnovationRates
                 .First(
                     x => x.NirInnovationPropertyID == Nir.NirInnovationPropertyID 
                     && x.NirScaleID == Nir.NirScaleID
-                ).ID;
+                ).Value;
 
             _context.Attach(Nir).State = EntityState.Modified;
 

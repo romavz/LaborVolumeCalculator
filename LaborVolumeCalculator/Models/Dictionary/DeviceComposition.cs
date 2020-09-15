@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Policy;
 
-namespace LaborVolumeCalculator.Models
+namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Description("РЭУ, СРЭУ, РЭФУ")]
     [Display(Name = "Компоновка устройства")]

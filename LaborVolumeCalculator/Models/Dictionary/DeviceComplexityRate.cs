@@ -3,14 +3,14 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LaborVolumeCalculator.Models
+namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name = "Коэффициент сложности МФУ", GroupName = "Коэффициэнты сложности МФУ")]
     public class DeviceComplexityRate
     {
         public DeviceComplexityRate() { }
 
-        public DeviceComplexityRate(DeviceComposition deviceComposition, DeviceCountRange deviceCountRange, decimal value) : this()
+        public DeviceComplexityRate(DeviceComposition deviceComposition, DeviceCountRange deviceCountRange, double value) : this()
         {
             DeviceComposition = deviceComposition;
             DeviceCompositionID = deviceComposition.ID;
@@ -36,6 +36,6 @@ namespace LaborVolumeCalculator.Models
         public DeviceCountRange DeviceCountRange { get; set; }
 
         [DisplayName("Значение")]
-        public decimal Value { get; set; }
+        public double Value { get; set; }
     }
 }
