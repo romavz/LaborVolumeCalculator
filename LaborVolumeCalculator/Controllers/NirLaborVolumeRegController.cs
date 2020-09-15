@@ -150,7 +150,6 @@ namespace LaborVolumeCalculator.Controllers
         public async Task<ActionResult<IEnumerable<NirLaborVolumeRegDto>>> AddDefaultLabors(int nirID, int stageID)
         {
             var nir = await _context.Nirs
-                .Include(nir => nir.NirInnovationRate)
                 .FirstAsync(nir => nir.ID == nirID);
 
             var stage = await _context.NirStages
@@ -233,7 +232,7 @@ namespace LaborVolumeCalculator.Controllers
 
         public NirLaborVolumeReg Create(NirLabor labor)
         {
-            float volume = labor.MaxVolume * this.volumeRate;
+            double volume = labor.MaxVolume * this.volumeRate;
             if (volume < labor.MinVolume) volume = labor.MinVolume;
             
             return new NirLaborVolumeReg {
@@ -241,8 +240,8 @@ namespace LaborVolumeCalculator.Controllers
                 StageID = stage.ID, 
                 LaborID = labor.ID, 
                 Labor = labor,
-                Volume = volume,
-                TotalVolume = volume * (float)nir.NirInnovationRate.Value
+                Volume = (float)volume,
+                TotalVolume = (float)(volume * nir.NirInnovationRateValue)
             };
         }
     }

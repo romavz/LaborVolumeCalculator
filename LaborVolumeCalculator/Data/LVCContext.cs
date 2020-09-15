@@ -95,7 +95,7 @@ namespace LaborVolumeCalculator.Data
 
             modelBuilder.Entity<Nir>(e =>
             {
-                e.HasOne(n => n.NirInnovationRate).WithMany().OnDelete(DeleteBehavior.NoAction);
+                e.Property(n => n.NirInnovationRateValue).IsRequired();
                 e.HasOne(n => n.NirInnovationProperty).WithMany().OnDelete(DeleteBehavior.NoAction);
                 e.HasOne(n => n.NirScale).WithMany().OnDelete(DeleteBehavior.NoAction);
             });

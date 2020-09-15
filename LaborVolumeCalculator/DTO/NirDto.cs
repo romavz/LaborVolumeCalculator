@@ -1,11 +1,17 @@
+using System;
+
 namespace LaborVolumeCalculator.DTO
 {
     public class NirDto : BaseModelDto
     {
-        public float NirInnovationRate { get; set; }
+        public double NirInnovationRateValue { get; set; }
 
-        public string NirInnovationProperty { get; set; }
+        public int NirInnovationPropertyID { get; set; }
+        public string NirInnovationPropertyName { get; set; }
 
-        public string NirScale { get; set; }
+        public int NirScaleID { get; set; }
+        public string NirScaleName { get; set; }
+
+        public DateTime CreateTime { get; set; }
     }
 }

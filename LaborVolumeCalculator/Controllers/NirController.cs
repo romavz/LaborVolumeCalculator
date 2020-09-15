@@ -68,7 +68,11 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirDto>>> GetNirs()
         {
-            var nirs = await _context.Nirs.ToListAsync();
+            var nirs = await _context.Nirs
+                .Include(n => n.NirInnovationProperty)
+                .Include(n => n.NirScale)
+                .ToListAsync();
+            
             var nirsDto = ConfigToDto(nirs).ToList();
             return nirsDto;
         }
@@ -77,7 +81,10 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NirDto>> GetNir(int id)
         {
-            var nir = await _context.Nirs.FindAsync(id);
+            var nir = await _context.Nirs
+                .Include(n => n.NirInnovationProperty)
+                .Include(n => n.NirScale)
+                .FirstOrDefaultAsync(n => n.ID == id);
 
             if (nir == null)
             {

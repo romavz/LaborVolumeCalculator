@@ -44,7 +44,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 .Where(n => n.NirScaleID == Nir.NirScaleID)
                 .FirstOrDefaultAsync();
 
-            Nir.NirInnovationRateID = nirInnovationRate.ID;
+            Nir.NirInnovationRateValue = nirInnovationRate.Value;
 
             _context.Nirs.Add(Nir);
             await _context.SaveChangesAsync();
