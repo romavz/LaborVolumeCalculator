@@ -49,15 +49,15 @@ namespace LaborVolumeCalculator.Data
             dbContext.NirInnovationProperties.AddRange(nirProps);
 
             dbContext.NirInnovationRates.AddRange(
-                new NirInnovationRate(nirScales[0], nirProps[0], (decimal)1.3),
-                new NirInnovationRate(nirScales[0], nirProps[1], (decimal)1.7),
-                new NirInnovationRate(nirScales[0], nirProps[2], (decimal)2.9),
-                new NirInnovationRate(nirScales[1], nirProps[0], (decimal)1.0),
-                new NirInnovationRate(nirScales[1], nirProps[1], (decimal)1.4),
-                new NirInnovationRate(nirScales[1], nirProps[2], (decimal)2.5),
-                new NirInnovationRate(nirScales[2], nirProps[0], (decimal)1.2),
-                new NirInnovationRate(nirScales[2], nirProps[1], (decimal)1.7),
-                new NirInnovationRate(nirScales[2], nirProps[2], (decimal)2.7)
+                new NirInnovationRate(nirScales[0], nirProps[0], 1.3),
+                new NirInnovationRate(nirScales[0], nirProps[1], 1.7),
+                new NirInnovationRate(nirScales[0], nirProps[2], 2.9),
+                new NirInnovationRate(nirScales[1], nirProps[0], 1.0),
+                new NirInnovationRate(nirScales[1], nirProps[1], 1.4),
+                new NirInnovationRate(nirScales[1], nirProps[2], 2.5),
+                new NirInnovationRate(nirScales[2], nirProps[0], 1.2),
+                new NirInnovationRate(nirScales[2], nirProps[1], 1.7),
+                new NirInnovationRate(nirScales[2], nirProps[2], 2.7)
             );
 
             var dcREFU = new DeviceComposition("РЭФУ");
@@ -73,15 +73,15 @@ namespace LaborVolumeCalculator.Data
             dbContext.DeviceCountRange.AddRange(dcRange_1_5, dcRange_6_10, dcRange_11_20);
 
             dbContext.DeviceComplexityRates.AddRange(
-                new DeviceComplexityRate(dcREFU, dcRange_1_5, (decimal)1.0),
-                new DeviceComplexityRate(dcREFU, dcRange_6_10, (decimal)1.5),
-                new DeviceComplexityRate(dcREFU, dcRange_11_20, (decimal)2.0),
-                new DeviceComplexityRate(dcREU, dcRange_1_5, (decimal)1.0),
-                new DeviceComplexityRate(dcREU, dcRange_6_10, (decimal)1.25),
-                new DeviceComplexityRate(dcREU, dcRange_11_20, (decimal)1.5),
-                new DeviceComplexityRate(dcSREU, dcRange_1_5, (decimal)1.0),
-                new DeviceComplexityRate(dcSREU, dcRange_6_10, (decimal)1.4),
-                new DeviceComplexityRate(dcSREU, dcRange_11_20, (decimal)1.8)
+                new DeviceComplexityRate(dcREFU, dcRange_1_5, 1.0),
+                new DeviceComplexityRate(dcREFU, dcRange_6_10, 1.5),
+                new DeviceComplexityRate(dcREFU, dcRange_11_20, 2.0),
+                new DeviceComplexityRate(dcREU, dcRange_1_5, 1.0),
+                new DeviceComplexityRate(dcREU, dcRange_6_10, 1.25),
+                new DeviceComplexityRate(dcREU, dcRange_11_20, 1.5),
+                new DeviceComplexityRate(dcSREU, dcRange_1_5, 1.0),
+                new DeviceComplexityRate(dcSREU, dcRange_6_10, 1.4),
+                new DeviceComplexityRate(dcSREU, dcRange_11_20, 1.8)
             );
 
             OkrInnovationProperty[] okrInoProps =
@@ -708,7 +708,7 @@ namespace LaborVolumeCalculator.Data
 
             foreach (var rateValue in rateValues)
             {
-                rates.Add(new OkrInnovationRate(innovationProperties.Current, deviceComposition, (decimal)rateValue));
+                rates.Add(new OkrInnovationRate(innovationProperties.Current, deviceComposition, rateValue));
                 innovationProperties.MoveNext();
             }
 

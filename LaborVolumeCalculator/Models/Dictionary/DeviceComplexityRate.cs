@@ -10,7 +10,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
     {
         public DeviceComplexityRate() { }
 
-        public DeviceComplexityRate(DeviceComposition deviceComposition, DeviceCountRange deviceCountRange, decimal value) : this()
+        public DeviceComplexityRate(DeviceComposition deviceComposition, DeviceCountRange deviceCountRange, double value) : this()
         {
             DeviceComposition = deviceComposition;
             DeviceCompositionID = deviceComposition.ID;
@@ -36,6 +36,6 @@ namespace LaborVolumeCalculator.Models.Dictionary
         public DeviceCountRange DeviceCountRange { get; set; }
 
         [DisplayName("Значение")]
-        public decimal Value { get; set; }
+        public double Value { get; set; }
     }
 }
