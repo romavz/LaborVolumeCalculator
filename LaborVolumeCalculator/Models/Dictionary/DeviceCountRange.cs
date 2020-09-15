@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LaborVolumeCalculator.Models
+namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name = "Диапазон количества разнотипных устройств", GroupName = "Диапазоны количества разнотипных устройств")]
     public class DeviceCountRange
