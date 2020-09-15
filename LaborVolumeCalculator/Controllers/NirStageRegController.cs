@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Registers;
+using LaborVolumeCalculator.DTO;
+using AutoMapper;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -15,41 +17,53 @@ namespace LaborVolumeCalculator.Controllers
     public class NirStageRegController : ControllerBase
     {
         private readonly LVCContext _context;
+        private readonly IMapper _mapper;
 
-        public NirStageRegController(LVCContext context)
+        public NirStageRegController(LVCContext context, IMapper mapper)
         {
             _context = context;
+            this._mapper = mapper;
         }
 
         // GET: api/NirStageReg
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<NirStageReg>>> GetNirStageRegs()
+        public async Task<ActionResult<IEnumerable<NirStageRegDto>>> GetNirStageRegs()
         {
-            return await _context.NirStageRegs.ToListAsync();
+            var regs = await _context.NirStageRegs
+                .Include(r => r.Stage)
+                .ToListAsync();
+
+            var result = regs.Select(item => ConvertToDto(item))
+                .OrderBy(item => item.Stage.Name)
+                .ToList();
+
+            return result;
         }
 
         // GET: api/NirStageReg/GetNirStageRegs/5
         [HttpGet("[action]/{nirId}")]
-        public async Task<ActionResult<IEnumerable<NirStageReg>>> GetNirStageRegs(int nirId)
+        public async Task<ActionResult<IEnumerable<NirStageRegDto>>> GetNirStageRegs(int nirId)
         {
-            var nirStageReg = await _context.NirStageRegs
-                .Include(r => r.NirStage)
+            var nirStageRegs = await _context.NirStageRegs
+                .Include(r => r.Stage)
                 .Where(r => r.NirID == nirId)
                 .AsNoTracking()
                 .ToListAsync();
 
-            if (nirStageReg == null)
+            if (nirStageRegs == null)
             {
                 return NotFound();
             }
+            
+            var result = _mapper.Map<IList<NirStageReg>, IEnumerable<NirStageRegDto>>(nirStageRegs).ToList();
 
-            return nirStageReg;
+            return result;
         }
 
 
         // GET: api/NirStageReg/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<NirStageReg>> GetNirStageReg(int id)
+        public async Task<ActionResult<NirStageRegDto>> GetNirStageReg(int id)
         {
             var nirStageReg = await _context.NirStageRegs.FindAsync(id);
 
@@ -58,15 +72,16 @@ namespace LaborVolumeCalculator.Controllers
                 return NotFound();
             }
 
-            return nirStageReg;
+            return ConvertToDto(nirStageReg);
         }
 
         // POST: api/NirStageReg
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<NirStageReg>> PostNirStageReg(NirStageReg nirStageReg)
+        public async Task<ActionResult<NirStageRegDto>> PostNirStageReg(NirStageRegDto itemDto)
         {
+            var nirStageReg = ConvertFromDto(itemDto);
             _context.NirStageRegs.Add(nirStageReg);
             
             try
@@ -78,12 +93,14 @@ namespace LaborVolumeCalculator.Controllers
                 return BadRequest();
             }
 
-            return CreatedAtAction("GetNirStageReg", new { id = nirStageReg.ID }, nirStageReg);
+            itemDto = ConvertToDto(nirStageReg);
+
+            return CreatedAtAction("GetNirStageReg", new { id = nirStageReg.ID }, itemDto);
         }
 
         // DELETE: api/NirStageReg/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<NirStageReg>> DeleteNirStageReg(int id)
+        public async Task<ActionResult<NirStageRegDto>> DeleteNirStageReg(int id)
         {
             var nirStageReg = await _context.NirStageRegs.FindAsync(id);
             if (nirStageReg == null)
@@ -94,12 +111,22 @@ namespace LaborVolumeCalculator.Controllers
             _context.NirStageRegs.Remove(nirStageReg);
             await _context.SaveChangesAsync();
 
-            return nirStageReg;
+            return ConvertToDto(nirStageReg);
         }
 
         private bool NirStageRegExists(int id)
         {
             return _context.NirStageRegs.Any(e => e.ID == id);
+        }
+
+        private NirStageRegDto ConvertToDto(NirStageReg item)
+        {
+            return _mapper.Map<NirStageRegDto>(item);
+        }
+
+        private NirStageReg ConvertFromDto(NirStageRegDto item)
+        {
+            return _mapper.Map<NirStageReg>(item);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace LaborVolumeCalculator.DTO.Profiles
     {
         public NirProfile()
         {
-            CreateMap<Nir, NirDto>();
+            CreateMap<Nir, NirDto>().ReverseMap();
         }
     }
 }

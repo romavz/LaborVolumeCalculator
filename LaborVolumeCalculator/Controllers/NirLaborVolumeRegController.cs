@@ -36,11 +36,12 @@ namespace LaborVolumeCalculator.Controllers
         {
             var result = await _context.NirLaborVolumeRegs
                 .Include(item => item.Labor)
-                .Select(item => ConvertToDto(item))
                 .AsNoTracking()
                 .ToListAsync();
             
-            return result.OrderBy(item => item.Labor.Code, CodeComparer.Instance).ToArray();
+            var dto = result.Select(item => ConvertToDto(item));
+            
+            return dto.OrderBy(item => item.Labor.Code, CodeComparer.Instance).ToArray();
         }
 
         // GET: api/NirLaborVolumeRegController/5
@@ -69,12 +70,12 @@ namespace LaborVolumeCalculator.Controllers
                 .Where(m =>
                     m.NirID == nirID
                     && m.StageID == stageID)
-                .Select(item => ConvertToDto(item))
                 .AsNoTracking()
                 .ToListAsync();
             
-            var orderedRegs = laborVolumeRegs.OrderBy(m => m.Labor.Code, CodeComparer.Instance);
-            return orderedRegs.ToArray();
+            var orderedRegs = laborVolumeRegs.OrderBy(m => m.Labor.Code, CodeComparer.Instance).ToArray();
+            
+            return _mapper.Map<NirLaborVolumeReg[], IEnumerable<NirLaborVolumeRegDto>>(orderedRegs).ToList();
         }
 
         // PUT: api/NirLaborVolumeRegController/5

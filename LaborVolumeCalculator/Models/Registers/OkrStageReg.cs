@@ -8,7 +8,7 @@ namespace LaborVolumeCalculator.Models.Registers
         public int OkrID { get; set; }
         public Okr Okr { get; set; }
 
-        public int OkrStageID { get; set; }
-        public OkrStage OkrStage { get; set; }
+        public int StageID { get; set; }
+        public OkrStage Stage { get; set; }
     }
 }
