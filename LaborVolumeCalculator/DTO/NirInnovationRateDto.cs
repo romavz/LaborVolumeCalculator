@@ -7,9 +7,9 @@ namespace LaborVolumeCalculator.DTO
 
         public int NirInnovationPropertyID { get; set; }
         
-        // public string NirScaleName { get; set; }
+        public string NirScaleName { get; set; }
 
-        // public string NirInnovationPropertyName { get; set; }
+        public string NirInnovationPropertyName { get; set; }
 
         public double Value { get; set; }
 

@@ -73,7 +73,7 @@ namespace LaborVolumeCalculator.Controllers
                 .Include(n => n.NirScale)
                 .ToListAsync();
             
-            var nirsDto = ConfigToDto(nirs).ToList();
+            var nirsDto = ConvertToDto(nirs).ToList();
             return nirsDto;
         }
 
@@ -161,7 +161,7 @@ namespace LaborVolumeCalculator.Controllers
             return _context.Nirs.Any(e => e.ID == id);
         }
 
-        private IEnumerable<NirDto> ConfigToDto(List<Nir> nirs)
+        private IEnumerable<NirDto> ConvertToDto(List<Nir> nirs)
         {
             return _mapper.Map<IList<Nir>, IEnumerable<NirDto>>(nirs);
         }
