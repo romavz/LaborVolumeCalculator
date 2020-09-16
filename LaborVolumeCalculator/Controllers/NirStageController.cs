@@ -14,15 +14,13 @@ namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NirStageController : ControllerBase
+    public class NirStageController : ControllerBase<NirStage, NirStageDto>
     {
         private readonly LVCContext _context;
-        private readonly IMapper _mapper;
 
-        public NirStageController(LVCContext context, IMapper mapper)
+        public NirStageController(LVCContext context, IMapper mapper) : base(mapper)
         {
             _context = context;
-            this._mapper = mapper;
         }
 
         // GET: api/NirStage
@@ -30,8 +28,7 @@ namespace LaborVolumeCalculator.Controllers
         public async Task<ActionResult<IEnumerable<NirStageDto>>> GetNirStages()
         {
             var stages = await _context.NirStages.ToListAsync();
-            var stagesDto = ConvertToDto(stages);
-            return stagesDto.ToList();
+            return ConvertToDto(stages);
         }
 
         // GET: api/NirStage/5
@@ -59,7 +56,7 @@ namespace LaborVolumeCalculator.Controllers
                 return BadRequest();
             }
 
-            var nirStage = ConvertFromDto(nirStageDto);
+            var nirStage = ConvertToSource(nirStageDto);
             _context.Entry(nirStage).State = EntityState.Modified;
 
             try
@@ -87,7 +84,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpPost]
         public async Task<ActionResult<NirStage>> PostNirStage(NirStageDto nirStageDto)
         {
-            var nirStage = ConvertFromDto(nirStageDto);
+            var nirStage = ConvertToSource(nirStageDto);
             _context.NirStages.Add(nirStage);
             await _context.SaveChangesAsync();
 
@@ -113,21 +110,6 @@ namespace LaborVolumeCalculator.Controllers
         private bool NirStageExists(int id)
         {
             return _context.NirStages.Any(e => e.ID == id);
-        }
-
-        private NirStageDto ConvertToDto(NirStage item)
-        {
-            return _mapper.Map<NirStageDto>(item);
-        }
-
-        private NirStage ConvertFromDto(NirStageDto item)
-        {
-            return _mapper.Map<NirStage>(item);
-        }
-
-        private IEnumerable<NirStageDto> ConvertToDto(IEnumerable<NirStage> laborVolumeRegs)
-        {
-            return _mapper.Map<IEnumerable<NirStage>, IEnumerable<NirStageDto>>(laborVolumeRegs);
         }
     }
 }

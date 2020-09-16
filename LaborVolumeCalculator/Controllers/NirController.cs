@@ -15,15 +15,12 @@ namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NirController : ControllerBase
+    public class NirController : ControllerBase<Nir, NirDto>
     {
         private readonly LVCContext _context;
-        private readonly IMapper _mapper;
-
-        public NirController(LVCContext context, IMapper mapper)
+        public NirController(LVCContext context, IMapper mapper) : base(mapper)
         {
             _context = context;
-            this._mapper = mapper;
         }
 
 
@@ -105,7 +102,7 @@ namespace LaborVolumeCalculator.Controllers
                 return BadRequest();
             }
 
-            var nir = ConvertFromDto(nirDto);
+            var nir = ConvertToSource(nirDto);
             _context.Entry(nir).State = EntityState.Modified;
 
             try
@@ -133,7 +130,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpPost]
         public async Task<ActionResult<NirDto>> PostNir(NirDto nirDto)
         {
-            var nir = ConvertFromDto(nirDto);
+            var nir = ConvertToSource(nirDto);
             _context.Nirs.Add(nir);
             await _context.SaveChangesAsync();
 
@@ -159,21 +156,6 @@ namespace LaborVolumeCalculator.Controllers
         private bool NirExists(int id)
         {
             return _context.Nirs.Any(e => e.ID == id);
-        }
-
-        private IEnumerable<NirDto> ConvertToDto(List<Nir> nirs)
-        {
-            return _mapper.Map<IList<Nir>, IEnumerable<NirDto>>(nirs);
-        }
-
-        private NirDto ConvertToDto(Nir nir)
-        {
-            return _mapper.Map<Nir, NirDto>(nir);
-        }
-
-        private Nir ConvertFromDto(NirDto nirDto)
-        {
-            return _mapper.Map<NirDto, Nir>(nirDto);
         }
     }
 }
