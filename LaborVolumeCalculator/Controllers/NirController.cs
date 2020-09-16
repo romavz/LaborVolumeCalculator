@@ -10,20 +10,18 @@ using System.Threading.Tasks;
 using NSwag.Annotations;
 using LaborVolumeCalculator.DTO;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NirController : ControllerBase
+    public class NirController : ControllerBase<Nir, NirDto>
     {
         private readonly LVCContext _context;
-        private readonly IMapper _mapper;
-
-        public NirController(LVCContext context, IMapper mapper)
+        public NirController(LVCContext context, IMapper mapper) : base(mapper)
         {
             _context = context;
-            this._mapper = mapper;
         }
 
 
@@ -35,7 +33,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{nirId}/[action]")]
         public async Task<ActionResult<IEnumerable<NirStageDto>>> Stages(int nirId)
         {
-            var nirStage = await _context.Nirs.FindAsync(nirId);
+            var nirStage = await _context.Nirs.AsNoTracking().FirstOrDefaultAsync(m => m.ID == nirId);
 
             if (nirStage == null)
             {
@@ -61,17 +59,14 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<NirStage>>> NirStages()
         {
-            return await _context.NirStages.ToListAsync();
+            return await _context.NirStages.AsNoTracking().ToListAsync();
         }
 
         // GET: api/NirController
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirDto>>> GetNirs()
         {
-            var nirs = await _context.Nirs
-                .Include(n => n.NirInnovationProperty)
-                .Include(n => n.NirScale)
-                .ToListAsync();
+            var nirs = await GetScalesQuery().ToListAsync();
             
             var nirsDto = ConvertToDto(nirs).ToList();
             return nirsDto;
@@ -81,10 +76,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NirDto>> GetNir(int id)
         {
-            var nir = await _context.Nirs
-                .Include(n => n.NirInnovationProperty)
-                .Include(n => n.NirScale)
-                .FirstOrDefaultAsync(n => n.ID == id);
+            var nir = await GetScalesQuery().FirstOrDefaultAsync(n => n.ID == id);
 
             if (nir == null)
             {
@@ -92,6 +84,14 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(nir);
+        }
+
+        private IQueryable<Nir> GetScalesQuery()
+        {
+            return _context.Nirs
+                .Include(n => n.NirInnovationProperty)
+                .Include(n => n.NirScale)
+                .AsNoTracking();
         }
 
         // PUT: api/NirController/5
@@ -105,7 +105,7 @@ namespace LaborVolumeCalculator.Controllers
                 return BadRequest();
             }
 
-            var nir = ConvertFromDto(nirDto);
+            var nir = ConvertToSource(nirDto);
             _context.Entry(nir).State = EntityState.Modified;
 
             try
@@ -124,7 +124,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/NirController
@@ -133,7 +133,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpPost]
         public async Task<ActionResult<NirDto>> PostNir(NirDto nirDto)
         {
-            var nir = ConvertFromDto(nirDto);
+            var nir = ConvertToSource(nirDto);
             _context.Nirs.Add(nir);
             await _context.SaveChangesAsync();
 
@@ -159,21 +159,6 @@ namespace LaborVolumeCalculator.Controllers
         private bool NirExists(int id)
         {
             return _context.Nirs.Any(e => e.ID == id);
-        }
-
-        private IEnumerable<NirDto> ConvertToDto(List<Nir> nirs)
-        {
-            return _mapper.Map<IList<Nir>, IEnumerable<NirDto>>(nirs);
-        }
-
-        private NirDto ConvertToDto(Nir nir)
-        {
-            return _mapper.Map<Nir, NirDto>(nir);
-        }
-
-        private Nir ConvertFromDto(NirDto nirDto)
-        {
-            return _mapper.Map<NirDto, Nir>(nirDto);
         }
     }
 }

@@ -14,31 +14,28 @@ namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NirSoftwareDevLaborGroupController : ControllerBase
+    public class NirSoftwareDevLaborGroupController : ControllerBase<NirSoftwareDevLaborGroup, NirSoftwareDevLaborGroupDto>
     {
         private readonly LVCContext _context;
-        private readonly IMapper _mapper;
 
-        public NirSoftwareDevLaborGroupController(LVCContext context, IMapper mapper)
+        public NirSoftwareDevLaborGroupController(LVCContext context, IMapper mapper) : base(mapper)
         {
             _context = context;
-            this._mapper = mapper;
         }
 
         // GET: api/NirSoftwareDevLaborGroup
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirSoftwareDevLaborGroupDto>>> GetNirSoftwareDevLaborGroups()
         {
-            var groups = await _context.NirSoftwareDevLaborGroups.ToListAsync();
-            IList<NirSoftwareDevLaborGroupDto> groupsDto = ConvertToDto(groups);
-            return groupsDto.ToList();
+            var groups = await GetGroupsQuery().ToListAsync();
+            return ConvertToDto(groups);
         }
 
         // GET: api/NirSoftwareDevLaborGroup/5
         [HttpGet("{id}")]
         public async Task<ActionResult<NirSoftwareDevLaborGroupDto>> GetNirSoftwareDevLaborGroup(int id)
         {
-            var nirSoftwareDevLaborGroup = await _context.NirSoftwareDevLaborGroups.FindAsync(id);
+            var nirSoftwareDevLaborGroup = await GetGroupsQuery().FirstOrDefaultAsync(m => m.ID == id);
 
             if (nirSoftwareDevLaborGroup == null)
             {
@@ -46,6 +43,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(nirSoftwareDevLaborGroup);
+        }
+
+        private IQueryable<NirSoftwareDevLaborGroup> GetGroupsQuery()
+        {
+            return _context.NirSoftwareDevLaborGroups.AsNoTracking();
         }
 
         // PUT: api/NirSoftwareDevLaborGroup/5
@@ -59,7 +61,7 @@ namespace LaborVolumeCalculator.Controllers
                 return BadRequest();
             }
 
-            var nirSoftwareDevLaborGroup = ConvertFromDto(nirSoftwareDevLaborGroupDto);
+            var nirSoftwareDevLaborGroup = ConvertToSource(nirSoftwareDevLaborGroupDto);
             _context.Entry(nirSoftwareDevLaborGroup).State = EntityState.Modified;
 
             try
@@ -78,7 +80,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/NirSoftwareDevLaborGroup
@@ -87,7 +89,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpPost]
         public async Task<ActionResult<NirSoftwareDevLaborGroupDto>> PostNirSoftwareDevLaborGroup(NirSoftwareDevLaborGroupDto nirSoftwareDevLaborGroupDto)
         {
-            var nirSoftwareDevLaborGroup = ConvertFromDto(nirSoftwareDevLaborGroupDto);
+            var nirSoftwareDevLaborGroup = base.ConvertToSource(nirSoftwareDevLaborGroupDto);
             
             _context.NirSoftwareDevLaborGroups.Add(nirSoftwareDevLaborGroup);
             await _context.SaveChangesAsync();
@@ -114,21 +116,6 @@ namespace LaborVolumeCalculator.Controllers
         private bool NirSoftwareDevLaborGroupExists(int id)
         {
             return _context.NirSoftwareDevLaborGroups.Any(e => e.ID == id);
-        }
-
-        private IList<NirSoftwareDevLaborGroupDto> ConvertToDto(List<NirSoftwareDevLaborGroup> groups)
-        {
-            return _mapper.Map<IList<NirSoftwareDevLaborGroup>, IList<NirSoftwareDevLaborGroupDto>>(groups);
-        }
-
-        private NirSoftwareDevLaborGroupDto ConvertToDto(NirSoftwareDevLaborGroup nirSoftwareDevLaborGroup)
-        {
-            return _mapper.Map<NirSoftwareDevLaborGroupDto>(nirSoftwareDevLaborGroup);
-        }
-
-        private NirSoftwareDevLaborGroup ConvertFromDto(NirSoftwareDevLaborGroupDto nirSoftwareDevLaborGroupDto)
-        {
-            return _mapper.Map<NirSoftwareDevLaborGroupDto, NirSoftwareDevLaborGroup>(nirSoftwareDevLaborGroupDto);
         }
     }
 }

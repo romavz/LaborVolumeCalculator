@@ -14,28 +14,24 @@ namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NirStageRegController : ControllerBase
+    public class NirStageRegController : ControllerBase<NirStageReg, NirStageRegDto>
     {
         private readonly LVCContext _context;
-        private readonly IMapper _mapper;
 
-        public NirStageRegController(LVCContext context, IMapper mapper)
+        public NirStageRegController(LVCContext context, IMapper mapper) : base(mapper)
         {
             _context = context;
-            this._mapper = mapper;
         }
 
         // GET: api/NirStageReg
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirStageRegDto>>> GetNirStageRegs()
         {
-            var regs = await _context.NirStageRegs
-                .Include(r => r.Stage)
-                .ToListAsync();
+            var regs = await GetRegsQuery().ToListAsync();
 
-            var result = regs.Select(item => ConvertToDto(item))
+            var result = ConvertToDto(regs)
                 .OrderBy(item => item.Stage.Name)
-                .ToList();
+                .ToArray();
 
             return result;
         }
@@ -44,20 +40,23 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("[action]/{nirId}")]
         public async Task<ActionResult<IEnumerable<NirStageRegDto>>> GetNirStageRegs(int nirId)
         {
-            var nirStageRegs = await _context.NirStageRegs
-                .Include(r => r.Stage)
+            var nirStageRegs = await GetRegsQuery()
                 .Where(r => r.NirID == nirId)
-                .AsNoTracking()
                 .ToListAsync();
 
             if (nirStageRegs == null)
             {
                 return NotFound();
             }
-            
-            var result = _mapper.Map<IList<NirStageReg>, IEnumerable<NirStageRegDto>>(nirStageRegs).ToList();
 
-            return result;
+            return ConvertToDto(nirStageRegs);
+        }
+
+        private IQueryable<NirStageReg> GetRegsQuery()
+        {
+            return _context.NirStageRegs
+                            .Include(r => r.Stage)
+                            .AsNoTracking();
         }
 
 
@@ -81,7 +80,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpPost]
         public async Task<ActionResult<NirStageRegDto>> PostNirStageReg(NirStageRegDto itemDto)
         {
-            var nirStageReg = ConvertFromDto(itemDto);
+            var nirStageReg = ConvertToSource(itemDto);
             _context.NirStageRegs.Add(nirStageReg);
             
             try
@@ -91,11 +90,9 @@ namespace LaborVolumeCalculator.Controllers
             catch (DbUpdateException)
             {
                 return BadRequest();
-            }
+            }            
 
-            itemDto = ConvertToDto(nirStageReg);
-
-            return CreatedAtAction("GetNirStageReg", new { id = nirStageReg.ID }, itemDto);
+            return CreatedAtAction("GetNirStageReg", new { id = nirStageReg.ID }, ConvertToDto(nirStageReg));
         }
 
         // DELETE: api/NirStageReg/5
@@ -117,16 +114,6 @@ namespace LaborVolumeCalculator.Controllers
         private bool NirStageRegExists(int id)
         {
             return _context.NirStageRegs.Any(e => e.ID == id);
-        }
-
-        private NirStageRegDto ConvertToDto(NirStageReg item)
-        {
-            return _mapper.Map<NirStageRegDto>(item);
-        }
-
-        private NirStageReg ConvertFromDto(NirStageRegDto item)
-        {
-            return _mapper.Map<NirStageReg>(item);
         }
     }
 }

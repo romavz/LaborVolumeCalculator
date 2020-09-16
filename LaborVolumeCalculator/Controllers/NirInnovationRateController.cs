@@ -32,11 +32,12 @@ namespace LaborVolumeCalculator.Controllers
             return ConvertToDto(result);
         }
 
-        private IIncludableQueryable<NirInnovationRate, NirScale> GetRatesQuery()
+        private IQueryable<NirInnovationRate> GetRatesQuery()
         {
             return _context.NirInnovationRates
                 .Include(r => r.NirInnovationProperty)
-                .Include(r => r.NirScale);
+                .Include(r => r.NirScale)
+                .AsNoTracking();
         }
 
         // GET: api/NirInnovationRate/5
@@ -83,7 +84,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/NirInnovationRate

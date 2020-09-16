@@ -9,28 +9,29 @@ using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
 using AutoMapper;
 using LaborVolumeCalculator.DTO;
+using LaborVolumeCalculator.Utils;
 
 namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NirLaborController : ControllerBase
+    public class NirLaborController : ControllerBase<NirLabor, NirLaborDto>
     {
         private readonly LVCContext _context;
-        private readonly IMapper _mapper;
 
-        public NirLaborController(LVCContext context, IMapper mapper)
+        public NirLaborController(LVCContext context, IMapper mapper) : base(mapper)
         {
             _context = context;
-            this._mapper = mapper;
         }
 
         // GET: api/NirLabor
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirLaborDto>>> GetNirLabors()
         {
-            var labors = await _context.NirLabors.ToListAsync();
-            var laborsDto = ConvertToDto(labors).ToList();
+            var labors = await GetLaborsQuery().ToListAsync();
+            var laborsDto = ConvertToDto(labors)
+                .OrderBy(m => m.Code, CodeComparer.Instance)
+                .ToArray();
             return laborsDto;
         }
 
@@ -38,7 +39,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NirLaborDto>> GetNirLabor(int id)
         {
-            var nirLabor = await _context.NirLabors.FindAsync(id);
+            var nirLabor = await GetLaborsQuery().FirstOrDefaultAsync(m => m.ID == id);
 
             if (nirLabor == null)
             {
@@ -46,6 +47,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(nirLabor);
+        }
+
+        private IQueryable<NirLabor> GetLaborsQuery()
+        {
+            return _context.NirLabors.AsNoTracking();
         }
 
         // PUT: api/NirLabor/5
@@ -59,7 +65,7 @@ namespace LaborVolumeCalculator.Controllers
                 return BadRequest();
             }
 
-            var nirLabor = ConvertFromDto(nirLaborDto);
+            var nirLabor = ConvertToSource(nirLaborDto);
 
             _context.Entry(nirLabor).State = EntityState.Modified;
 
@@ -79,7 +85,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/NirLabor
@@ -88,7 +94,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpPost]
         public async Task<ActionResult<NirLabor>> PostNirLabor(NirLaborDto nirLaborDto)
         {
-            var nirLabor = ConvertFromDto(nirLaborDto);
+            var nirLabor = ConvertToSource(nirLaborDto);
             
             _context.NirLabors.Add(nirLabor);
             await _context.SaveChangesAsync();
@@ -115,21 +121,6 @@ namespace LaborVolumeCalculator.Controllers
         private bool NirLaborExists(int id)
         {
             return _context.NirLabors.Any(e => e.ID == id);
-        }
-
-        private NirLaborDto ConvertToDto(NirLabor labor)
-        {
-            return _mapper.Map<NirLabor, NirLaborDto>(labor);
-        }
-
-        private NirLabor ConvertFromDto(NirLaborDto item)
-        {
-            return _mapper.Map<NirLaborDto, NirLabor>(item);
-        }
-        
-        private IEnumerable<NirLaborDto> ConvertToDto(List<NirLabor> labors)
-        {
-            return _mapper.Map<IEnumerable<NirLabor>, IEnumerable<NirLaborDto>>(labors);
         }
     }
 }

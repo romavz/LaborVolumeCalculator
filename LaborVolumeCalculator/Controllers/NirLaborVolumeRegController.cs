@@ -18,15 +18,13 @@ namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NirLaborVolumeRegController : ControllerBase
+    public class NirLaborVolumeRegController : ControllerBase<NirLaborVolumeReg, NirLaborVolumeRegDto>
     {
         private readonly LVCContext _context;
-        private readonly IMapper _mapper;
 
-        public NirLaborVolumeRegController(LVCContext context, IMapper mapper)
+        public NirLaborVolumeRegController(LVCContext context, IMapper mapper) : base(mapper)
         {
             this._context = context;
-            this._mapper = mapper;
         }
 
 
@@ -34,24 +32,27 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirLaborVolumeRegDto>>> GetNirLaborVolumeRegs()
         {
-            var result = await _context.NirLaborVolumeRegs
-                .Include(item => item.Labor)
-                .AsNoTracking()
-                .ToListAsync();
-            
-            var dto = result.Select(item => ConvertToDto(item));
-            
-            return dto.OrderBy(item => item.Labor.Code, CodeComparer.Instance).ToArray();
+            var result = await GetRegsRequest().ToListAsync();
+
+            var dto = ConvertToDto(result)
+                .OrderBy(item => item.Labor.Code, CodeComparer.Instance)
+                .ToArray();
+
+            return dto;
+        }
+
+        private IQueryable<NirLaborVolumeReg> GetRegsRequest()
+        {
+            return _context.NirLaborVolumeRegs
+                            .Include(item => item.Labor)
+                            .AsNoTracking();
         }
 
         // GET: api/NirLaborVolumeRegController/5
         [HttpGet("{id}")]
         public async Task<ActionResult<NirLaborVolumeRegDto>> GetNirLaborVolumeReg(int id)
         {
-            var nirLaborVolumeReg = await _context.NirLaborVolumeRegs
-                .Include(i => i.Labor)
-                .AsNoTracking()
-                .FirstAsync(t => t.ID == id);
+            var nirLaborVolumeReg = await GetRegsRequest().FirstOrDefaultAsync(t => t.ID == id);
 
             if (nirLaborVolumeReg == null)
             {
@@ -65,17 +66,16 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<NirLaborVolumeRegDto>>> GetRegs(int nirID, int stageID)
         {
-            var laborVolumeRegs = await _context.NirLaborVolumeRegs
-                .Include(m => m.Labor)
+            var laborVolumeRegs = await GetRegsRequest()
                 .Where(m =>
                     m.NirID == nirID
                     && m.StageID == stageID)
-                .AsNoTracking()
                 .ToListAsync();
             
-            var orderedRegs = laborVolumeRegs.OrderBy(m => m.Labor.Code, CodeComparer.Instance).ToArray();
+            var regsDto = ConvertToDto(laborVolumeRegs);
+            var orderedRegs = regsDto.OrderBy(m => m.Labor.Code, CodeComparer.Instance).ToArray();
             
-            return _mapper.Map<NirLaborVolumeReg[], IEnumerable<NirLaborVolumeRegDto>>(orderedRegs).ToList();
+            return orderedRegs;
         }
 
         // PUT: api/NirLaborVolumeRegController/5
@@ -89,7 +89,7 @@ namespace LaborVolumeCalculator.Controllers
                 return BadRequest();
             }
 
-            var nirLaborVolumeReg = ConvertFromDto(item);
+            var nirLaborVolumeReg = ConvertToSource(item);
             _context.Entry(nirLaborVolumeReg).State = EntityState.Modified;
 
             try
@@ -108,21 +108,21 @@ namespace LaborVolumeCalculator.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/NirLaborVolumeRegController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<NirLaborVolumeRegDto>> PostNirLaborVolumeReg(NirLaborVolumeReg nirLaborVolumeRegDto)
+        public async Task<ActionResult<NirLaborVolumeRegDto>> PostNirLaborVolumeReg(NirLaborVolumeRegDto nirLaborVolumeRegDto)
         {
-            var nirLaborVolumeReg = _mapper.Map<NirLaborVolumeReg>(nirLaborVolumeRegDto);
+            var nirLaborVolumeReg = ConvertToSource(nirLaborVolumeRegDto);
             
             _context.NirLaborVolumeRegs.Add(nirLaborVolumeReg);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetNirLaborVolumeReg", new { id = nirLaborVolumeRegDto.ID }, nirLaborVolumeRegDto);
+            return CreatedAtAction("GetNirLaborVolumeReg", new { id = nirLaborVolumeReg.ID }, ConvertToDto(nirLaborVolumeReg));
         }
 
         // DELETE: api/NirLaborVolumeRegController/5
@@ -194,25 +194,8 @@ namespace LaborVolumeCalculator.Controllers
                 .Include(r => r.Labor)
                 .Where(item => laborVolumeRegs.Select(reg => reg.LaborID).Contains(item.LaborID))
                 .ToListAsync();
-            
-            var result = ConvertToDto(inserted);
 
-            return CreatedAtAction("GetRegs", new { nirID = nirID, stageID = stageID }, result);
-        }
-
-        private NirLaborVolumeRegDto ConvertToDto(NirLaborVolumeReg item)
-        {
-            return _mapper.Map<NirLaborVolumeRegDto>(item);
-        }
-
-        private NirLaborVolumeReg ConvertFromDto(NirLaborVolumeRegDto item)
-        {
-            return _mapper.Map<NirLaborVolumeReg>(item);
-        }
-
-        private IEnumerable<NirLaborVolumeRegDto> ConvertToDto(IEnumerable<NirLaborVolumeReg> laborVolumeRegs)
-        {
-            return _mapper.Map<IEnumerable<NirLaborVolumeReg>, IEnumerable<NirLaborVolumeRegDto>>(laborVolumeRegs);
+            return CreatedAtAction("GetRegs", new { nirID = nirID, stageID = stageID }, ConvertToDto(inserted));
         }
     }
 

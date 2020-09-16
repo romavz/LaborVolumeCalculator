@@ -27,7 +27,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirScaleDto>>> GetNirScales()
         {
-            var result = await _context.NirScales.ToListAsync();
+            var result = await GetScalesQuery().ToListAsync();
             return ConvertToDto(result);
         }
 
@@ -35,7 +35,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NirScaleDto>> GetNirScale(int id)
         {
-            var nirScale = await _context.NirScales.FindAsync(id);
+            var nirScale = await GetScalesQuery().FirstOrDefaultAsync(m => m.ID == id);
 
             if (nirScale == null)
             {
@@ -43,6 +43,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(nirScale);
+        }
+
+        private IQueryable<NirScale> GetScalesQuery()
+        {
+            return _context.NirScales.AsNoTracking();
         }
 
         // PUT: api/NirScale/5
@@ -75,7 +80,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/NirScale
