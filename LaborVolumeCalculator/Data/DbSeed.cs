@@ -653,7 +653,7 @@ namespace LaborVolumeCalculator.Data
         private TestsScale TestsScale { get; set; }
         private TestsCoverageLevel TestsCoverageLevel { get; set; }
 
-        public TestsDevelopmentRate Create(float value)
+        public TestsDevelopmentRate Create(double value)
         {
             return new TestsDevelopmentRate(ComponentsMicroArchitecture, TestsScale, TestsCoverageLevel, value);
         }
@@ -676,12 +676,12 @@ namespace LaborVolumeCalculator.Data
             return this;
         }
 
-        public TestsDevelopmentRate Create(TestsCoverageLevel level, float value)
+        public TestsDevelopmentRate Create(TestsCoverageLevel level, double value)
         {
             return this.WithTestsCoverLevel(level).Create(value);
         }
 
-        public TestsDevelopmentRate Create(ComponentsMicroArchitecture arch, TestsScale scale, TestsCoverageLevel coverLevel, float value)
+        public TestsDevelopmentRate Create(ComponentsMicroArchitecture arch, TestsScale scale, TestsCoverageLevel coverLevel, double value)
         {
             return this.WithMicroArch(arch).WithTestsScale(scale).WithTestsCoverLevel(coverLevel).Create(value);
         }

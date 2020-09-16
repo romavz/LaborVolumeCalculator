@@ -11,7 +11,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
         {
         }
 
-        public ArchitectureComplexityRate(ComponentsMakroArchitecture componentsMakroArchitecture, ComponentsInteractionArchitecture componentsInteractionArchitecture, float value)
+        public ArchitectureComplexityRate(ComponentsMakroArchitecture componentsMakroArchitecture, ComponentsInteractionArchitecture componentsInteractionArchitecture, double value)
         {
             ComponentsMakroArchitecture = componentsMakroArchitecture;
             ComponentsMakroArchitectureID = componentsMakroArchitecture?.ID ?? 0;
@@ -30,7 +30,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
         public ComponentsInteractionArchitecture ComponentsInteractionArchitecture { get; set; }
 
         [DisplayName("Значение")]
-        public float Value { get; set; }
+        public double Value { get; set; }
 
     }
 }

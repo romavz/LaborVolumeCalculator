@@ -8,12 +8,12 @@ namespace LaborVolumeCalculator.Models.Dictionary
     {
         public SolutionInnovationRate() : base() { }
 
-        public SolutionInnovationRate(string name, float value) : base(name)
+        public SolutionInnovationRate(string name, double value) : base(name)
         {
             Value = value;
         }
 
         [DisplayName("Значение")]
-        public float Value { get; set; }
+        public double Value { get; set; }
     }
 }

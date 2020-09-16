@@ -9,11 +9,11 @@ namespace LaborVolumeCalculator.Models.Dictionary
         {
         }
 
-        public InfrastructureComplexityRate(string name, float value) : base(name)
+        public InfrastructureComplexityRate(string name, double value) : base(name)
         {
             Value = value;
         }
 
-        public float Value { get; set; }
+        public double Value { get; set; }
     }
 }

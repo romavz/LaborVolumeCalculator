@@ -11,7 +11,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
         {
         }
 
-        public TestsDevelopmentRate(ComponentsMicroArchitecture componentsMicroArchitecture, TestsScale testsScale, TestsCoverageLevel testsCoverageLevel, float value)
+        public TestsDevelopmentRate(ComponentsMicroArchitecture componentsMicroArchitecture, TestsScale testsScale, TestsCoverageLevel testsCoverageLevel, double value)
         {
             ComponentsMicroArchitecture = componentsMicroArchitecture;
             ComponentsMicroArchitectureID = componentsMicroArchitecture?.ID ?? 0;
@@ -25,7 +25,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
         public int ID { get; set; }
         
         [DisplayName("Значение")]
-        public float Value { get; set; }
+        public double Value { get; set; }
 
         public int ComponentsMicroArchitectureID { get; set; }
         public ComponentsMicroArchitecture ComponentsMicroArchitecture { get; set; }
