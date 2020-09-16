@@ -14,15 +14,13 @@ namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NirLaborController : ControllerBase
+    public class NirLaborController : ControllerBase<NirLabor, NirLaborDto>
     {
         private readonly LVCContext _context;
-        private readonly IMapper _mapper;
 
-        public NirLaborController(LVCContext context, IMapper mapper)
+        public NirLaborController(LVCContext context, IMapper mapper) : base(mapper)
         {
             _context = context;
-            this._mapper = mapper;
         }
 
         // GET: api/NirLabor
@@ -59,7 +57,7 @@ namespace LaborVolumeCalculator.Controllers
                 return BadRequest();
             }
 
-            var nirLabor = ConvertFromDto(nirLaborDto);
+            var nirLabor = ConvertToSource(nirLaborDto);
 
             _context.Entry(nirLabor).State = EntityState.Modified;
 
@@ -79,7 +77,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/NirLabor
@@ -88,7 +86,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpPost]
         public async Task<ActionResult<NirLabor>> PostNirLabor(NirLaborDto nirLaborDto)
         {
-            var nirLabor = ConvertFromDto(nirLaborDto);
+            var nirLabor = ConvertToSource(nirLaborDto);
             
             _context.NirLabors.Add(nirLabor);
             await _context.SaveChangesAsync();
@@ -115,21 +113,6 @@ namespace LaborVolumeCalculator.Controllers
         private bool NirLaborExists(int id)
         {
             return _context.NirLabors.Any(e => e.ID == id);
-        }
-
-        private NirLaborDto ConvertToDto(NirLabor labor)
-        {
-            return _mapper.Map<NirLabor, NirLaborDto>(labor);
-        }
-
-        private NirLabor ConvertFromDto(NirLaborDto item)
-        {
-            return _mapper.Map<NirLaborDto, NirLabor>(item);
-        }
-        
-        private IEnumerable<NirLaborDto> ConvertToDto(List<NirLabor> labors)
-        {
-            return _mapper.Map<IEnumerable<NirLabor>, IEnumerable<NirLaborDto>>(labors);
         }
     }
 }
