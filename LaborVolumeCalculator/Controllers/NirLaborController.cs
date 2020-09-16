@@ -9,6 +9,7 @@ using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
 using AutoMapper;
 using LaborVolumeCalculator.DTO;
+using LaborVolumeCalculator.Utils;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -27,8 +28,10 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirLaborDto>>> GetNirLabors()
         {
-            var labors = await _context.NirLabors.ToListAsync();
-            var laborsDto = ConvertToDto(labors).ToList();
+            var labors = await GetLaborsQuery().ToListAsync();
+            var laborsDto = ConvertToDto(labors)
+                .OrderBy(m => m.Code, CodeComparer.Instance)
+                .ToArray();
             return laborsDto;
         }
 
@@ -36,7 +39,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NirLaborDto>> GetNirLabor(int id)
         {
-            var nirLabor = await _context.NirLabors.FindAsync(id);
+            var nirLabor = await GetLaborsQuery().FirstOrDefaultAsync(m => m.ID == id);
 
             if (nirLabor == null)
             {
@@ -44,6 +47,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(nirLabor);
+        }
+
+        private IQueryable<NirLabor> GetLaborsQuery()
+        {
+            return _context.NirLabors.AsNoTracking();
         }
 
         // PUT: api/NirLabor/5

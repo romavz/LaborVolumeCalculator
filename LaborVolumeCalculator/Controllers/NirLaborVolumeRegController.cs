@@ -34,9 +34,11 @@ namespace LaborVolumeCalculator.Controllers
         {
             var result = await GetRegsRequest().ToListAsync();
 
-            var dto = ConvertToDto(result);
+            var dto = ConvertToDto(result)
+                .OrderBy(item => item.Labor.Code, CodeComparer.Instance)
+                .ToArray();
 
-            return dto.OrderBy(item => item.Labor.Code, CodeComparer.Instance).ToArray();
+            return dto;
         }
 
         private IQueryable<NirLaborVolumeReg> GetRegsRequest()

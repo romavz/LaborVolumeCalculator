@@ -27,7 +27,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirStageDto>>> GetNirStages()
         {
-            var stages = await _context.NirStages.ToListAsync();
+            var stages = await GetStageQuery().ToListAsync();
             return ConvertToDto(stages);
         }
 
@@ -35,7 +35,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NirStageDto>> GetNirStage(int id)
         {
-            var nirStage = await _context.NirStages.FindAsync(id);
+            var nirStage = await GetStageQuery().FirstOrDefaultAsync(m => m.ID == id);
 
             if (nirStage == null)
             {
@@ -43,6 +43,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(nirStage);
+        }
+
+        private IQueryable<NirStage> GetStageQuery()
+        {
+            return _context.NirStages.AsNoTracking();
         }
 
         // PUT: api/NirStage/5

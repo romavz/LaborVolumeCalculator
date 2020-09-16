@@ -27,7 +27,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirInnovationPropertyDto>>> GetNirInnovationProperties()
         {
-            var result = await _context.NirInnovationProperties.ToListAsync();
+            var result = await GetPropertiesQuery().ToListAsync();
             return ConvertToDto(result);
         }
 
@@ -35,7 +35,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NirInnovationPropertyDto>> GetNirInnovationProperty(int id)
         {
-            var nirInnovationProperty = await _context.NirInnovationProperties.FindAsync(id);
+            var nirInnovationProperty = await GetPropertiesQuery().FirstOrDefaultAsync(m => m.ID == id);
 
             if (nirInnovationProperty == null)
             {
@@ -43,6 +43,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(nirInnovationProperty);
+        }
+
+        private IQueryable<NirInnovationProperty> GetPropertiesQuery()
+        {
+            return _context.NirInnovationProperties.AsNoTracking();
         }
 
         // PUT: api/NirInnovationProperty/5

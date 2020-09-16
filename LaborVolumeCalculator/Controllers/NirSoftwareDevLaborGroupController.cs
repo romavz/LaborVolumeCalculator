@@ -27,16 +27,15 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirSoftwareDevLaborGroupDto>>> GetNirSoftwareDevLaborGroups()
         {
-            var groups = await _context.NirSoftwareDevLaborGroups.ToListAsync();
-            IList<NirSoftwareDevLaborGroupDto> groupsDto = ConvertToDto(groups);
-            return groupsDto.ToList();
+            var groups = await GetGroupsQuery().ToListAsync();
+            return ConvertToDto(groups);
         }
 
         // GET: api/NirSoftwareDevLaborGroup/5
         [HttpGet("{id}")]
         public async Task<ActionResult<NirSoftwareDevLaborGroupDto>> GetNirSoftwareDevLaborGroup(int id)
         {
-            var nirSoftwareDevLaborGroup = await _context.NirSoftwareDevLaborGroups.FindAsync(id);
+            var nirSoftwareDevLaborGroup = await GetGroupsQuery().FirstOrDefaultAsync(m => m.ID == id);
 
             if (nirSoftwareDevLaborGroup == null)
             {
@@ -44,6 +43,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(nirSoftwareDevLaborGroup);
+        }
+
+        private IQueryable<NirSoftwareDevLaborGroup> GetGroupsQuery()
+        {
+            return _context.NirSoftwareDevLaborGroups.AsNoTracking();
         }
 
         // PUT: api/NirSoftwareDevLaborGroup/5
