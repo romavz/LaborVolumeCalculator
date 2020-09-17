@@ -204,7 +204,9 @@ namespace LaborVolumeCalculator.Data
             
             modelBuilder.Entity<ArchitectureComplexityRate>(e => 
             {
-                e.ToTable("ArchitectureComplexityRate", Schema.Dictionary);
+                e.ToTable("ArchitectureComplexityRate", Schema.Dictionary)
+                    .HasIndex(key => new{ key.ComponentsInteractionArchitectureID, key.ComponentsMakroArchitectureID })
+                    .IsUnique();
                 e.HasOne(r => r.ComponentsInteractionArchitecture).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.ComponentsMakroArchitecture).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
             });
@@ -258,7 +260,9 @@ namespace LaborVolumeCalculator.Data
             
             modelBuilder.Entity<TestsDevelopmentRate>(e => 
             {
-                e.ToTable("TestsDevelopmentRate", Schema.Dictionary);
+                e.ToTable("TestsDevelopmentRate", Schema.Dictionary)
+                    .HasIndex(key => new { key.ComponentsMicroArchitectureID, key.TestsCoverageLevelID, key.TestsScaleID })
+                    .IsUnique();
                 e.HasOne(r => r.ComponentsMicroArchitecture).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.TestsScale).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.TestsCoverageLevel).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
