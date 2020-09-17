@@ -4,8 +4,8 @@ namespace LaborVolumeCalculator.DTO
     {
         public int ID { get; set; }
         public double Value { get; set; }
-        public int TestScaleID { get; set; }
-        public string TestScaleName { get; set; }
+        public int TestsScaleID { get; set; }
+        public string TestsScaleName { get; set; }
 
         public int TestsCoverageLevelID { get; set; }
 
