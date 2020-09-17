@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using AutoMapper;
 using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.Models.Registers;
@@ -9,7 +10,11 @@ namespace LaborVolumeCalculator.DTO.Profiles
         public NirProfile()
         {
             // Справочники
-            CreateMap<Nir, NirDto>().ReverseMap();
+            CreateMap<Nir, NirDto>().ReverseMap()
+                .ForPath(p => p.NirInnovationProperty.Name, opt => opt.Ignore())
+                .ForPath(p => p.NirScale.Name, opt => opt.Ignore())
+                .ForPath(p => p.CreateTime, opt => opt.Ignore());
+
             CreateMap<NirStage, NirStageDto>().ReverseMap();
             CreateMap<NirLabor, NirLaborDto>().ReverseMap();
 

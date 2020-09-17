@@ -66,7 +66,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirDto>>> GetNirs()
         {
-            var nirs = await GetScalesQuery().ToListAsync();
+            var nirs = await NirsQuery().ToListAsync();
             
             var nirsDto = ConvertToDto(nirs).ToList();
             return nirsDto;
@@ -76,7 +76,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NirDto>> GetNir(int id)
         {
-            var nir = await GetScalesQuery().FirstOrDefaultAsync(n => n.ID == id);
+            var nir = await NirsQuery().FirstOrDefaultAsync(n => n.ID == id);
 
             if (nir == null)
             {
@@ -86,7 +86,7 @@ namespace LaborVolumeCalculator.Controllers
             return ConvertToDto(nir);
         }
 
-        private IQueryable<Nir> GetScalesQuery()
+        private IQueryable<Nir> NirsQuery()
         {
             return _context.Nirs
                 .Include(n => n.NirInnovationProperty)
@@ -137,6 +137,8 @@ namespace LaborVolumeCalculator.Controllers
             _context.Nirs.Add(nir);
             await _context.SaveChangesAsync();
 
+            nir = await NirsQuery().FirstOrDefaultAsync(m => m.ID == nir.ID);
+            
             return CreatedAtAction("GetNir", new { id = nir.ID }, ConvertToDto(nir));
         }
 
