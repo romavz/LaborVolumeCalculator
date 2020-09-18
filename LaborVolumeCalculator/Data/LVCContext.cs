@@ -42,6 +42,9 @@ namespace LaborVolumeCalculator.Data
         public DbSet<OkrLabor> OkrLabors { get; set; }
         public DbSet<OntdLabor> OntdLabors { get; set; }
         public DbSet<SoftwareDevLabor> SoftwareDevLabors { get; set; }
+        public DbSet<SoftwareDevLaborVolumeRange> SoftwareDevLaborVolumeRanges { get; set; }
+        public DbSet<DbDevLaborVolumeRange> DbDevLaborVolumeRanges { get; set; }
+
         public DbSet<DbDevLabor> DbDevLabors { get; set; }
         public DbSet<HardwareDevLabor> HardwareDevLabors { get; set; }
 
@@ -141,11 +144,9 @@ namespace LaborVolumeCalculator.Data
                 e.Property(p => p.Name).IsRequired();
             });
 
-            modelBuilder.Entity<OkrLabor>()         .HasOne(r => r.OkrStage)                .WithMany().OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<DevelopmentLabor>() .HasOne(r => r.LaborCategory)           .WithMany(r => r.Labors).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<DbDevLabor>()       .HasOne(r => r.DbEntityCountRange)      .WithMany().OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<HardwareDevLabor>() .HasOne(r => r.PlatePointsCountRange)   .WithMany().OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<SoftwareDevLabor>() .HasOne(r => r.SoftwareDevEnv).WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<OkrLabor>().HasOne(r => r.OkrStage).WithMany().OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<DevelopmentLabor>().ToTable("DevelopmentLabor", Schema.Dictionary);
 
             modelBuilder.Entity<NiokrStage>().ToTable("NiokrStage", Schema.Dictionary);
 
@@ -182,6 +183,22 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
                 e.HasIndex(key => new { key.OkrID, key.StageID, key.LaborID }).IsUnique();
+            });
+
+            modelBuilder.Entity<SoftwareDevLaborVolumeRange>(e => 
+            {
+                e.ToTable("SoftwareDevLaborVolumeRange", Schema.Dictionary)
+                    .HasIndex(key => new { key.LaborID, key.SoftwareDevEnvID }).IsUnique();
+                e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.SoftwareDevEnv).WithMany().OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<DbDevLaborVolumeRange>(e => 
+            {
+                e.ToTable("DbDevLaborVolumeRange", Schema.Dictionary)
+                    .HasIndex(key => new { key.LaborID, key.DbEntityCountRangeID }).IsUnique();
+                e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.DbEntityCountRange).WithMany().OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<SoftwareDevLaborGroup>(e => 

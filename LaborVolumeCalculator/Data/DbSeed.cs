@@ -1,4 +1,8 @@
-﻿using LaborVolumeCalculator.Models;
+﻿using Microsoft.CSharp.RuntimeBinder;
+using System.Runtime.ConstrainedExecution;
+using System.Security.Cryptography;
+using System.Reflection.Emit;
+using LaborVolumeCalculator.Models;
 using LaborVolumeCalculator.Models.Dictionary;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -133,7 +137,8 @@ namespace LaborVolumeCalculator.Data
 
             SoftwareDevEnv[] devEnvironments = SeedSoftwareDevEnvironments();
             LaborCategory[] laborCategories = SeedLaborsCategories();
-            SeedSoftwareDevLabors(laborCategories, devEnvironments);
+            SoftwareDevLabor[] softLabors = SeedSoftwareDevLabors(laborCategories);
+            SeedSoftwareDevLaborVolumeRanges(softLabors, devEnvironments);
 
             SolutionInnovationRate[] inoRate = {
                 new SolutionInnovationRate("Разработка решения, предусматривающая применение принципиально новых методов разработки,"+
@@ -321,32 +326,56 @@ namespace LaborVolumeCalculator.Data
             return environments;
         }
 
-        private void SeedSoftwareDevLabors(LaborCategory[] laborCategories, SoftwareDevEnv[] devEnvironments)
+        private SoftwareDevLabor[] SeedSoftwareDevLabors(LaborCategory[] categories)
         {
-            List<SoftwareDevLabor> labors = new List<SoftwareDevLabor>();
-
-            void newLabor(string code, string name, LaborCategory category, SoftwareDevEnv[] devEnvironments, float[,] volumes)
-            {
-                int index = 0;
-                foreach (var env in devEnvironments)
-                {
-                    var labor = new SoftwareDevLabor(code, name, category, env, (float)volumes[index, 0], (float)volumes[index, 1]);
-                    labors.Add(labor);
-                    index++;
-                };
+            SoftwareDevLabor[] labors = new SoftwareDevLabor[] {
+                new SoftwareDevLabor("101", "Разбор файлов входных данных заданного формата", categories[0]),
+                new SoftwareDevLabor("102", "Разрбор потока данных заданного формата", categories[0]),
+                new SoftwareDevLabor("103", "Графический интерфейс ввода", categories[0]),
+                new SoftwareDevLabor("104", "Консольный интерфейс ввода", categories[0]),
+                new SoftwareDevLabor("105", "Графический веб интерфейс (формы ввода данных)", categories[0]),
+                new SoftwareDevLabor("106", "Интерфейс управления миниатюрным устройством, оснащенным тачскрином", categories[0]),
+                new SoftwareDevLabor("107", "Обработка входящий сообщений от системы обмена сообщениями", categories[0])
             };
 
-            var category = laborCategories;
-            var env = devEnvironments;
-            newLabor("101", "Разбор файлов входных данных заданного формата", category[0], env[1..3], new[,] { { 0.5f, 1f }, { 0.5f, 1.5f } });
-            newLabor("102", "Разрбор потока данных заданного формата", category[0], env[1..3], new[,] { { 0.5f, 1.5f }, { 2, 2 } });
-            newLabor("103", "Графический интерфейс ввода", category[0], new SoftwareDevEnv[] { env[0], env[2] }, new[,] { { 1f, 2f }, { 3, 4 } });
-            newLabor("104", "Консольный интерфейс ввода", category[0], env, new[,] { { 1f, 1f }, { 1, 2 }, { 2, 2 }, { 3, 4 } });
-            newLabor("105", "Графический веб интерфейс (формы ввода данных)", category[0], env[0..1], new[,] { { 1f, 2f } });
-            newLabor("106", "Интерфейс управления миниатюрным устройством, оснащенным тачскрином", category[0], env[2..3], new float[,] { { 1, 5f, 2f } });
-            newLabor("107", "Обработка входящий сообщений от системы обмена сообщениями", category[0], env[0..3], new float[,] { { 1.5f, 1.5f }, { 1.5f, 1.5f }, { 1.5f, 1.5f } });
-
             dbContext.SoftwareDevLabors.AddRange(labors);
+            return labors;
+        }
+
+        private SoftwareDevLaborVolumeRange[] SeedSoftwareDevLaborVolumeRanges(SoftwareDevLabor[] labors, SoftwareDevEnv[] devEnv)
+        {
+            var _PHP_JS = devEnv[0];
+            var _Perl_Ruby_Pyton = devEnv[1];
+            var _Cpp_Cs_Java_ObjC = devEnv[2];
+            var _Asm = devEnv[3];
+
+            var rb = new SoftwareDevLaborVolumeRangeBuilder(labors[0]);
+            SoftwareDevLaborVolumeRange[] ranges = new SoftwareDevLaborVolumeRange[]
+            {
+                rb.Create(_Perl_Ruby_Pyton, 0.5, 1),
+                rb.Create(_Cpp_Cs_Java_ObjC, 0.5, 1.5),
+                
+                rb.Create(labors[1], _Perl_Ruby_Pyton, 0.5, 1.5),
+                rb.Create(_Cpp_Cs_Java_ObjC, 2),
+                
+                rb.Create(labors[2], _PHP_JS, 1, 2),
+                rb.Create(_Cpp_Cs_Java_ObjC, 3, 4),
+                
+                rb.Create(labors[3], _PHP_JS, 1),
+                rb.Create(_Perl_Ruby_Pyton, 1, 2),
+                rb.Create(_Cpp_Cs_Java_ObjC, 2),
+                rb.Create(_Asm, 3, 4),
+
+                rb.Create(labors[4], _PHP_JS, 1, 2),
+                rb.Create(labors[5], _Cpp_Cs_Java_ObjC, 1.5, 2),
+                
+                rb.Create(labors[6], _PHP_JS, 1,5),
+                rb.Create(_Perl_Ruby_Pyton, 1.5),
+                rb.Create(_Cpp_Cs_Java_ObjC, 1.5)
+            };
+            
+            dbContext.SoftwareDevLaborVolumeRanges.AddRange(ranges);
+            return ranges;
         }
 
         private void SeedOkrSoftwareDevLaborGroups(OkrStage[] okrStages)
@@ -732,6 +761,36 @@ namespace LaborVolumeCalculator.Data
         public NirStageDefaultLabor Create(NirLabor labor) 
         {
             return new NirStageDefaultLabor(_nirStage, labor);
+        }
+    }
+
+    internal class SoftwareDevLaborVolumeRangeBuilder
+    {
+        private SoftwareDevLabor _labor;
+
+        public SoftwareDevLaborVolumeRangeBuilder(SoftwareDevLabor labor)
+        {
+            this._labor = labor;
+        }
+
+        public SoftwareDevLaborVolumeRange Create(SoftwareDevLabor labor, SoftwareDevEnv devEnv, double volume)
+        {
+            return Create(labor, devEnv, volume, volume);
+        }
+
+        public SoftwareDevLaborVolumeRange Create(SoftwareDevLabor labor, SoftwareDevEnv devEnv, double minVolume, double maxVolume)
+        {
+            this._labor = labor;
+            return Create(devEnv, minVolume, maxVolume);
+        }
+        
+        public SoftwareDevLaborVolumeRange Create(SoftwareDevEnv devEnv, double volume)
+        {
+            return Create(devEnv, volume, volume);
+        }
+        public SoftwareDevLaborVolumeRange Create(SoftwareDevEnv devEnv, double minVolume, double maxVolume)
+        {
+            return new SoftwareDevLaborVolumeRange(_labor, devEnv, minVolume, maxVolume);
         }
     }
 }
