@@ -78,7 +78,8 @@ namespace LaborVolumeCalculator.Data
         public DbSet<TestsCoverageLevel> TestsCoverageLevels { get; set; }
         public DbSet<TestsScale> TestsScales { get; set; }
 
-        public DbSet<SoftwareDevLaborGroupReg> SoftwareDevLaborGroupRegs { get; set; }
+        public DbSet<NirSoftwareDevLaborGroupReg> NirSoftwareDevLaborGroupRegs { get; set; }
+        public DbSet<OkrSoftwareDevLaborGroupReg> OkrSoftwareDevLaborGroupRegs { get; set; }
         public DbSet<TestsDevelopmentRate> TestsDevelopmentRates { get; set; }
 
         public DbSet<NirStageDefaultLabor> NirStageDefaultLabors { get; set; }
@@ -251,13 +252,27 @@ namespace LaborVolumeCalculator.Data
                 e.ToTable("TestsScale", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
             });
-            modelBuilder.Entity<SoftwareDevLaborGroupReg>(e => 
+                      
+            modelBuilder.Entity<NirSoftwareDevLaborGroupReg>(e => 
             {
-                e.ToTable("SoftwareDevLaborGroupReg", Schema.Registers)
-                    .HasIndex(key => new{ key.NiokrID, key.NiokrStageID, key.SoftwareDevLaborGroupID })
+                e.ToTable("NirSoftwareDevLaborGroupReg", Schema.Registers)
+                    .HasIndex(key => new { key.NirID, key.StageID, key.SoftwareDevLaborGroupID })
                     .IsUnique();
+                e.HasOne(r => r.Nir).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.SoftwareDevLaborGroup).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<OkrSoftwareDevLaborGroupReg>(e => 
+            {
+                e.ToTable("OkrSoftwareDevLaborGroupReg", Schema.Registers)
+                    .HasIndex(key => new { key.OkrID, key.StageID, key.SoftwareDevLaborGroupID })
+                    .IsUnique();
+                e.HasOne(r => r.Okr).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.SoftwareDevLaborGroup).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
             });
             
+            
+
             modelBuilder.Entity<TestsDevelopmentRate>(e => 
             {
                 e.ToTable("TestsDevelopmentRate", Schema.Dictionary)

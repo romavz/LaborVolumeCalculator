@@ -1,5 +1,6 @@
 using AutoMapper;
 using LaborVolumeCalculator.Models.Dictionary;
+using LaborVolumeCalculator.Models.Registers;
 
 namespace LaborVolumeCalculator.DTO.Profiles
 {
@@ -26,6 +27,10 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<ArchitectureComplexityRate, ArchitectureComplexityRateDto>().ReverseMap()
                 .ForPath(p => p.ComponentsMakroArchitecture.Name, opt => opt.Ignore())
                 .ForPath(p => p.ComponentsInteractionArchitecture.Name, opt => opt.Ignore());
+
+            CreateMap<NirSoftwareDevLaborGroupReg, NirSoftwareDevLaborGroupRegDto>()
+                .ReverseMap()
+                .ForPath(p => p.SoftwareDevLaborGroup.Name, opt => opt.Ignore());
         }
     }
 }

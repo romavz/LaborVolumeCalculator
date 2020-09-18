@@ -1,19 +1,13 @@
-using System;
-using LaborVolumeCalculator.Models.Dictionary;
-
-namespace LaborVolumeCalculator.Models.Registers
+namespace LaborVolumeCalculator.DTO
 {
-    public class SoftwareDevLaborGroupReg
+    public class SoftwareDevLaborGroupRegDto
     {
-        public SoftwareDevLaborGroupReg()
-        {
-        }
-
         public int ID { get; set; }
 
         public int StageID { get; set; }
 
         public int SoftwareDevLaborGroupID { get; set; }
+        public string SoftwareDevLaborGroupName { get; set; }
 
         public int SolutionInnovationRateID { get; set; }
         public double SolutionInnovationRateValue { get; set; }

@@ -9,6 +9,7 @@ using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
 using AutoMapper;
 using LaborVolumeCalculator.DTO;
+using LaborVolumeCalculator.Utils;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -28,7 +29,10 @@ namespace LaborVolumeCalculator.Controllers
         public async Task<ActionResult<IEnumerable<NirSoftwareDevLaborGroupDto>>> GetNirSoftwareDevLaborGroups()
         {
             var groups = await GetGroupsQuery().ToListAsync();
-            return ConvertToDto(groups);
+            var result = ConvertToDto(groups)
+                .OrderBy(m => m.Code, CodeComparer.Instance).ToArray();
+            
+            return result;
         }
 
         // GET: api/NirSoftwareDevLaborGroup/5
