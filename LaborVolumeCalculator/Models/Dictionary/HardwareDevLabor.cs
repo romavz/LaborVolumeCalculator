@@ -14,17 +14,9 @@ namespace LaborVolumeCalculator.Models.Dictionary
         {
         }
 
-        public HardwareDevLabor(string code, string name, LaborCategory laborCategory, PlatePointsCountRange pointsCountRange, float minVolume, float maxVolume) 
-            : base(code, name, laborCategory, minVolume, maxVolume)
+        public HardwareDevLabor(string code, string name, DevelopmentLaborCategory laborCategory)
+            : base(code, name, laborCategory)
         {
-            PlatePointsCountRange = pointsCountRange ?? throw new ArgumentNullException("pointsCountRange");
-            PlatePointsCountRangeID = pointsCountRange.ID;
         }
-
-        public int PlatePointsCountRangeID { get; set; }
-
-        [DisplayName("Количество точек")]
-        public PlatePointsCountRange PlatePointsCountRange { get; set; }
-
     }
 }

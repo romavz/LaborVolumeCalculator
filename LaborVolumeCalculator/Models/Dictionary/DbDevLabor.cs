@@ -11,17 +11,9 @@ namespace LaborVolumeCalculator.Models.Dictionary
     {
         public DbDevLabor() { }
 
-        public DbDevLabor(string code, string name, LaborCategory laborCategory, DbEntityCountRange dbEntityCountRange, float minVolume, float maxVolume) 
-            : base(code, name, laborCategory, minVolume, maxVolume)
+        public DbDevLabor(string code, string name, DevelopmentLaborCategory laborCategory)
+            : base(code, name, laborCategory)
         {
-            DbEntityCountRange = dbEntityCountRange ?? throw new ArgumentNullException("dbEntityCountRange");
-            DbEntityCountRangeId = dbEntityCountRange.ID;
         }
-
-        public int DbEntityCountRangeId { get; set; }
-
-        [Display(Name ="Количество сущностей БД")]
-        public DbEntityCountRange DbEntityCountRange { get; set; }
-
     }
 }

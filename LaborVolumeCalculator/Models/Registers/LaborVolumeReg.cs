@@ -17,11 +17,10 @@ namespace LaborVolumeCalculator.Models.Registers
         }
 
         public int ID { get; set; }
+        public int StageID { get; set; }
 
-        [DisplayName("Объем")]
-        public float Volume { get; set; }
-        [DisplayName("Итог")]
-        public float TotalVolume { get; set; }
+        public int LaborID { get; set; }
 
+        public double Volume { get; set; }
     }
 }

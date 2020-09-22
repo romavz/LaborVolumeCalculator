@@ -8,12 +8,12 @@ using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Models.Registers
 {
-    public class SoftwareLaborVolumeReg : LaborVolumeReg
+    public class SoftwareDevLaborVolumeReg : LaborVolumeReg
     {
-        public SoftwareLaborVolumeReg() : base() {}
+        public SoftwareDevLaborVolumeReg() : base() {}
 
         public int SoftwareDevLaborGroupID { get; set; }
 
-        public SoftwareDevLaborGroup SoftwareLaborDevGroup { get; set; }
+        public SoftwareDevLaborGroup SoftwareDevLaborGroup { get; set; }
     }
 }

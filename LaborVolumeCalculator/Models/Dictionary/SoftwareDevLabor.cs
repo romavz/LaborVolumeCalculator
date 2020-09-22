@@ -11,14 +11,9 @@ namespace LaborVolumeCalculator.Models.Dictionary
     {
         public SoftwareDevLabor() : base() { }
         
-        public SoftwareDevLabor(string code, string name, LaborCategory laborCategory, SoftwareDevEnv softwareDevEnv, float minVolume, float maxVolume) 
-            : base(code, name, laborCategory, minVolume, maxVolume)
+        public SoftwareDevLabor(string code, string name, DevelopmentLaborCategory laborCategory)
+            : base(code, name, laborCategory)
         {
-            SoftwareDevEnv = softwareDevEnv ?? throw new ArgumentNullException("softwareDevEnv");
-            SoftwareDevEnvID = softwareDevEnv.ID;
         }
-
-        public int SoftwareDevEnvID { get; set; }
-        public SoftwareDevEnv SoftwareDevEnv { get; set; }
     }
 }
