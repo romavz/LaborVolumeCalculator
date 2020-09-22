@@ -204,9 +204,9 @@ namespace LaborVolumeCalculator.Controllers
         private readonly Nir nir;
         private readonly NirStage stage;
 
-        private float volumeRate;
+        private double volumeRate;
 
-        public NirLaborVolumeRegBuilder(Nir nir, NirStage stage, float volumeRate = 1.0f)
+        public NirLaborVolumeRegBuilder(Nir nir, NirStage stage, double volumeRate = 1.0)
         {
             this.nir = nir;
             this.stage = stage;
@@ -215,7 +215,9 @@ namespace LaborVolumeCalculator.Controllers
 
         public NirLaborVolumeReg Create(NirLabor labor)
         {
-            double volume = labor.MaxVolume * this.volumeRate;
+            var delta = labor.MaxVolume - labor.MinVolume;
+            double volume = labor.MinVolume + delta * volumeRate;
+            
             if (volume < labor.MinVolume) volume = labor.MinVolume;
             
             return new NirLaborVolumeReg {
@@ -223,7 +225,7 @@ namespace LaborVolumeCalculator.Controllers
                 StageID = stage.ID, 
                 LaborID = labor.ID, 
                 Labor = labor,
-                Volume = (float)volume
+                Volume = volume
             };
         }
     }

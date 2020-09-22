@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,6 +66,7 @@ namespace LaborVolumeCalculator.Data
         public DbSet<DbEntityCountRange> DbEntityCountRanges { get; set; }
 
         public DbSet<NirLaborVolumeReg> NirLaborVolumeRegs { get; set; }
+        public DbSet<NirSoftwareDevLaborVolumeReg> NirSoftwareDevLaborVolumeRegs { get; set; }
         public DbSet<OkrLaborVolumeReg> OkrLaborVolumeRegs { get; set; }
 
         public DbSet<DevelopmentLaborCategory> LaborCategories { get; set; }
@@ -175,6 +176,16 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
                 e.HasIndex(key => new { key.NirID, key.StageID, key.LaborID }).IsUnique();
+            });
+
+            modelBuilder.Entity<NirSoftwareDevLaborVolumeReg>(e => 
+            {
+                e.ToTable("NirSoftwareDevLaborVolumeReg", Schema.Registers)
+                    .HasIndex(key => new{ key.NirID, key.StageID, key.SoftwareDevLaborGroupID, key.LaborID })
+                    .IsUnique();
+                e.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.Cascade);
+                e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.SoftwareDevLaborGroup).WithMany().OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<OkrLaborVolumeReg>(e => {
