@@ -223,8 +223,7 @@ namespace LaborVolumeCalculator.Controllers
                 StageID = stage.ID, 
                 LaborID = labor.ID, 
                 Labor = labor,
-                Volume = (float)volume,
-                TotalVolume = (float)(volume * nir.NirInnovationRateValue)
+                Volume = (float)volume
             };
         }
     }

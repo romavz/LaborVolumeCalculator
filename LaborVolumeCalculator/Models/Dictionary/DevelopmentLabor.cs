@@ -10,7 +10,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
         {
         }
 
-        public DevelopmentLabor(string code, string name, LaborCategory laborCategory) 
+        public DevelopmentLabor(string code, string name, DevelopmentLaborCategory laborCategory) 
         {
             Code = code;
             Name = name;
@@ -27,6 +27,6 @@ namespace LaborVolumeCalculator.Models.Dictionary
         public string Name { get; set; }
 
         public int LaborCategoryID { get; set; }
-        public LaborCategory LaborCategory { get; set; }
+        public DevelopmentLaborCategory LaborCategory { get; set; }
     }
 }

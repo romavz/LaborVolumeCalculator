@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace LaborVolumeCalculator.Models.Dictionary
 {
-    public class LaborCategory
+    public class DevelopmentLaborCategory
     {
-        public LaborCategory(int number, string name)
+        public DevelopmentLaborCategory(int number, string name)
         {
             Number = number;
             Name = name;

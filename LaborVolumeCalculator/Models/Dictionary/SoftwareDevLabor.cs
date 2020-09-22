@@ -11,7 +11,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
     {
         public SoftwareDevLabor() : base() { }
         
-        public SoftwareDevLabor(string code, string name, LaborCategory laborCategory)
+        public SoftwareDevLabor(string code, string name, DevelopmentLaborCategory laborCategory)
             : base(code, name, laborCategory)
         {
         }

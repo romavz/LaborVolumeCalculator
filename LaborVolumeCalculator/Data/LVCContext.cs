@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -68,7 +68,7 @@ namespace LaborVolumeCalculator.Data
         public DbSet<NirLaborVolumeReg> NirLaborVolumeRegs { get; set; }
         public DbSet<OkrLaborVolumeReg> OkrLaborVolumeRegs { get; set; }
 
-        public DbSet<LaborCategory> LaborCategories { get; set; }
+        public DbSet<DevelopmentLaborCategory> LaborCategories { get; set; }
 
         public DbSet<ArchitectureComplexityRate> ArchitectureComplexityRates { get; set; }
         public DbSet<ComponentsInteractionArchitecture> ComponentsInteractionArchitectures { get; set; }
@@ -213,7 +213,7 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(r => r.OkrStage).WithMany().OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<LaborCategory>(e => 
+            modelBuilder.Entity<DevelopmentLaborCategory>(e => 
             {
                 e.ToTable("LaborCategory", Schema.Dictionary);
                 e.Property(p => p.Number).IsRequired();

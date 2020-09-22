@@ -136,7 +136,7 @@ namespace LaborVolumeCalculator.Data
             SeedOkrSoftwareDevLaborGroups(okrStages);
 
             SoftwareDevEnv[] devEnvironments = SeedSoftwareDevEnvironments();
-            LaborCategory[] laborCategories = SeedLaborsCategories();
+            DevelopmentLaborCategory[] laborCategories = SeedLaborsCategories();
             SoftwareDevLabor[] softLabors = SeedSoftwareDevLabors(laborCategories);
             SeedSoftwareDevLaborVolumeRanges(softLabors, devEnvironments);
 
@@ -292,21 +292,21 @@ namespace LaborVolumeCalculator.Data
             dbContext.AddRange(nirStageDefaultLabors);
         }
 
-        private LaborCategory[] SeedLaborsCategories()
+        private DevelopmentLaborCategory[] SeedLaborsCategories()
         {
-            LaborCategory[] categories =
+            DevelopmentLaborCategory[] categories =
             {
-                new LaborCategory(1, "Обработка входных потоков"),
-                new LaborCategory(2, "Управление ПО"),
-                new LaborCategory(3, "Выходные потоки"),
-                new LaborCategory(4, "Специальные функции обработки данных"),
-                new LaborCategory(5, "Взаимодействие со сторонними ПО"),
-                new LaborCategory(6, "Взаимодействие с внешним оборудованием"),
-                new LaborCategory(7, "Сетевой взаимодействие"),
-                new LaborCategory(8, "Архитектура компоненты"),
-                new LaborCategory(9, "Создание базы данных"),
-                new LaborCategory(10, "Функционирование базы данных"),
-                new LaborCategory(11, "Разработка печатной платы")
+                new DevelopmentLaborCategory(1, "Обработка входных потоков"),
+                new DevelopmentLaborCategory(2, "Управление ПО"),
+                new DevelopmentLaborCategory(3, "Выходные потоки"),
+                new DevelopmentLaborCategory(4, "Специальные функции обработки данных"),
+                new DevelopmentLaborCategory(5, "Взаимодействие со сторонними ПО"),
+                new DevelopmentLaborCategory(6, "Взаимодействие с внешним оборудованием"),
+                new DevelopmentLaborCategory(7, "Сетевой взаимодействие"),
+                new DevelopmentLaborCategory(8, "Архитектура компоненты"),
+                new DevelopmentLaborCategory(9, "Создание базы данных"),
+                new DevelopmentLaborCategory(10, "Функционирование базы данных"),
+                new DevelopmentLaborCategory(11, "Разработка печатной платы")
             };
             dbContext.LaborCategories.AddRange(categories);
 
@@ -326,7 +326,7 @@ namespace LaborVolumeCalculator.Data
             return environments;
         }
 
-        private SoftwareDevLabor[] SeedSoftwareDevLabors(LaborCategory[] categories)
+        private SoftwareDevLabor[] SeedSoftwareDevLabors(DevelopmentLaborCategory[] categories)
         {
             SoftwareDevLabor[] labors = new SoftwareDevLabor[] {
                 new SoftwareDevLabor("101", "Разбор файлов входных данных заданного формата", categories[0]),
