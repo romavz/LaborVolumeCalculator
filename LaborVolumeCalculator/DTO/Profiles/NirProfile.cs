@@ -26,7 +26,8 @@ namespace LaborVolumeCalculator.DTO.Profiles
             
             // Регистры
             CreateMap<NirLaborVolumeReg, NirLaborVolumeRegDto>().ReverseMap();
-            CreateMap<NirStageReg, NirStageRegDto>().ReverseMap();
+            CreateMap<NirStageReg, NirStageRegDto>().ReverseMap()
+                .ForPath(m => m.Stage.ID, opt => opt.Ignore());
         }
     }
 }
