@@ -169,6 +169,10 @@ namespace LaborVolumeCalculator.Data
                 e.HasIndex(key => new { key.OkrID, key.StageID }).IsUnique();
             });
 
+            modelBuilder.Entity<SoftwareDevEnv>(e => {
+                e.ToTable("SoftwareDevEnv", Schema.Dictionary);
+            });
+
             modelBuilder.Entity<NirLaborVolumeReg>(e =>
             {
                 e.ToTable("NirLaborVolumeReg", Schema.Registers);
@@ -199,9 +203,9 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<SoftwareDevLaborVolumeRange>(e => 
             {
                 e.ToTable("SoftwareDevLaborVolumeRange", Schema.Dictionary)
-                    .HasIndex(key => new { key.LaborID, key.SoftwareDevEnvID }).IsUnique();
+                    .HasIndex(key => new { key.LaborID, key.DevEnvID }).IsUnique();
                 e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
-                e.HasOne(r => r.SoftwareDevEnv).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.DevEnv).WithMany().OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<DbDevLaborVolumeRange>(e => 
