@@ -155,7 +155,7 @@ namespace LaborVolumeCalculator.Data
                 e.ToTable("NirStageReg", Schema.Registers);
                 e.Property(p => p.NirID).IsRequired();
                 e.Property(p => p.StageID).IsRequired();
-                e.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.Cascade);
                 e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
                 e.HasIndex(key => new { key.NirID, key.StageID }).IsUnique();
             });
@@ -164,7 +164,7 @@ namespace LaborVolumeCalculator.Data
                 e.ToTable("OkrStageReg", Schema.Registers);
                 e.Property(p => p.OkrID).IsRequired();
                 e.Property(p => p.StageID).IsRequired();
-                e.HasOne(r => r.Okr).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.Okr).WithMany().OnDelete(DeleteBehavior.Cascade);
                 e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
                 e.HasIndex(key => new { key.OkrID, key.StageID }).IsUnique();
             });
@@ -290,7 +290,8 @@ namespace LaborVolumeCalculator.Data
                 e.ToTable("NirSoftwareDevLaborGroupReg", Schema.Registers)
                     .HasIndex(key => new { key.NirID, key.StageID, key.SoftwareDevLaborGroupID })
                     .IsUnique();
-                e.HasOne(r => r.Nir).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.Nir).WithMany().IsRequired().OnDelete(DeleteBehavior.Cascade);
+                e.HasOne(r => r.Stage).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.SoftwareDevLaborGroup).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
             });
 
@@ -299,7 +300,8 @@ namespace LaborVolumeCalculator.Data
                 e.ToTable("OkrSoftwareDevLaborGroupReg", Schema.Registers)
                     .HasIndex(key => new { key.OkrID, key.StageID, key.SoftwareDevLaborGroupID })
                     .IsUnique();
-                e.HasOne(r => r.Okr).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.Okr).WithMany().IsRequired().OnDelete(DeleteBehavior.Cascade);
+                e.HasOne(r => r.Stage).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.SoftwareDevLaborGroup).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
             });
             
