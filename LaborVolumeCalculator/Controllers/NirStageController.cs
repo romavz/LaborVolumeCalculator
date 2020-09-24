@@ -27,7 +27,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirStageDto>>> GetNirStages()
         {
-            var stages = await GetStageQuery().ToListAsync();
+            var stages = await GetStageQuery().OrderBy(m => m.Name).ToListAsync();
             return ConvertToDto(stages);
         }
 
