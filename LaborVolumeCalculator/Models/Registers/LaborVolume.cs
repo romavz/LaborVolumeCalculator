@@ -9,18 +9,13 @@ using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Models.Registers
 {
-    public class LaborVolumeReg
+    public class LaborVolume : LaborVolumeBase
     {
-        public LaborVolumeReg()
+        public LaborVolume()
         {
 
         }
 
-        public int ID { get; set; }
-        public int StageID { get; set; }
-
         public int LaborID { get; set; }
-
-        public double Volume { get; set; }
     }
 }
