@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
 using AutoMapper;
 using LaborVolumeCalculator.Models.Dictionary;
@@ -25,7 +26,9 @@ namespace LaborVolumeCalculator.DTO.Profiles
                 .ForPath(p => p.NirInnovationProperty.Name, opt => opt.Ignore());
             
             // Регистры
-            CreateMap<NirLaborVolumeReg, NirLaborVolumeRegDto>().ReverseMap();
+            CreateMap<NirLaborVolumeReg, NirLaborVolumeRegDto>().ReverseMap()
+                .ForPath(p => p.Labor, opt => opt.Ignore());
+
             CreateMap<NirStageReg, NirStageRegDto>().ReverseMap()
                 .ForPath(m => m.Stage.ID, opt => opt.Ignore());
         }
