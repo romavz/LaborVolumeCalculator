@@ -10,7 +10,7 @@ namespace LaborVolumeCalculator.Models.Registers
 
         public int NirID { get; set; }
         public Nir Nir { get; set; }
-        public NirStage Stage { get; set; }
+        public StageForNir Stage { get; set; }
         public NirLabor Labor { get; set; }
     }
 }

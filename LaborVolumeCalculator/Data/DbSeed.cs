@@ -126,8 +126,8 @@ namespace LaborVolumeCalculator.Data
             IEnumerable<OkrInnovationRate> sreuRates = SREU_ratesBinder.Bind(sreuRatesValues);
             dbContext.OkrInnovationRates.AddRange(sreuRates);
 
-            NirStage[] nirStages = SeedNirStages();
-            OkrStage[] okrStages = SeedOkrStages();
+            StageForNir[] nirStages = SeedNirStages();
+            StageForOkr[] okrStages = SeedOkrStages();
 
             NirLabor[] nirLabors = SeedNirLabors();
             SeedNirSoftwareDevLaborGroups();
@@ -273,7 +273,7 @@ namespace LaborVolumeCalculator.Data
             dbContext.SaveChanges();
         }
 
-        private void SeedNirStageDefaultLabors(NirStage[] nirStages, NirLabor[] nirLabors)
+        private void SeedNirStageDefaultLabors(StageForNir[] nirStages, NirLabor[] nirLabors)
         {
             NirLabor getLabor(string code) {
                 return nirLabors.First(l => l.Code == code);
@@ -378,7 +378,7 @@ namespace LaborVolumeCalculator.Data
             return ranges;
         }
 
-        private void SeedOkrSoftwareDevLaborGroups(OkrStage[] okrStages)
+        private void SeedOkrSoftwareDevLaborGroups(StageForOkr[] okrStages)
         {
             Func<string, string, OkrSoftwareDevLaborGroup> newOkrGroup = (code, name) =>
             {
@@ -407,7 +407,7 @@ namespace LaborVolumeCalculator.Data
             return int.Parse(code.Split('.')[0]);
         }
 
-        private void SeedOkrLabors(OkrStage[] okrStages)
+        private void SeedOkrLabors(StageForOkr[] okrStages)
         {
             Func<string, string, float, float, OkrLabor> newOkrLabor = (code, name, minVolume, maxVolume) =>
             {
@@ -637,32 +637,32 @@ namespace LaborVolumeCalculator.Data
             return nirLabors;
         }
 
-        private NirStage[] SeedNirStages()
+        private StageForNir[] SeedNirStages()
         {
-            NirStage[] nirStages = new NirStage[]
+            StageForNir[] nirStages = new StageForNir[]
             {
-                new NirStage("Этап 1."),
-                new NirStage("Этап 2."),
-                new NirStage("Этап 3."),
-                new NirStage("Этап 4."),
+                new StageForNir("Этап 1."),
+                new StageForNir("Этап 2."),
+                new StageForNir("Этап 3."),
+                new StageForNir("Этап 4."),
             };
-            dbContext.NirStages.AddRange(nirStages);
+            dbContext.StagesForNir.AddRange(nirStages);
             return nirStages;
         }
 
-        private OkrStage[] SeedOkrStages()
+        private StageForOkr[] SeedOkrStages()
         {
-            OkrStage[] okrStages = new OkrStage[]
+            StageForOkr[] okrStages = new StageForOkr[]
             {
-                new OkrStage("Этап 1. Эскизный проект"),
-                new OkrStage("Этап 2. Технический проект"),
-                new OkrStage("Этап 3. Разработка РКД для изготовления ОО изделия"),
-                new OkrStage("Этап 4. Изготовление ОО изделия"),
-                new OkrStage("Этап 5. Проведение ГИ ОО"),
-                new OkrStage("Этап 6. Утверждение РКД для организации промышленного(серийного) производства изделия"),
-                new OkrStage("Работы, осуществляемые в ходе всей ОКР"),
+                new StageForOkr("Этап 1. Эскизный проект"),
+                new StageForOkr("Этап 2. Технический проект"),
+                new StageForOkr("Этап 3. Разработка РКД для изготовления ОО изделия"),
+                new StageForOkr("Этап 4. Изготовление ОО изделия"),
+                new StageForOkr("Этап 5. Проведение ГИ ОО"),
+                new StageForOkr("Этап 6. Утверждение РКД для организации промышленного(серийного) производства изделия"),
+                new StageForOkr("Работы, осуществляемые в ходе всей ОКР"),
             };
-            dbContext.OkrStages.AddRange(okrStages);
+            dbContext.StagesForOkr.AddRange(okrStages);
             return okrStages;
         }
 
@@ -747,13 +747,13 @@ namespace LaborVolumeCalculator.Data
 
     internal class NirStageDefaultLaborsBuilder
     {
-        private NirStage _nirStage;
-        public NirStageDefaultLaborsBuilder(NirStage stage)
+        private StageForNir _nirStage;
+        public NirStageDefaultLaborsBuilder(StageForNir stage)
         {
             this._nirStage = stage;
         }
 
-        public NirStageDefaultLaborsBuilder WithStage(NirStage stage) {
+        public NirStageDefaultLaborsBuilder WithStage(StageForNir stage) {
             _nirStage = stage;
             return this;
         }

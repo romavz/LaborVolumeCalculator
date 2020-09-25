@@ -31,7 +31,7 @@ namespace LaborVolumeCalculator.Controllers
         /// <param name="nirId"> Идентификатор НИР, тип: int</param>
         /// <returns> Список этапов НИР. тип: NirStage[] </returns>
         [HttpGet("{nirId}/[action]")]
-        public async Task<ActionResult<IEnumerable<NirStageDto>>> Stages(int nirId)
+        public async Task<ActionResult<IEnumerable<StageForNirDto>>> Stages(int nirId)
         {
             var nirStage = await _context.Nirs.AsNoTracking().FirstOrDefaultAsync(m => m.ID == nirId);
 
@@ -48,7 +48,7 @@ namespace LaborVolumeCalculator.Controllers
                 .AsNoTracking()
                 .ToListAsync();
 
-            var stagesDto = _mapper.Map<IList<NirStage>, IEnumerable<NirStageDto>>(stages);
+            var stagesDto = _mapper.Map<IList<StageForNir>, IEnumerable<StageForNirDto>>(stages);
             return stagesDto.ToList();
         }
 
@@ -57,9 +57,9 @@ namespace LaborVolumeCalculator.Controllers
         /// </summary>
         /// <returns> список НИР, тип: NirStage[]</returns>
         [HttpGet("[action]")]
-        public async Task<ActionResult<IEnumerable<NirStage>>> NirStages()
+        public async Task<ActionResult<IEnumerable<StageForNir>>> NirStages()
         {
-            return await _context.NirStages.AsNoTracking().ToListAsync();
+            return await _context.StagesForNir.AsNoTracking().ToListAsync();
         }
 
         // GET: api/NirController

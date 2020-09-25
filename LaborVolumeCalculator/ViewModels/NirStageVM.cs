@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.ViewModels
 {
-    public class NirStageVM : NirStage
+    public class NirStageVM : Models.Dictionary.StageForNir
     {
         public NirStageVM()
         {
@@ -17,7 +17,7 @@ namespace LaborVolumeCalculator.ViewModels
         {
         }
 
-        public NirStageVM(NirStage nirStage)
+        public NirStageVM(Models.Dictionary.StageForNir nirStage)
         {
             ID = nirStage.ID;
             Name = nirStage.Name;

@@ -27,7 +27,7 @@ namespace LaborVolumeCalculator.Models.Documents
         public int NiokrStageID { get; set; }
 
         [DisplayName("Этап")]
-        public NiokrStage NiokrStage { get; set; }
+        public Stage NiokrStage { get; set; }
         
         [DisplayName("Коэффициент новизны")]
         public float NirInnovationRate { get; set; }

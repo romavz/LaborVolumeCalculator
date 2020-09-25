@@ -52,9 +52,9 @@ namespace LaborVolumeCalculator.Data
         public DbSet<NirSoftwareDevLaborGroup> NirSoftwareDevLaborGroups { get; set; }
         public DbSet<OkrSoftwareDevLaborGroup> OkrSoftwareDevLaborGroups { get; set; }
 
-        public DbSet<NiokrStage> NiokrStages { get; set; }
-        public DbSet<NirStage> NirStages { get; set; }
-        public DbSet<OkrStage> OkrStages { get; set; }
+        public DbSet<Stage> Stages { get; set; }
+        public DbSet<Models.Dictionary.StageForNir> StagesForNir { get; set; }
+        public DbSet<Models.Dictionary.StageForOkr> StagesForOkr { get; set; }
 
         public DbSet<NirStageReg> NirStageRegs { get; set; }
         public DbSet<OkrStageReg> OkrStageRegs { get; set; }
@@ -149,7 +149,7 @@ namespace LaborVolumeCalculator.Data
 
             modelBuilder.Entity<DevelopmentLabor>().ToTable("DevelopmentLabor", Schema.Dictionary);
 
-            modelBuilder.Entity<NiokrStage>().ToTable("NiokrStage", Schema.Dictionary);
+            modelBuilder.Entity<Stage>().ToTable("NiokrStage", Schema.Dictionary);
 
             modelBuilder.Entity<NirStageReg>(e => {
                 e.ToTable("NirStageReg", Schema.Registers);

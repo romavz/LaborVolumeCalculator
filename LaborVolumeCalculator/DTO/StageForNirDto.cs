@@ -1,6 +1,6 @@
 namespace LaborVolumeCalculator.DTO
 {
-    public class NirStageDto : BaseModelDto
+    public class StageForNirDto : BaseModelDto
     {
         
     }

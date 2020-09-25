@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Models.Dictionary
 {
-    public class NirStage : NiokrStage
+    public class StageForNir : Stage
     {
-        public NirStage() : base()
+        public StageForNir() : base()
         {
         }
 
-        public NirStage(string name) : base(name)
+        public StageForNir(string name) : base(name)
         {
         }
     }

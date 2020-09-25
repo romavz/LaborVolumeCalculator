@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace LaborVolumeCalculator.Controllers
             var regs = await GetRegsQuery().ToListAsync();
 
             var result = ConvertToDto(regs)
-                .OrderBy(item => item.Stage.Name)
+                .OrderBy(item => item.Name)
                 .ToArray();
 
             return result;

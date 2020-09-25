@@ -14,55 +14,55 @@ namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NirStageController : ControllerBase<NirStage, NirStageDto>
+    public class StageForNirController : ControllerBase<StageForNir, StageForNirDto>
     {
         private readonly LVCContext _context;
 
-        public NirStageController(LVCContext context, IMapper mapper) : base(mapper)
+        public StageForNirController(LVCContext context, IMapper mapper) : base(mapper)
         {
             _context = context;
         }
 
-        // GET: api/NirStage
+        // GET: api/StageForNir
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<NirStageDto>>> GetNirStages()
+        public async Task<ActionResult<IEnumerable<StageForNirDto>>> GetStageForNirs()
         {
             var stages = await GetStageQuery().OrderBy(m => m.Name).ToListAsync();
             return ConvertToDto(stages);
         }
 
-        // GET: api/NirStage/5
+        // GET: api/StageForNir/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<NirStageDto>> GetNirStage(int id)
+        public async Task<ActionResult<StageForNirDto>> GetStageForNir(int id)
         {
-            var nirStage = await GetStageQuery().FirstOrDefaultAsync(m => m.ID == id);
+            var stageForNir = await GetStageQuery().FirstOrDefaultAsync(m => m.ID == id);
 
-            if (nirStage == null)
+            if (stageForNir == null)
             {
                 return NotFound();
             }
 
-            return ConvertToDto(nirStage);
+            return ConvertToDto(stageForNir);
         }
 
-        private IQueryable<NirStage> GetStageQuery()
+        private IQueryable<StageForNir> GetStageQuery()
         {
-            return _context.NirStages.AsNoTracking();
+            return _context.StagesForNir.AsNoTracking();
         }
 
-        // PUT: api/NirStage/5
+        // PUT: api/StageForNir/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNirStage(int id, NirStageDto nirStageDto)
+        public async Task<IActionResult> PutStageForNir(int id, StageForNirDto stageForNirDto)
         {
-            if (id != nirStageDto.ID)
+            if (id != stageForNirDto.ID)
             {
                 return BadRequest();
             }
 
-            var nirStage = ConvertToSource(nirStageDto);
-            _context.Entry(nirStage).State = EntityState.Modified;
+            var stageForNir = ConvertToSource(stageForNirDto);
+            _context.Entry(stageForNir).State = EntityState.Modified;
 
             try
             {
@@ -70,7 +70,7 @@ namespace LaborVolumeCalculator.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NirStageExists(id))
+                if (!StageForNirExists(id))
                 {
                     return NotFound();
                 }
@@ -83,38 +83,38 @@ namespace LaborVolumeCalculator.Controllers
             return Ok();
         }
 
-        // POST: api/NirStage
+        // POST: api/StageForNir
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<NirStage>> PostNirStage(NirStageDto nirStageDto)
+        public async Task<ActionResult<StageForNir>> PostStageForNir(StageForNirDto stageForNirDto)
         {
-            var nirStage = ConvertToSource(nirStageDto);
-            _context.NirStages.Add(nirStage);
+            var stageForNir = ConvertToSource(stageForNirDto);
+            _context.StagesForNir.Add(stageForNir);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetNirStage", new { id = nirStage.ID }, ConvertToDto(nirStage));
+            return CreatedAtAction("GetStageForNir", new { id = stageForNir.ID }, ConvertToDto(stageForNir));
         }
 
-        // DELETE: api/NirStage/5
+        // DELETE: api/StageForNir/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<NirStageDto>> DeleteNirStage(int id)
+        public async Task<ActionResult<StageForNirDto>> DeleteStageForNir(int id)
         {
-            var nirStage = await _context.NirStages.FindAsync(id);
-            if (nirStage == null)
+            var stageForNir = await _context.StagesForNir.FindAsync(id);
+            if (stageForNir == null)
             {
                 return NotFound();
             }
 
-            _context.NirStages.Remove(nirStage);
+            _context.StagesForNir.Remove(stageForNir);
             await _context.SaveChangesAsync();
 
-            return ConvertToDto(nirStage);
+            return ConvertToDto(stageForNir);
         }
 
-        private bool NirStageExists(int id)
+        private bool StageForNirExists(int id)
         {
-            return _context.NirStages.Any(e => e.ID == id);
+            return _context.StagesForNir.Any(e => e.ID == id);
         }
     }
 }

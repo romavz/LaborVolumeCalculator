@@ -8,16 +8,18 @@ using System.Threading.Tasks;
 namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name = "Этап НИОКР", GroupName ="Этапы НИОКР")]
-    public class NiokrStage
+    public class Stage
     {
-        public NiokrStage() { }
+        public Stage() { }
 
-        public NiokrStage(string name) : this()
+        public Stage(string name) : this()
         {
             Name = name ?? throw new ArgumentNullException("name");
         }
 
         public int ID { get; set; }
+
+        public string Code { get; set; }
 
         [DisplayName("Называние")]
         public string Name { get; set; }

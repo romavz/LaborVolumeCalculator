@@ -8,9 +8,9 @@ namespace LaborVolumeCalculator.Models.Dictionary
 
         public int ID { get; set; }
         public int StageID { get; set; }
-        public NirStage Stage { get; set; }
+        public StageForNir Stage { get; set; }
 
-        public NirStageDefaultLabor(NirStage stage, NirLabor labor)
+        public NirStageDefaultLabor(StageForNir stage, NirLabor labor)
         {
             StageID = stage.ID;
             LaborID = labor.ID;

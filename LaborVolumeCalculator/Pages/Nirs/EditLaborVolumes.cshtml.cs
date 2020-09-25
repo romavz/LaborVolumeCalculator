@@ -44,7 +44,7 @@ namespace LaborVolumeCalculator.Pages.Nirs
                 .Include(n => n.NirInnovationProperty)
                 .Include(n => n.NirScale).FirstOrDefaultAsync(m => m.ID == id);
 
-            NirStagesVM = await _context.NirStages
+            NirStagesVM = await _context.StagesForNir
                 .OrderBy(m => m.Name)
                 .Select(nirStage => new NirStageVM(nirStage)).ToListAsync();
 
