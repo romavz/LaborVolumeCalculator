@@ -32,9 +32,9 @@ namespace LaborVolumeCalculator.DTO.Profiles
                 .ReverseMap()
                 .ForPath(p => p.SoftwareDevLaborGroup.Name, opt => opt.Ignore());
             
-            CreateMap<NirSoftwareDevLaborVolumeReg, NirSoftwareDevLaborVolumeRegDto>()
+            CreateMap<NirSoftwareDevLaborVolume, NirSoftwareDevLaborVolumeDto>()
                 .ReverseMap()
-                .ForPath(p => p.Labor, opt => opt.Ignore());
+                .ForPath(p => p.LaborVolumeRange, opt => opt.Ignore());
         }
     }
 }

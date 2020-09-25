@@ -2,7 +2,7 @@ using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Models.Registers
 {
-    public class OkrLaborVolumeReg : LaborVolumeReg
+    public class OkrLaborVolumeReg : LaborVolume
     {
         public int OkrID { get; set; }
         public Okr Okr { get; set; }

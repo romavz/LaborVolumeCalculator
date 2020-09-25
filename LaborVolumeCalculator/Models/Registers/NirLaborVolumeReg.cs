@@ -2,7 +2,7 @@ using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Models.Registers
 {
-    public class NirLaborVolumeReg : LaborVolumeReg
+    public class NirLaborVolumeReg : LaborVolume
     {
         public NirLaborVolumeReg()
         {

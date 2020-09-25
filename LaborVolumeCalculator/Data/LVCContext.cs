@@ -66,7 +66,7 @@ namespace LaborVolumeCalculator.Data
         public DbSet<DbEntityCountRange> DbEntityCountRanges { get; set; }
 
         public DbSet<NirLaborVolumeReg> NirLaborVolumeRegs { get; set; }
-        public DbSet<NirSoftwareDevLaborVolumeReg> NirSoftwareDevLaborVolumeRegs { get; set; }
+        public DbSet<NirSoftwareDevLaborVolume> NirSoftwareDevLaborVolums { get; set; }
         public DbSet<OkrLaborVolumeReg> OkrLaborVolumeRegs { get; set; }
 
         public DbSet<DevelopmentLaborCategory> LaborCategories { get; set; }
@@ -182,10 +182,10 @@ namespace LaborVolumeCalculator.Data
                 e.HasIndex(key => new { key.NirID, key.StageID, key.LaborID }).IsUnique();
             });
 
-            modelBuilder.Entity<NirSoftwareDevLaborVolumeReg>(e => 
+            modelBuilder.Entity<NirSoftwareDevLaborVolume>(e => 
             {
-                e.ToTable("NirSoftwareDevLaborVolumeReg", Schema.Registers)
-                    .HasIndex(key => new{ key.NirID, key.StageID, key.SoftwareDevLaborGroupID, key.LaborID })
+                e.ToTable("NirSoftwareDevLaborVolume", Schema.Registers)
+                    .HasIndex(key => new{ key.NirID, key.StageID, key.SoftwareDevLaborGroupID, key.LaborVolumeRangeID })
                     .IsUnique();
                 e.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.Cascade);
                 e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
