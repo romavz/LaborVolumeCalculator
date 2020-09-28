@@ -1,7 +1,22 @@
 namespace LaborVolumeCalculator.DTO
 {
-    public class NirStageDto : BaseModelDto
+    public class NirStageDto
     {
+        public int ID { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+
+        public int NirInnovationRateID { get; set; }
+        public double NirInnovationRateValue { get; set; }
+    }
+
+    public class NirStageCreateDto
+    {
+        public int NirID { get; set; }
         
+        public string Code { get; set; }
+        public string Name { get; set; }
+
+        public int NirInnovationRateID { get; set; }
     }
 }

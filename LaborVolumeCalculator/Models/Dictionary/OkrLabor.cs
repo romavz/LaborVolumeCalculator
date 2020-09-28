@@ -14,7 +14,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
         {
         }
 
-        public OkrLabor(string code, string name, OkrStage okrStage, float minVolume, float maxVolume) : base(code, name, minVolume, maxVolume)
+        public OkrLabor(string code, string name, StageForOkr okrStage, float minVolume, float maxVolume) : base(code, name, minVolume, maxVolume)
         {
             OkrStage = okrStage ?? throw new ArgumentNullException("okrStage");
             OkrStageID = okrStage.ID;
@@ -23,7 +23,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
         public int OkrStageID { get; set; }
 
         [DisplayName("Этап ОКР")]
-        public OkrStage OkrStage { get; set; }
+        public StageForOkr OkrStage { get; set; }
         
     }
 }

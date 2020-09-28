@@ -24,44 +24,6 @@ namespace LaborVolumeCalculator.Controllers
             _context = context;
         }
 
-
-        /// <summary>
-        ///     Возвращает добавленные к НИР этапы, по идентификатору НИР
-        /// </summary>
-        /// <param name="nirId"> Идентификатор НИР, тип: int</param>
-        /// <returns> Список этапов НИР. тип: NirStage[] </returns>
-        [HttpGet("{nirId}/[action]")]
-        public async Task<ActionResult<IEnumerable<NirStageDto>>> Stages(int nirId)
-        {
-            var nirStage = await _context.Nirs.AsNoTracking().FirstOrDefaultAsync(m => m.ID == nirId);
-
-            if (nirStage == null)
-            {
-                return NotFound();
-            }
-
-            var stages = await _context.NirStageRegs
-                .Include(reg => reg.Stage)
-                .Where(reg => reg.NirID == nirId)
-                .Select(reg => reg.Stage)
-                .OrderBy(stage => stage.Name)
-                .AsNoTracking()
-                .ToListAsync();
-
-            var stagesDto = _mapper.Map<IList<NirStage>, IEnumerable<NirStageDto>>(stages);
-            return stagesDto.ToList();
-        }
-
-        /// <summary>
-        ///     Возвращает список всех возможных этапов, без привязки к конкретной НИР
-        /// </summary>
-        /// <returns> список НИР, тип: NirStage[]</returns>
-        [HttpGet("[action]")]
-        public async Task<ActionResult<IEnumerable<NirStage>>> NirStages()
-        {
-            return await _context.NirStages.AsNoTracking().ToListAsync();
-        }
-
         // GET: api/NirController
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirDto>>> GetNirs()
@@ -89,8 +51,6 @@ namespace LaborVolumeCalculator.Controllers
         private IQueryable<Nir> NirsQuery()
         {
             return _context.Nirs
-                .Include(n => n.NirInnovationProperty)
-                .Include(n => n.NirScale)
                 .AsNoTracking();
         }
 
@@ -131,7 +91,7 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<NirDto>> PostNir(NirDto nirDto)
+        public async Task<ActionResult<NirDto>> PostNir(NirCreateDto nirDto)
         {
             var nir = ConvertToSource(nirDto);
             _context.Nirs.Add(nir);

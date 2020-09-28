@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
-using LaborVolumeCalculator.Models.Dictionary;
+using LaborVolumeCalculator.Models.Registers;
 using LaborVolumeCalculator.DTO;
 using AutoMapper;
 
@@ -27,15 +28,44 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirStageDto>>> GetNirStages()
         {
-            var stages = await GetStageQuery().OrderBy(m => m.Name).ToListAsync();
-            return ConvertToDto(stages);
+            var items = await StagesRequest().ToListAsync();
+
+            var result = ConvertToDto(items)
+                .OrderBy(item => item.Name)
+                .ToArray();
+
+            return result;
         }
+
+        // GET: api/NirStage/GetNirStages/5
+        [HttpGet("[action]/{nirId}")]
+        public async Task<ActionResult<IEnumerable<NirStageDto>>> GetNirStages(int nirId)
+        {
+            var nirStages = await StagesRequest()
+                .Where(r => r.NirID == nirId)
+                .ToListAsync();
+
+            if (nirStages == null)
+            {
+                return NotFound();
+            }
+
+            return ConvertToDto(nirStages);
+        }
+
+        private IQueryable<NirStage> StagesRequest()
+        {
+            return _context.NirStages
+                .Include(m => m.NirInnovationRate)
+                .AsNoTracking();
+        }
+
 
         // GET: api/NirStage/5
         [HttpGet("{id}")]
         public async Task<ActionResult<NirStageDto>> GetNirStage(int id)
         {
-            var nirStage = await GetStageQuery().FirstOrDefaultAsync(m => m.ID == id);
+            var nirStage = await _context.NirStages.FindAsync(id);
 
             if (nirStage == null)
             {
@@ -45,54 +75,25 @@ namespace LaborVolumeCalculator.Controllers
             return ConvertToDto(nirStage);
         }
 
-        private IQueryable<NirStage> GetStageQuery()
-        {
-            return _context.NirStages.AsNoTracking();
-        }
-
-        // PUT: api/NirStage/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutNirStage(int id, NirStageDto nirStageDto)
-        {
-            if (id != nirStageDto.ID)
-            {
-                return BadRequest();
-            }
-
-            var nirStage = ConvertToSource(nirStageDto);
-            _context.Entry(nirStage).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!NirStageExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok();
-        }
-
         // POST: api/NirStage
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<NirStage>> PostNirStage(NirStageDto nirStageDto)
+        public async Task<ActionResult<NirStageDto>> PostNirStage(NirStageCreateDto itemDto)
         {
-            var nirStage = ConvertToSource(nirStageDto);
+            var nirStage = ConvertToSource(itemDto);
             _context.NirStages.Add(nirStage);
-            await _context.SaveChangesAsync();
+            
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest();
+            }
 
+            nirStage = await StagesRequest().FirstOrDefaultAsync(m => m.ID == nirStage.ID);
             return CreatedAtAction("GetNirStage", new { id = nirStage.ID }, ConvertToDto(nirStage));
         }
 

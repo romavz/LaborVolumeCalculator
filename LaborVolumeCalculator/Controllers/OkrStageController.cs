@@ -12,27 +12,27 @@ namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OkrStageRegController : ControllerBase
+    public class OkrStageController : ControllerBase
     {
         private readonly LVCContext _context;
 
-        public OkrStageRegController(LVCContext context)
+        public OkrStageController(LVCContext context)
         {
             _context = context;
         }
 
-        // GET: api/OkrStageReg
+        // GET: api/OkrStage
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OkrStageReg>>> GetOkrStageRegs()
+        public async Task<ActionResult<IEnumerable<OkrStage>>> GetOkrStages()
         {
-            return await _context.OkrStageRegs.ToListAsync();
+            return await _context.OkrStages.ToListAsync();
         }
 
-        // GET: api/OkrStageReg/5
+        // GET: api/OkrStage/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<OkrStageReg>> GetOkrStageReg(int id)
+        public async Task<ActionResult<OkrStage>> GetOkrStage(int id)
         {
-            var okrStageReg = await _context.OkrStageRegs.FindAsync(id);
+            var okrStageReg = await _context.OkrStages.FindAsync(id);
 
             if (okrStageReg == null)
             {
@@ -42,13 +42,13 @@ namespace LaborVolumeCalculator.Controllers
             return okrStageReg;
         }
 
-        // POST: api/OkrStageReg
+        // POST: api/OkrStage
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<OkrStageReg>> PostOkrStageReg(OkrStageReg okrStageReg)
+        public async Task<ActionResult<OkrStage>> PostOkrStage(OkrStage okrStageReg)
         {
-            _context.OkrStageRegs.Add(okrStageReg);
+            _context.OkrStages.Add(okrStageReg);
 
             try
             {
@@ -59,28 +59,28 @@ namespace LaborVolumeCalculator.Controllers
                 return BadRequest();
             }
 
-            return CreatedAtAction("GetOkrStageReg", new { id = okrStageReg.ID }, okrStageReg);
+            return CreatedAtAction("GetOkrStage", new { id = okrStageReg.ID }, okrStageReg);
         }
 
-        // DELETE: api/OkrStageReg/5
+        // DELETE: api/OkrStage/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<OkrStageReg>> DeleteOkrStageReg(int id)
+        public async Task<ActionResult<OkrStage>> DeleteOkrStage(int id)
         {
-            var okrStageReg = await _context.OkrStageRegs.FindAsync(id);
+            var okrStageReg = await _context.OkrStages.FindAsync(id);
             if (okrStageReg == null)
             {
                 return NotFound();
             }
 
-            _context.OkrStageRegs.Remove(okrStageReg);
+            _context.OkrStages.Remove(okrStageReg);
             await _context.SaveChangesAsync();
 
             return okrStageReg;
         }
 
-        private bool OkrStageRegExists(int id)
+        private bool OkrStageExists(int id)
         {
-            return _context.OkrStageRegs.Any(e => e.ID == id);
+            return _context.OkrStages.Any(e => e.ID == id);
         }
     }
 }

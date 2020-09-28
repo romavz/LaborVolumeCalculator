@@ -152,7 +152,7 @@ namespace LaborVolumeCalculator.Controllers
             var nir = await _context.Nirs
                 .FirstAsync(nir => nir.ID == nirID);
 
-            var stage = await _context.NirStages
+            var stage = await _context.StagesForNir
                 .FirstAsync(stage => stage.ID == stageID);
 
             var defaultLabors = _context.NirStageDefaultLabors
@@ -202,11 +202,11 @@ namespace LaborVolumeCalculator.Controllers
     internal class NirLaborVolumeRegBuilder
     {
         private readonly Nir nir;
-        private readonly NirStage stage;
+        private readonly StageForNir stage;
 
         private double volumeRate;
 
-        public NirLaborVolumeRegBuilder(Nir nir, NirStage stage, double volumeRate = 1.0)
+        public NirLaborVolumeRegBuilder(Nir nir, StageForNir stage, double volumeRate = 1.0)
         {
             this.nir = nir;
             this.stage = stage;

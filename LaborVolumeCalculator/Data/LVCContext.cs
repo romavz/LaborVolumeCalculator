@@ -52,12 +52,12 @@ namespace LaborVolumeCalculator.Data
         public DbSet<NirSoftwareDevLaborGroup> NirSoftwareDevLaborGroups { get; set; }
         public DbSet<OkrSoftwareDevLaborGroup> OkrSoftwareDevLaborGroups { get; set; }
 
-        public DbSet<NiokrStage> NiokrStages { get; set; }
+        public DbSet<Stage> Stages { get; set; }
+        public DbSet<StageForNir> StagesForNir { get; set; }
+        public DbSet<StageForOkr> StagesForOkr { get; set; }
+
         public DbSet<NirStage> NirStages { get; set; }
         public DbSet<OkrStage> OkrStages { get; set; }
-
-        public DbSet<NirStageReg> NirStageRegs { get; set; }
-        public DbSet<OkrStageReg> OkrStageRegs { get; set; }
 
         public DbSet<SoftwareDevEnv> SoftwareDevEnvs { get; set; }
 
@@ -90,23 +90,14 @@ namespace LaborVolumeCalculator.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Niokr>(e =>
-            {
-                e.ToTable("Niokr", Schema.Dictionary);
-                e.HasDiscriminator<string>("NiokrCategory")
-                    .HasValue<Nir>("НИР")
-                    .HasValue<Okr>("ОКР");
-            });
-
             modelBuilder.Entity<Nir>(e =>
-            {
-                e.Property(n => n.NirInnovationRateValue).IsRequired();
-                e.HasOne(n => n.NirInnovationProperty).WithMany().OnDelete(DeleteBehavior.NoAction);
-                e.HasOne(n => n.NirScale).WithMany().OnDelete(DeleteBehavior.NoAction);
+            {   
+                e.ToTable("Nir", Schema.Dictionary);
             });
 
             modelBuilder.Entity<Okr>(e => 
             {
+                e.ToTable("Okr", Schema.Dictionary);
                 e.HasOne(n => n.OkrInnovationRate).WithMany().OnDelete(DeleteBehavior.NoAction);
                 e.HasOne(n => n.DeviceComplexityRate).WithMany().OnDelete(DeleteBehavior.NoAction);
                 e.HasOne(n => n.OkrInnovationProperty).WithMany().OnDelete(DeleteBehavior.NoAction);
@@ -149,19 +140,17 @@ namespace LaborVolumeCalculator.Data
 
             modelBuilder.Entity<DevelopmentLabor>().ToTable("DevelopmentLabor", Schema.Dictionary);
 
-            modelBuilder.Entity<NiokrStage>().ToTable("NiokrStage", Schema.Dictionary);
+            modelBuilder.Entity<Stage>().ToTable("Stage", Schema.Dictionary);
 
-            modelBuilder.Entity<NirStageReg>(e => {
-                e.ToTable("NirStageReg", Schema.Registers);
+            modelBuilder.Entity<NirStage>(e => {
+                e.ToTable("NirStage", Schema.Registers);
                 e.Property(p => p.NirID).IsRequired();
-                e.Property(p => p.StageID).IsRequired();
+                e.Property(p => p.NirInnovationRateID).IsRequired();
                 e.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.Cascade);
-                e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
-                e.HasIndex(key => new { key.NirID, key.StageID }).IsUnique();
             });
 
-            modelBuilder.Entity<OkrStageReg>(e => {
-                e.ToTable("OkrStageReg", Schema.Registers);
+            modelBuilder.Entity<OkrStage>(e => {
+                e.ToTable("OkrStage", Schema.Registers);
                 e.Property(p => p.OkrID).IsRequired();
                 e.Property(p => p.StageID).IsRequired();
                 e.HasOne(r => r.Okr).WithMany().OnDelete(DeleteBehavior.Cascade);
