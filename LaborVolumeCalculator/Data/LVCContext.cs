@@ -90,23 +90,14 @@ namespace LaborVolumeCalculator.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Niokr>(e =>
-            {
-                e.ToTable("Niokr", Schema.Dictionary);
-                e.HasDiscriminator<string>("NiokrCategory")
-                    .HasValue<Nir>("НИР")
-                    .HasValue<Okr>("ОКР");
-            });
-
             modelBuilder.Entity<Nir>(e =>
-            {
-                e.Property(n => n.NirInnovationRateValue).IsRequired();
-                e.HasOne(n => n.NirInnovationProperty).WithMany().OnDelete(DeleteBehavior.NoAction);
-                e.HasOne(n => n.NirScale).WithMany().OnDelete(DeleteBehavior.NoAction);
+            {   
+                e.ToTable("Nir", Schema.Dictionary);
             });
 
             modelBuilder.Entity<Okr>(e => 
             {
+                e.ToTable("Okr", Schema.Dictionary);
                 e.HasOne(n => n.OkrInnovationRate).WithMany().OnDelete(DeleteBehavior.NoAction);
                 e.HasOne(n => n.DeviceComplexityRate).WithMany().OnDelete(DeleteBehavior.NoAction);
                 e.HasOne(n => n.OkrInnovationProperty).WithMany().OnDelete(DeleteBehavior.NoAction);
@@ -154,6 +145,7 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<NirStage>(e => {
                 e.ToTable("NirStage", Schema.Registers);
                 e.Property(p => p.NirID).IsRequired();
+                e.Property(p => p.NirInnovationRateID).IsRequired();
                 e.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.Cascade);
             });
 

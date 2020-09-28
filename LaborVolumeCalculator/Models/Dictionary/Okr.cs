@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Models.Dictionary
 {
-    public class Okr : Niokr
+    public class Okr : BasicModel
     {
         public Okr()
         {

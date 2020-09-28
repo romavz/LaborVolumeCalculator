@@ -56,7 +56,8 @@ namespace LaborVolumeCalculator.Controllers
         private IQueryable<NirStage> StagesRequest()
         {
             return _context.NirStages
-                            .AsNoTracking();
+                .Include(m => m.NirInnovationRate)
+                .AsNoTracking();
         }
 
 
@@ -90,8 +91,9 @@ namespace LaborVolumeCalculator.Controllers
             catch (DbUpdateException)
             {
                 return BadRequest();
-            }            
+            }
 
+            nirStage = await StagesRequest().FirstOrDefaultAsync(m => m.ID == nirStage.ID);
             return CreatedAtAction("GetNirStage", new { id = nirStage.ID }, ConvertToDto(nirStage));
         }
 

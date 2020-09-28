@@ -10,5 +10,7 @@ namespace LaborVolumeCalculator.Models.Registers
         
         public string Code { get; set; }
         public string Name { get; set; }
+        public int NirInnovationRateID { get; set; }
+        public NirInnovationRate NirInnovationRate { get; set; }
     }
 }

@@ -12,9 +12,9 @@ namespace LaborVolumeCalculator.DTO.Profiles
         {
             // Справочники
             CreateMap<Nir, NirDto>().ReverseMap()
-                .ForPath(p => p.NirInnovationProperty.Name, opt => opt.Ignore())
-                .ForPath(p => p.NirScale.Name, opt => opt.Ignore())
                 .ForPath(p => p.CreateTime, opt => opt.Ignore());
+
+            CreateMap<NirCreateDto, Nir>();
 
             CreateMap<NirLabor, NirLaborDto>().ReverseMap();
 
@@ -28,8 +28,11 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<NirLaborVolumeReg, NirLaborVolumeRegDto>().ReverseMap()
                 .ForPath(p => p.Labor, opt => opt.Ignore());
 
-            CreateMap<NirStage, NirStageDto>().ReverseMap();
-            CreateMap<NirStageCreateDto, NirStage>().ReverseMap();
+            CreateMap<NirStage, NirStageDto>().ReverseMap()
+                .ForPath(p => p.NirInnovationRate, opt => opt.Ignore());
+            
+            CreateMap<NirStageCreateDto, NirStage>()
+                .ForPath(p => p.NirInnovationRate, opt => opt.Ignore());
         }
     }
 }

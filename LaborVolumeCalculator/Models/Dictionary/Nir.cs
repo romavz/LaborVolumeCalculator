@@ -1,27 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LaborVolumeCalculator.Models.Dictionary
 {
-    [Display(Name ="НИР", GroupName ="НИРы")]
-    public class Nir : Niokr
+    [Display(Name = "НИР", GroupName = "НИРы")]
+    public class Nir : BasicModel
     {
         public Nir() : base() { }
 
-        public Nir(string name) : base(name) { }
+        public Nir(string name) : base(name)
+        {
 
-        public double NirInnovationRateValue { get; set; }
-
-        public int NirInnovationPropertyID { get; set; }
-
-        public NirInnovationProperty NirInnovationProperty { get; set; }
-
-        public int NirScaleID { get; set; }
-
-        public NirScale NirScale { get; set; }
+        }
     }
 }
