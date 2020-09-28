@@ -126,7 +126,6 @@ namespace LaborVolumeCalculator.Data
             IEnumerable<OkrInnovationRate> sreuRates = SREU_ratesBinder.Bind(sreuRatesValues);
             dbContext.OkrInnovationRates.AddRange(sreuRates);
 
-            StageForNir[] nirStages = SeedNirStages();
             StageForOkr[] okrStages = SeedOkrStages();
 
             NirLabor[] nirLabors = SeedNirLabors();
@@ -267,8 +266,6 @@ namespace LaborVolumeCalculator.Data
                 tdrb.Create(testCovers[2], 1.6)
             };
             dbContext.AddRange(testDevRates);
-
-            SeedNirStageDefaultLabors(nirStages, nirLabors);
 
             dbContext.SaveChanges();
         }
@@ -635,19 +632,6 @@ namespace LaborVolumeCalculator.Data
 
             dbContext.NirLabors.AddRange(nirLabors);
             return nirLabors;
-        }
-
-        private StageForNir[] SeedNirStages()
-        {
-            StageForNir[] nirStages = new StageForNir[]
-            {
-                new StageForNir("Этап 1."),
-                new StageForNir("Этап 2."),
-                new StageForNir("Этап 3."),
-                new StageForNir("Этап 4."),
-            };
-            dbContext.StagesForNir.AddRange(nirStages);
-            return nirStages;
         }
 
         private StageForOkr[] SeedOkrStages()

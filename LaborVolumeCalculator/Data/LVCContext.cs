@@ -53,11 +53,11 @@ namespace LaborVolumeCalculator.Data
         public DbSet<OkrSoftwareDevLaborGroup> OkrSoftwareDevLaborGroups { get; set; }
 
         public DbSet<Stage> Stages { get; set; }
-        public DbSet<Models.Dictionary.StageForNir> StagesForNir { get; set; }
-        public DbSet<Models.Dictionary.StageForOkr> StagesForOkr { get; set; }
+        public DbSet<StageForNir> StagesForNir { get; set; }
+        public DbSet<StageForOkr> StagesForOkr { get; set; }
 
-        public DbSet<NirStageReg> NirStageRegs { get; set; }
-        public DbSet<OkrStageReg> OkrStageRegs { get; set; }
+        public DbSet<NirStage> NirStages { get; set; }
+        public DbSet<OkrStage> OkrStages { get; set; }
 
         public DbSet<SoftwareDevEnv> SoftwareDevEnvs { get; set; }
 
@@ -149,19 +149,16 @@ namespace LaborVolumeCalculator.Data
 
             modelBuilder.Entity<DevelopmentLabor>().ToTable("DevelopmentLabor", Schema.Dictionary);
 
-            modelBuilder.Entity<Stage>().ToTable("NiokrStage", Schema.Dictionary);
+            modelBuilder.Entity<Stage>().ToTable("Stage", Schema.Dictionary);
 
-            modelBuilder.Entity<NirStageReg>(e => {
-                e.ToTable("NirStageReg", Schema.Registers);
+            modelBuilder.Entity<NirStage>(e => {
+                e.ToTable("NirStage", Schema.Registers);
                 e.Property(p => p.NirID).IsRequired();
-                e.Property(p => p.StageID).IsRequired();
                 e.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.Cascade);
-                e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
-                e.HasIndex(key => new { key.NirID, key.StageID }).IsUnique();
             });
 
-            modelBuilder.Entity<OkrStageReg>(e => {
-                e.ToTable("OkrStageReg", Schema.Registers);
+            modelBuilder.Entity<OkrStage>(e => {
+                e.ToTable("OkrStage", Schema.Registers);
                 e.Property(p => p.OkrID).IsRequired();
                 e.Property(p => p.StageID).IsRequired();
                 e.HasOne(r => r.Okr).WithMany().OnDelete(DeleteBehavior.Cascade);
