@@ -65,7 +65,7 @@ namespace LaborVolumeCalculator.Data
 
         public DbSet<DbEntityCountRange> DbEntityCountRanges { get; set; }
 
-        public DbSet<NirLaborVolumeReg> NirLaborVolumeRegs { get; set; }
+        public DbSet<NirStageLaborVolume> NirStageLaborVolumes { get; set; }
         public DbSet<NirSoftwareDevLaborVolume> NirSoftwareDevLaborVolums { get; set; }
         public DbSet<OkrLaborVolumeReg> OkrLaborVolumeRegs { get; set; }
 
@@ -162,13 +162,13 @@ namespace LaborVolumeCalculator.Data
                 e.ToTable("SoftwareDevEnv", Schema.Dictionary);
             });
 
-            modelBuilder.Entity<NirLaborVolumeReg>(e =>
+            modelBuilder.Entity<NirStageLaborVolume>(e =>
             {
-                e.ToTable("NirLaborVolumeReg", Schema.Registers);
-                e.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.Cascade);
+                e.ToTable("NirStageLaborVolume", Schema.Registers);
                 e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
-                e.HasIndex(key => new { key.NirID, key.StageID, key.LaborID }).IsUnique();
+                e.Property(p => p.Volume).IsRequired();
+                e.HasIndex(key => new { key.StageID, key.LaborID }).IsUnique();
             });
 
             modelBuilder.Entity<NirSoftwareDevLaborVolume>(e => 
