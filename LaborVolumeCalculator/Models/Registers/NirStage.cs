@@ -1,3 +1,4 @@
+using System;
 using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Models.Registers
@@ -12,5 +13,10 @@ namespace LaborVolumeCalculator.Models.Registers
         public string Name { get; set; }
         public int NirInnovationRateID { get; set; }
         public NirInnovationRate NirInnovationRate { get; set; }
+
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+
+        public double Volume { get; set; }
     }
 }
