@@ -8,7 +8,6 @@ using LaborVolumeCalculator.DTO;
 using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.Models.Registers;
 using LaborVolumeCalculator.Utils;
-using LaborVolumeCalculator.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,21 +17,23 @@ namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NirLaborVolumeRegController : ControllerBase<NirLaborVolumeReg, NirLaborVolumeRegDto>
+    public class NirStageLaborVolumeController : ControllerBase<NirStageLaborVolume, NirStageLaborVolumeDto>
     {
         private readonly LVCContext _context;
 
-        public NirLaborVolumeRegController(LVCContext context, IMapper mapper) : base(mapper)
+        public NirStageLaborVolumeController(LVCContext context, IMapper mapper) : base(mapper)
         {
             this._context = context;
         }
 
 
-        // GET: api/NirLaborVolumeRegController
+        // GET: api/NirLaborVolumeController?stageID=23
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<NirLaborVolumeRegDto>>> GetNirLaborVolumeRegs()
+        public async Task<ActionResult<IEnumerable<NirStageLaborVolumeDto>>> GetNirLaborVolumes(int stageID)
         {
-            var result = await GetRegsRequest().ToListAsync();
+            var result = await ItemsRequest()
+                .Where(m => m.StageID == stageID)
+                .ToListAsync();
 
             var dto = ConvertToDto(result)
                 .OrderBy(item => item.Labor.Code, CodeComparer.Instance)
@@ -41,56 +42,40 @@ namespace LaborVolumeCalculator.Controllers
             return dto;
         }
 
-        private IQueryable<NirLaborVolumeReg> GetRegsRequest()
+        private IQueryable<NirStageLaborVolume> ItemsRequest()
         {
-            return _context.NirLaborVolumeRegs
-                            .Include(item => item.Labor)
-                            .AsNoTracking();
+            return _context.NirStageLaborVolumes
+                .Include(item => item.Labor)
+                .AsNoTracking();
         }
 
-        // GET: api/NirLaborVolumeRegController/5
+        // GET: api/NirLaborVolumeController/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<NirLaborVolumeRegDto>> GetNirLaborVolumeReg(int id)
+        public async Task<ActionResult<NirStageLaborVolumeDto>> GetNirLaborVolume(int id)
         {
-            var nirLaborVolumeReg = await GetRegsRequest().FirstOrDefaultAsync(t => t.ID == id);
+            var nirLaborVolume = await ItemsRequest().FirstOrDefaultAsync(t => t.ID == id);
 
-            if (nirLaborVolumeReg == null)
+            if (nirLaborVolume == null)
             {
                 return NotFound();
             }
 
-            return ConvertToDto(nirLaborVolumeReg);
+            return ConvertToDto(nirLaborVolume);
         }
 
-        //GET api/NirLaborVolumeReg/GetRegs? nirID = 3 & StageID = 1
-        [HttpGet("[action]")]
-        public async Task<ActionResult<IEnumerable<NirLaborVolumeRegDto>>> GetRegs(int nirID, int stageID)
-        {
-            var laborVolumeRegs = await GetRegsRequest()
-                .Where(m =>
-                    m.NirID == nirID
-                    && m.StageID == stageID)
-                .ToListAsync();
-            
-            var regsDto = ConvertToDto(laborVolumeRegs);
-            var orderedRegs = regsDto.OrderBy(m => m.Labor.Code, CodeComparer.Instance).ToArray();
-            
-            return orderedRegs;
-        }
-
-        // PUT: api/NirLaborVolumeRegController/5
+        // PUT: api/NirLaborVolumeController/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut]
-        public async Task<IActionResult> PutNirLaborVolumeReg(int id, NirLaborVolumeRegDto item)
+        public async Task<IActionResult> PutNirLaborVolume(int id, NirStageLaborVolumeChangeDto item)
         {
             if (id != item.ID)
             {
                 return BadRequest();
             }
 
-            var nirLaborVolumeReg = ConvertToSource(item);
-            _context.Entry(nirLaborVolumeReg).State = EntityState.Modified;
+            var nirLaborVolume = ConvertToSource(item);
+            _context.Entry(nirLaborVolume).State = EntityState.Modified;
 
             try
             {
@@ -98,7 +83,7 @@ namespace LaborVolumeCalculator.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NirLaborVolumeRegExists(id))
+                if (!NirLaborVolumeExists(id))
                 {
                     return NotFound();
                 }
@@ -111,43 +96,45 @@ namespace LaborVolumeCalculator.Controllers
             return Ok();
         }
 
-        // POST: api/NirLaborVolumeRegController
+        // POST: api/NirLaborVolumeController
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<NirLaborVolumeRegDto>> PostNirLaborVolumeReg(NirLaborVolumeRegDto nirLaborVolumeRegDto)
+        public async Task<ActionResult<NirStageLaborVolumeDto>> PostNirLaborVolume(NirStageLaborVolumeCreateDto nirLaborVolumeDto)
         {
-            var nirLaborVolumeReg = ConvertToSource(nirLaborVolumeRegDto);
+            var nirLaborVolume = ConvertToSource(nirLaborVolumeDto);
             
-            _context.NirLaborVolumeRegs.Add(nirLaborVolumeReg);
+            _context.NirStageLaborVolumes.Add(nirLaborVolume);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetNirLaborVolumeReg", new { id = nirLaborVolumeReg.ID }, ConvertToDto(nirLaborVolumeReg));
+            nirLaborVolume = await ItemsRequest().Include(m => m.Labor).FirstOrDefaultAsync(m => m.ID == nirLaborVolume.ID);
+
+            return CreatedAtAction("GetNirLaborVolume", new { id = nirLaborVolume.ID }, ConvertToDto(nirLaborVolume));
         }
 
-        // DELETE: api/NirLaborVolumeRegController/5
+        // DELETE: api/NirLaborVolumeController/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<NirLaborVolumeRegDto>> DeleteNirLaborVolumeReg(int id)
+        public async Task<ActionResult<NirStageLaborVolumeDto>> DeleteNirLaborVolume(int id)
         {
-            var nirLaborVolumeReg = await _context.NirLaborVolumeRegs.FindAsync(id);
-            if (nirLaborVolumeReg == null)
+            var nirLaborVolume = await _context.NirStageLaborVolumes.FindAsync(id);
+            if (nirLaborVolume == null)
             {
                 return NotFound();
             }
 
-            _context.NirLaborVolumeRegs.Remove(nirLaborVolumeReg);
+            _context.NirStageLaborVolumes.Remove(nirLaborVolume);
             await _context.SaveChangesAsync();
 
-            return ConvertToDto(nirLaborVolumeReg);
+            return ConvertToDto(nirLaborVolume);
         }
 
-        private bool NirLaborVolumeRegExists(int id)
+        private bool NirLaborVolumeExists(int id)
         {
-            return _context.NirLaborVolumeRegs.Any(e => e.ID == id);
+            return _context.NirStageLaborVolumes.Any(e => e.ID == id);
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<IEnumerable<NirLaborVolumeRegDto>>> AddDefaultLabors(int nirID, int stageID)
+        public async Task<ActionResult<IEnumerable<NirStageLaborVolumeDto>>> AddDefaultLabors(int nirID, int stageID)
         {
             var nir = await _context.Nirs
                 .FirstAsync(nir => nir.ID == nirID);
@@ -162,9 +149,9 @@ namespace LaborVolumeCalculator.Controllers
 
             if (nir == null || stage == null) return BadRequest();
 
-            var regBuilder = new NirLaborVolumeRegBuilder(nir, stage, volumeRate: 0.8f);
+            var regBuilder = new NirLaborVolumeBuilder(nir, stage, volumeRate: 0.8f);
 
-            var registredLaborsIDs = _context.NirLaborVolumeRegs.Include(reg => reg.Labor).Select(item => (int?)item.LaborID);
+            var registredLaborsIDs = _context.NirStageLaborVolumes.Include(reg => reg.Labor).Select(item => (int?)item.LaborID);
 
             var laborsRequest = (
                 from defLabor in defaultLabors
@@ -176,13 +163,13 @@ namespace LaborVolumeCalculator.Controllers
 
             var needToInsertLabors = await laborsRequest.ToListAsync();
 
-            var laborVolumeRegs = needToInsertLabors.Select(labor => regBuilder.Create(labor)).ToList();
+            var laborVolumes = needToInsertLabors.Select(labor => regBuilder.Create(labor)).ToList();
 
-            if (laborVolumeRegs.Count() < 1) return Ok();
+            if (laborVolumes.Count() < 1) return Ok();
 
             try
             {
-                await _context.AddRangeAsync(laborVolumeRegs);
+                await _context.AddRangeAsync(laborVolumes);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
@@ -190,38 +177,37 @@ namespace LaborVolumeCalculator.Controllers
                 return BadRequest();
             }
             
-            var inserted = await _context.NirLaborVolumeRegs
+            var inserted = await _context.NirStageLaborVolumes
                 .Include(r => r.Labor)
-                .Where(item => laborVolumeRegs.Select(reg => reg.LaborID).Contains(item.LaborID))
+                .Where(item => laborVolumes.Select(reg => reg.LaborID).Contains(item.LaborID))
                 .ToListAsync();
 
-            return CreatedAtAction("GetRegs", new { nirID = nirID, stageID = stageID }, ConvertToDto(inserted));
+            return CreatedAtAction("GetVolumes", new { stageID = stageID }, ConvertToDto(inserted));
         }
     }
 
-    internal class NirLaborVolumeRegBuilder
+    internal class NirLaborVolumeBuilder
     {
         private readonly Nir nir;
         private readonly StageForNir stage;
 
         private double volumeRate;
 
-        public NirLaborVolumeRegBuilder(Nir nir, StageForNir stage, double volumeRate = 1.0)
+        public NirLaborVolumeBuilder(Nir nir, StageForNir stage, double volumeRate = 1.0)
         {
             this.nir = nir;
             this.stage = stage;
             this.volumeRate = volumeRate;
         }
 
-        public NirLaborVolumeReg Create(NirLabor labor)
+        public NirStageLaborVolume Create(NirLabor labor)
         {
             var delta = labor.MaxVolume - labor.MinVolume;
             double volume = labor.MinVolume + delta * volumeRate;
             
             if (volume < labor.MinVolume) volume = labor.MinVolume;
             
-            return new NirLaborVolumeReg {
-                NirID = nir.ID, 
+            return new NirStageLaborVolume {
                 StageID = stage.ID, 
                 LaborID = labor.ID, 
                 Labor = labor,
