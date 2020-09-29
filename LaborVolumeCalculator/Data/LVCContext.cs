@@ -93,6 +93,11 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<Nir>(e =>
             {   
                 e.ToTable("Nir", Schema.Dictionary);
+                e.Property(p => p.Name).IsRequired();
+                e.Property(p => p.DateFrom).IsRequired();
+                e.Property(p => p.DateTo).IsRequired();
+                e.Property(p => p.AnalogDurationMonthes).IsRequired();
+                e.Property(p => p.IntensiveRateValue).IsRequired().HasDefaultValue(1.0);
             });
 
             modelBuilder.Entity<Okr>(e => 
