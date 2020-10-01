@@ -1,4 +1,7 @@
+using System.Runtime.InteropServices.ComTypes;
 using System;
+using System.Collections.Generic;
+
 namespace LaborVolumeCalculator.DTO
 {
 
@@ -15,16 +18,21 @@ namespace LaborVolumeCalculator.DTO
     public class NirStageChangeDto : NirStageBaseDto
     {
         public int ID { get; set; }
-        public double NirInnovationRateValue { get; set; }
+        public int NirID { get; set; }
+        public List<NirStageLaborVolumeChangeDto> LaborVolumes { get; set; }
     }
 
-    public class NirStageDto : NirStageChangeDto
+    public class NirStageDto : NirStageBaseDto
     {
+        public int ID { get; set; }
+        public double NirInnovationRateValue { get; set; }
         public double Volume { get; set; }
+        public List<NirStageLaborVolumeDto> LaborVolumes { get; set; }
     }
 
     public class NirStageCreateDto : NirStageBaseDto
     {
         public int NirID { get; set; }
+        public List<NirStageLaborVolumeDto_ListItem> LaborVolumes { get; set; }
     }
 }

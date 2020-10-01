@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Models.Registers
@@ -18,5 +19,6 @@ namespace LaborVolumeCalculator.Models.Registers
         public DateTime DateTo { get; set; }
 
         public double Volume { get; set; }
+        public List<NirStageLaborVolume> LaborVolumes { get; set; }
     }
 }
