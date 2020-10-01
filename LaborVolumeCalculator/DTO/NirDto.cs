@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace LaborVolumeCalculator.DTO
 {
@@ -11,10 +12,15 @@ namespace LaborVolumeCalculator.DTO
         public double IntensiveRateValue { get; set; }
     }
 
-    public class NirDto : NirCreateDto
+    public class NirChangeDto : NirCreateDto
     {
         public int ID { get; set; }
         public DateTime CreateTime { get; set; }
-        public double LaborsVolume { get; set; }
     }
+
+    public class NirDto : NirChangeDto
+    {
+        public List<NirStageDto> Stages { get; set; }
+    }
+
 }

@@ -1364,7 +1364,7 @@ namespace LaborVolumeCalculator.Migrations
             modelBuilder.Entity("LaborVolumeCalculator.Models.Registers.NirStage", b =>
                 {
                     b.HasOne("LaborVolumeCalculator.Models.Dictionary.Nir", "Nir")
-                        .WithMany()
+                        .WithMany("NirStages")
                         .HasForeignKey("NirID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
