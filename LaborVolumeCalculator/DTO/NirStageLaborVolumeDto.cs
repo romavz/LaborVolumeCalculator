@@ -1,7 +1,9 @@
 namespace LaborVolumeCalculator.DTO
 {
-    public class NirStageLaborVolumeDto : LaborVolumeBaseDto
+    public class NirStageLaborVolumeDto
     {
+        public int ID { get; set; }
+        public double Volume { get; set; }
         public NirLaborDto Labor { get; set; }
     }
 
@@ -12,7 +14,16 @@ namespace LaborVolumeCalculator.DTO
         public double Volume { get; set; }
     }
 
-    public class NirStageLaborVolumeChangeDto : LaborVolumeBaseDto
+    public class NirStageLaborVolumeChangeDto
     {
+        public int ID { get; set; }
+        public int LaborID { get; set; }
+        public double Volume { get; set; }
+    }
+
+    public class NirStageLaborVolumeDto_ListItem
+    {
+        public int LaborID { get; set; }
+        public double Volume { get; set; }
     }
 }

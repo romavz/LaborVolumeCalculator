@@ -170,7 +170,7 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<NirStageLaborVolume>(e =>
             {
                 e.ToTable("NirStageLaborVolume", Schema.Registers);
-                e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.Stage).WithMany(l => l.LaborVolumes).OnDelete(DeleteBehavior.Cascade);
                 e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
                 e.Property(p => p.Volume).IsRequired();
                 e.HasIndex(key => new { key.StageID, key.LaborID }).IsUnique();

@@ -31,11 +31,15 @@ namespace LaborVolumeCalculator.DTO.Profiles
             
             CreateMap<NirStageLaborVolumeCreateDto, NirStageLaborVolume>();
             CreateMap<NirStageLaborVolumeChangeDto, NirStageLaborVolume>();
+            CreateMap<NirStageLaborVolumeDto_ListItem, NirStageLaborVolume>().ReverseMap();
 
             CreateMap<NirStage, NirStageDto>().ReverseMap()
                 .ForPath(p => p.NirInnovationRate, opt => opt.Ignore());
             
             CreateMap<NirStageCreateDto, NirStage>()
+                .ForPath(p => p.NirInnovationRate, opt => opt.Ignore());
+            
+            CreateMap<NirStageChangeDto, NirStage>()
                 .ForPath(p => p.NirInnovationRate, opt => opt.Ignore());
         }
     }
