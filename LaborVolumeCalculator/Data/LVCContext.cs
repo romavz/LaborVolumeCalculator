@@ -151,7 +151,7 @@ namespace LaborVolumeCalculator.Data
                 e.ToTable("NirStage", Schema.Registers);
                 e.Property(p => p.NirID).IsRequired();
                 e.Property(p => p.NirInnovationRateID).IsRequired();
-                e.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.Cascade);
+                e.HasOne(r => r.Nir).WithMany(m => m.Stages).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<OkrStage>(e => {

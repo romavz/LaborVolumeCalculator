@@ -51,6 +51,11 @@ namespace LaborVolumeCalculator.Controllers
         private IQueryable<Nir> NirsQuery()
         {
             return _context.Nirs
+                .Include(m => m.Stages)
+                    .ThenInclude(s => s.LaborVolumes)
+                        .ThenInclude(lv => lv.Labor)
+                .Include(m => m.Stages)
+                    .ThenInclude(s => s.NirInnovationRate)
                 .AsNoTracking();
         }
 
@@ -58,7 +63,7 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNir(int id, NirDto nirDto)
+        public async Task<IActionResult> PutNir(int id, NirChangeDto nirDto)
         {
             if (id != nirDto.ID)
             {

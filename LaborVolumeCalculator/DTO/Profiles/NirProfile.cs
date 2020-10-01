@@ -15,6 +15,7 @@ namespace LaborVolumeCalculator.DTO.Profiles
                 .ForPath(p => p.CreateTime, opt => opt.Ignore());
 
             CreateMap<NirCreateDto, Nir>();
+            CreateMap<NirChangeDto, Nir>();
 
             CreateMap<NirLabor, NirLaborDto>().ReverseMap();
 
