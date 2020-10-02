@@ -17,7 +17,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
         public DateTime DateTo { get; set; }
         public double AnalogDurationMonthes { get; set; }
         public double IntensiveRateValue { get; set; }
-        public double LaborsVolume { get; set; }
+        public double Volume { get; set; }
         public IEnumerable<NirStage> Stages { get; set; }
     }
 }

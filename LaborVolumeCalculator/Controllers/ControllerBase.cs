@@ -12,12 +12,21 @@ namespace LaborVolumeCalculator.Controllers
         public ControllerBase(IMapper mapper)
         {
             this._mapper = mapper;
-
         }
 
         protected TDto ConvertToDto(TSource item)
         {
             return _mapper.Map<TSource, TDto>(item);
+        }
+
+        protected TSomeOtherDto ConvertToDto<TSomeOtherDto>(TSource item) where TSomeOtherDto : class
+        {
+            return _mapper.Map<TSource, TSomeOtherDto>(item);
+        }
+
+        protected List<TDto> ConvertToDto(List<TSource> items)
+        {
+            return _mapper.Map<IEnumerable<TSource>, List<TDto>>(items);
         }
 
         protected TSource ConvertToSource(TDto itemDto)
@@ -28,11 +37,6 @@ namespace LaborVolumeCalculator.Controllers
         public TSource ConvertToSource<TSomeOtherDto>(TSomeOtherDto itemDto) where TSomeOtherDto : class
         {
             return _mapper.Map<TSomeOtherDto, TSource>(itemDto);
-        }
-
-        protected List<TDto> ConvertToDto(List<TSource> items)
-        {
-            return _mapper.Map<IEnumerable<TSource>, List<TDto>>(items);
         }
     }
 

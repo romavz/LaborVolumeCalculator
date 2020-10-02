@@ -42,6 +42,8 @@ namespace LaborVolumeCalculator.DTO.Profiles
             
             CreateMap<NirStageChangeDto, NirStage>()
                 .ForPath(p => p.NirInnovationRate, opt => opt.Ignore());
+            
+            CreateMap<NirStage, NirStageDeleteDto>();
         }
     }
 }
