@@ -27,12 +27,12 @@ namespace LaborVolumeCalculator.DTO
     {
         public int NirID { get; set; }
         public List<NirStageLaborVolumeDto_ListItem> LaborVolumes { get; set; }
+        public double Volume { get; set; }
     }
 
     public class NirStageChangeDto : NirStageCreateDto
     {
         public int ID { get; set; }
-        public double Volume { get; set; }
     }
 
     public class NirStageDto : NirStageBaseDto
