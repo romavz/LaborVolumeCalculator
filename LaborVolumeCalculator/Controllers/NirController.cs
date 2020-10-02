@@ -24,7 +24,7 @@ namespace LaborVolumeCalculator.Controllers
             _context = context;
         }
 
-        // GET: api/NirController
+        // GET: api/Nir
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirDto>>> GetNirs()
         {
@@ -34,7 +34,7 @@ namespace LaborVolumeCalculator.Controllers
             return nirsDto;
         }
 
-        // GET: api/NirController/5
+        // GET: api/Nir/5
         [HttpGet("{id}")]
         public async Task<ActionResult<NirDto>> GetNir(int id)
         {
@@ -51,15 +51,10 @@ namespace LaborVolumeCalculator.Controllers
         private IQueryable<Nir> NirsQuery()
         {
             return _context.Nirs
-                .Include(m => m.Stages)
-                    .ThenInclude(s => s.LaborVolumes)
-                        .ThenInclude(lv => lv.Labor)
-                .Include(m => m.Stages)
-                    .ThenInclude(s => s.NirInnovationRate)
                 .AsNoTracking();
         }
 
-        // PUT: api/NirController/5
+        // PUT: api/Nir/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
@@ -92,7 +87,7 @@ namespace LaborVolumeCalculator.Controllers
             return Ok();
         }
 
-        // POST: api/NirController
+        // POST: api/Nir
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
@@ -107,9 +102,9 @@ namespace LaborVolumeCalculator.Controllers
             return CreatedAtAction("GetNir", new { id = nir.ID }, ConvertToDto(nir));
         }
 
-        // DELETE: api/NirController/5
+        // DELETE: api/Nir/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<NirDto>> DeleteNir(int id)
+        public async Task<ActionResult<NirChangeDto>> DeleteNir(int id)
         {
             var nir = await _context.Nirs.FindAsync(id);
             if (nir == null)
@@ -120,7 +115,7 @@ namespace LaborVolumeCalculator.Controllers
             _context.Nirs.Remove(nir);
             await _context.SaveChangesAsync();
 
-            return ConvertToDto(nir);
+            return ConvertToDto<NirChangeDto>(nir);
         }
 
         private bool NirExists(int id)

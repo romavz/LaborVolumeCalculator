@@ -137,7 +137,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/NirStage/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<NirStageDto>> DeleteNirStage(int id)
+        public async Task<ActionResult<NirStageDeleteDto>> DeleteNirStage(int id)
         {
             var nirStage = await _context.NirStages.FindAsync(id);
             if (nirStage == null)
@@ -148,7 +148,7 @@ namespace LaborVolumeCalculator.Controllers
             _context.NirStages.Remove(nirStage);
             await _context.SaveChangesAsync();
 
-            return ConvertToDto(nirStage);
+            return ConvertToDto<NirStageDeleteDto>(nirStage);
         }
 
         private bool NirStageExists(int id)

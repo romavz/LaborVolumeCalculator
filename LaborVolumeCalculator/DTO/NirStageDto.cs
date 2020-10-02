@@ -15,11 +15,24 @@ namespace LaborVolumeCalculator.DTO
         public DateTime DateTo { get; set; }
     }
 
-    public class NirStageChangeDto : NirStageBaseDto
+    public class NirStageDeleteDto : NirStageBaseDto
     {
         public int ID { get; set; }
         public int NirID { get; set; }
-        public List<NirStageLaborVolumeChangeDto> LaborVolumes { get; set; }
+        public double NirInnovationRateValue { get; set; }
+        public double Volume { get; set; }
+    }
+
+    public class NirStageCreateDto : NirStageBaseDto
+    {
+        public int NirID { get; set; }
+        public List<NirStageLaborVolumeDto_ListItem> LaborVolumes { get; set; }
+    }
+
+    public class NirStageChangeDto : NirStageCreateDto
+    {
+        public int ID { get; set; }
+        public double Volume { get; set; }
     }
 
     public class NirStageDto : NirStageBaseDto
@@ -28,11 +41,5 @@ namespace LaborVolumeCalculator.DTO
         public double NirInnovationRateValue { get; set; }
         public double Volume { get; set; }
         public List<NirStageLaborVolumeDto> LaborVolumes { get; set; }
-    }
-
-    public class NirStageCreateDto : NirStageBaseDto
-    {
-        public int NirID { get; set; }
-        public List<NirStageLaborVolumeDto_ListItem> LaborVolumes { get; set; }
     }
 }

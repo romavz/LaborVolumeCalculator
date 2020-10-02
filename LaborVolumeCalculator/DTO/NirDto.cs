@@ -15,11 +15,12 @@ namespace LaborVolumeCalculator.DTO
     public class NirChangeDto : NirCreateDto
     {
         public int ID { get; set; }
-        public DateTime CreateTime { get; set; }
+        public double Volume { get; set; }
     }
 
     public class NirDto : NirChangeDto
     {
+        public DateTime CreateTime { get; set; }
         public List<NirStageDto> Stages { get; set; }
     }
 
