@@ -38,7 +38,13 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NirDto>> GetNir(int id)
         {
-            var nir = await NirsQuery().FirstOrDefaultAsync(n => n.ID == id);
+            var nir = await NirsQuery()
+                .Include(m => m.Stages)
+                    .ThenInclude(s => s.LaborVolumes)
+                        .ThenInclude(lv => lv.Labor)
+                .Include(m => m.Stages)
+                    .ThenInclude(s => s.NirInnovationRate)
+                .FirstOrDefaultAsync(n => n.ID == id);
 
             if (nir == null)
             {
