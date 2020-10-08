@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using LaborVolumeCalculator.Models;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using LaborVolumeCalculator.Models.Dictionary;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using LaborVolumeCalculator.Models.Documents;
 using LaborVolumeCalculator.Models.Registers;
 
 namespace LaborVolumeCalculator.Data
@@ -23,7 +17,7 @@ namespace LaborVolumeCalculator.Data
 
         public DbSet<Niokr> Niokrs { get; set; }
 
-        public DbSet<Nir> Nirs { get; set; }
+        public DbSet<Nir> Nirs { get; set; } 
 
         public DbSet<Okr> Okrs { get; set; }
 
@@ -91,7 +85,7 @@ namespace LaborVolumeCalculator.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Nir>(e =>
-            {   
+            {
                 e.ToTable("Nir", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
                 e.Property(p => p.DateFrom).IsRequired();
@@ -100,7 +94,7 @@ namespace LaborVolumeCalculator.Data
                 e.Property(p => p.IntensiveRateValue).IsRequired().HasDefaultValue(1.0);
             });
 
-            modelBuilder.Entity<Okr>(e => 
+            modelBuilder.Entity<Okr>(e =>
             {
                 e.ToTable("Okr", Schema.Dictionary);
                 e.HasOne(n => n.OkrInnovationRate).WithMany().OnDelete(DeleteBehavior.NoAction);
@@ -147,14 +141,16 @@ namespace LaborVolumeCalculator.Data
 
             modelBuilder.Entity<Stage>().ToTable("Stage", Schema.Dictionary);
 
-            modelBuilder.Entity<NirStage>(e => {
+            modelBuilder.Entity<NirStage>(e =>
+            {
                 e.ToTable("NirStage", Schema.Registers);
                 e.Property(p => p.NirID).IsRequired();
                 e.Property(p => p.NirInnovationRateID).IsRequired();
                 e.HasOne(r => r.Nir).WithMany(m => m.Stages).OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<OkrStage>(e => {
+            modelBuilder.Entity<OkrStage>(e =>
+            {
                 e.ToTable("OkrStage", Schema.Registers);
                 e.Property(p => p.OkrID).IsRequired();
                 e.Property(p => p.StageID).IsRequired();
@@ -163,7 +159,8 @@ namespace LaborVolumeCalculator.Data
                 e.HasIndex(key => new { key.OkrID, key.StageID }).IsUnique();
             });
 
-            modelBuilder.Entity<SoftwareDevEnv>(e => {
+            modelBuilder.Entity<SoftwareDevEnv>(e =>
+            {
                 e.ToTable("SoftwareDevEnv", Schema.Dictionary);
             });
 
@@ -176,17 +173,18 @@ namespace LaborVolumeCalculator.Data
                 e.HasIndex(key => new { key.StageID, key.LaborID }).IsUnique();
             });
 
-            modelBuilder.Entity<NirSoftwareDevLaborVolume>(e => 
+            modelBuilder.Entity<NirSoftwareDevLaborVolume>(e =>
             {
                 e.ToTable("NirSoftwareDevLaborVolume", Schema.Registers)
-                    .HasIndex(key => new{ key.NirID, key.StageID, key.SoftwareDevLaborGroupID, key.LaborVolumeRangeID })
+                    .HasIndex(key => new { key.NirID, key.StageID, key.SoftwareDevLaborGroupID, key.LaborVolumeRangeID })
                     .IsUnique();
                 e.HasOne(r => r.Nir).WithMany().OnDelete(DeleteBehavior.Cascade);
                 e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.SoftwareDevLaborGroup).WithMany().OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<OkrLaborVolumeReg>(e => {
+            modelBuilder.Entity<OkrLaborVolumeReg>(e =>
+            {
                 e.ToTable("OkrLaborVolumeReg", Schema.Registers);
                 e.HasOne(r => r.Okr).WithMany().OnDelete(DeleteBehavior.Cascade);
                 e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
@@ -194,7 +192,7 @@ namespace LaborVolumeCalculator.Data
                 e.HasIndex(key => new { key.OkrID, key.StageID, key.LaborID }).IsUnique();
             });
 
-            modelBuilder.Entity<SoftwareDevLaborVolumeRange>(e => 
+            modelBuilder.Entity<SoftwareDevLaborVolumeRange>(e =>
             {
                 e.ToTable("SoftwareDevLaborVolumeRange", Schema.Dictionary)
                     .HasIndex(key => new { key.LaborID, key.DevEnvID }).IsUnique();
@@ -202,7 +200,7 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(r => r.DevEnv).WithMany().OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<DbDevLaborVolumeRange>(e => 
+            modelBuilder.Entity<DbDevLaborVolumeRange>(e =>
             {
                 e.ToTable("DbDevLaborVolumeRange", Schema.Dictionary)
                     .HasIndex(key => new { key.LaborID, key.DbEntityCountRangeID }).IsUnique();
@@ -210,40 +208,40 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(r => r.DbEntityCountRange).WithMany().OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<SoftwareDevLaborGroup>(e => 
-            {   
+            modelBuilder.Entity<SoftwareDevLaborGroup>(e =>
+            {
                 e.ToTable("SoftwareDevLaborGroup", Schema.Dictionary);
                 e.Property(p => p.Code).IsRequired();
                 e.Property(p => p.Name).IsRequired();
             });
 
-            modelBuilder.Entity<OkrSoftwareDevLaborGroup>(e => 
+            modelBuilder.Entity<OkrSoftwareDevLaborGroup>(e =>
             {
                 e.HasOne(r => r.OkrStage).WithMany().OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<DevelopmentLaborCategory>(e => 
+            modelBuilder.Entity<DevelopmentLaborCategory>(e =>
             {
                 e.ToTable("LaborCategory", Schema.Dictionary);
                 e.Property(p => p.Number).IsRequired();
                 e.Property(p => p.Name).IsRequired();
             });
-            
-            modelBuilder.Entity<ArchitectureComplexityRate>(e => 
+
+            modelBuilder.Entity<ArchitectureComplexityRate>(e =>
             {
                 e.ToTable("ArchitectureComplexityRate", Schema.Dictionary)
-                    .HasIndex(key => new{ key.ComponentsInteractionArchitectureID, key.ComponentsMakroArchitectureID })
+                    .HasIndex(key => new { key.ComponentsInteractionArchitectureID, key.ComponentsMakroArchitectureID })
                     .IsUnique();
                 e.HasOne(r => r.ComponentsInteractionArchitecture).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.ComponentsMakroArchitecture).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<ComponentsInteractionArchitecture>(e => 
+            modelBuilder.Entity<ComponentsInteractionArchitecture>(e =>
             {
                 e.ToTable("ComponentsInteractionArchitecture", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
             });
-            modelBuilder.Entity<ComponentsMakroArchitecture>(e => 
+            modelBuilder.Entity<ComponentsMakroArchitecture>(e =>
             {
                 e.ToTable("ComponentsMakroArchitecture", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
@@ -263,23 +261,23 @@ namespace LaborVolumeCalculator.Data
                 e.ToTable("SolutionInnovationRate", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
             });
-            modelBuilder.Entity<StandardModulesUsingRate>(e => 
+            modelBuilder.Entity<StandardModulesUsingRate>(e =>
             {
                 e.ToTable("StandardModulesUsingRate", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
             });
-            modelBuilder.Entity<TestsCoverageLevel>(e => 
+            modelBuilder.Entity<TestsCoverageLevel>(e =>
             {
                 e.ToTable("TestsCoverageLevel", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
             });
-            modelBuilder.Entity<TestsScale>(e => 
+            modelBuilder.Entity<TestsScale>(e =>
             {
                 e.ToTable("TestsScale", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
             });
-                      
-            modelBuilder.Entity<NirSoftwareDevLaborGroupReg>(e => 
+
+            modelBuilder.Entity<NirSoftwareDevLaborGroupReg>(e =>
             {
                 e.ToTable("NirSoftwareDevLaborGroupReg", Schema.Registers)
                     .HasIndex(key => new { key.NirID, key.StageID, key.SoftwareDevLaborGroupID })
@@ -289,7 +287,7 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(r => r.SoftwareDevLaborGroup).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<OkrSoftwareDevLaborGroupReg>(e => 
+            modelBuilder.Entity<OkrSoftwareDevLaborGroupReg>(e =>
             {
                 e.ToTable("OkrSoftwareDevLaborGroupReg", Schema.Registers)
                     .HasIndex(key => new { key.OkrID, key.StageID, key.SoftwareDevLaborGroupID })
@@ -298,10 +296,10 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(r => r.Stage).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.SoftwareDevLaborGroup).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
             });
-            
-            
 
-            modelBuilder.Entity<TestsDevelopmentRate>(e => 
+
+
+            modelBuilder.Entity<TestsDevelopmentRate>(e =>
             {
                 e.ToTable("TestsDevelopmentRate", Schema.Dictionary)
                     .HasIndex(key => new { key.ComponentsMicroArchitectureID, key.TestsCoverageLevelID, key.TestsScaleID })
@@ -311,7 +309,8 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(r => r.TestsCoverageLevel).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<NirStageDefaultLabor>(e => {
+            modelBuilder.Entity<NirStageDefaultLabor>(e =>
+            {
                 e.ToTable("NirStageDefaultLabors", Schema.Dictionary);
                 e.Property(p => p.StageID).IsRequired();
                 e.Property(p => p.LaborID).IsRequired();
@@ -319,7 +318,7 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
             });
         }
-                
+
         private class Schema
         {
             public static string Dictionary => "Dictionary";

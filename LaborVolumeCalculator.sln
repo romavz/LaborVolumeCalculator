@@ -1,9 +1,13 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaborVolumeCalculator", "LaborVolumeCalculator\LaborVolumeCalculator.csproj", "{78CAD98E-65BB-4CCF-B2E3-D553AE66233F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LaborVolumeCalculator", "LaborVolumeCalculator\LaborVolumeCalculator.csproj", "{78CAD98E-65BB-4CCF-B2E3-D553AE66233F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LaborVolumeCalculator.Data", "LaborVolumeCalculator.Data\LaborVolumeCalculator.Data.csproj", "{AD02FDBE-3F47-47A7-BE4A-91AE96F86832}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaborVolumeCalculator.Models", "LaborVolumeCalculator.Models\LaborVolumeCalculator.Models.csproj", "{1F5A9256-1E30-4750-9F25-9197904C6FCB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{78CAD98E-65BB-4CCF-B2E3-D553AE66233F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78CAD98E-65BB-4CCF-B2E3-D553AE66233F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78CAD98E-65BB-4CCF-B2E3-D553AE66233F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD02FDBE-3F47-47A7-BE4A-91AE96F86832}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD02FDBE-3F47-47A7-BE4A-91AE96F86832}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD02FDBE-3F47-47A7-BE4A-91AE96F86832}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD02FDBE-3F47-47A7-BE4A-91AE96F86832}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F5A9256-1E30-4750-9F25-9197904C6FCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F5A9256-1E30-4750-9F25-9197904C6FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F5A9256-1E30-4750-9F25-9197904C6FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F5A9256-1E30-4750-9F25-9197904C6FCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
