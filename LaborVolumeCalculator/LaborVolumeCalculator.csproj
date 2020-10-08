@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LaborVolumeCalculator.Data\LaborVolumeCalculator.Data.csproj" />
+    <ProjectReference Include="..\LaborVolumeCalculator.Repositories\LaborVolumeCalculator.Repositories.csproj" />
   </ItemGroup>
 
   <ItemGroup>

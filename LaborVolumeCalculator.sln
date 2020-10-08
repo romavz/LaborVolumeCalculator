@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
@@ -8,6 +8,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LaborVolumeCalculator.Data", "LaborVolumeCalculator.Data\LaborVolumeCalculator.Data.csproj", "{AD02FDBE-3F47-47A7-BE4A-91AE96F86832}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaborVolumeCalculator.Models", "LaborVolumeCalculator.Models\LaborVolumeCalculator.Models.csproj", "{1F5A9256-1E30-4750-9F25-9197904C6FCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaborVolumeCalculator.Repositories", "LaborVolumeCalculator.Repositories\LaborVolumeCalculator.Repositories.csproj", "{FEC3B55E-78E6-43BC-B1E6-2A316C63FCFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{1F5A9256-1E30-4750-9F25-9197904C6FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F5A9256-1E30-4750-9F25-9197904C6FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F5A9256-1E30-4750-9F25-9197904C6FCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEC3B55E-78E6-43BC-B1E6-2A316C63FCFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEC3B55E-78E6-43BC-B1E6-2A316C63FCFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEC3B55E-78E6-43BC-B1E6-2A316C63FCFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEC3B55E-78E6-43BC-B1E6-2A316C63FCFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
