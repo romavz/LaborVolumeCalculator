@@ -30,7 +30,7 @@ namespace LaborVolumeCalculator.Pages.DeviceCountRanges
                 return NotFound();
             }
 
-            DeviceCountRange = await _context.DeviceCountRange.FirstOrDefaultAsync(m => m.ID == id);
+            DeviceCountRange = await _context.DeviceCountRanges.FirstOrDefaultAsync(m => m.ID == id);
 
             if (DeviceCountRange == null)
             {
@@ -71,7 +71,7 @@ namespace LaborVolumeCalculator.Pages.DeviceCountRanges
 
         private bool DeviceCountRangeExists(int id)
         {
-            return _context.DeviceCountRange.Any(e => e.ID == id);
+            return _context.DeviceCountRanges.Any(e => e.ID == id);
         }
     }
 }

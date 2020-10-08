@@ -29,7 +29,7 @@ namespace LaborVolumeCalculator.Pages.DeviceCountRanges
                 return NotFound();
             }
 
-            DeviceCountRange = await _context.DeviceCountRange.FirstOrDefaultAsync(m => m.ID == id);
+            DeviceCountRange = await _context.DeviceCountRanges.FirstOrDefaultAsync(m => m.ID == id);
 
             if (DeviceCountRange == null)
             {
@@ -45,11 +45,11 @@ namespace LaborVolumeCalculator.Pages.DeviceCountRanges
                 return NotFound();
             }
 
-            DeviceCountRange = await _context.DeviceCountRange.FindAsync(id);
+            DeviceCountRange = await _context.DeviceCountRanges.FindAsync(id);
 
             if (DeviceCountRange != null)
             {
-                _context.DeviceCountRange.Remove(DeviceCountRange);
+                _context.DeviceCountRanges.Remove(DeviceCountRange);
                 await _context.SaveChangesAsync();
             }
 

@@ -28,7 +28,7 @@ namespace LaborVolumeCalculator.Pages.DeviceCountRanges
                 return NotFound();
             }
 
-            DeviceCountRange = await _context.DeviceCountRange.FirstOrDefaultAsync(m => m.ID == id);
+            DeviceCountRange = await _context.DeviceCountRanges.FirstOrDefaultAsync(m => m.ID == id);
 
             if (DeviceCountRange == null)
             {

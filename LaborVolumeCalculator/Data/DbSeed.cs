@@ -74,7 +74,7 @@ namespace LaborVolumeCalculator.Data
             var dcRange_6_10 = new DeviceCountRange("6 .. 10");
             var dcRange_11_20 = new DeviceCountRange("11 .. 20");
 
-            dbContext.DeviceCountRange.AddRange(dcRange_1_5, dcRange_6_10, dcRange_11_20);
+            dbContext.DeviceCountRanges.AddRange(dcRange_1_5, dcRange_6_10, dcRange_11_20);
 
             dbContext.DeviceComplexityRates.AddRange(
                 new DeviceComplexityRate(dcREFU, dcRange_1_5, 1.0),

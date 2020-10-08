@@ -36,7 +36,7 @@ namespace LaborVolumeCalculator.Pages.DeviceCountRanges
                 return Page();
             }
 
-            _context.DeviceCountRange.Add(DeviceCountRange);
+            _context.DeviceCountRanges.Add(DeviceCountRange);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

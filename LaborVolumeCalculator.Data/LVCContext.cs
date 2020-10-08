@@ -15,8 +15,6 @@ namespace LaborVolumeCalculator.Data
             new TimeUpdateService(this.ChangeTracker);
         }
 
-        public DbSet<Niokr> Niokrs { get; set; }
-
         public DbSet<Nir> Nirs { get; set; } 
 
         public DbSet<Okr> Okrs { get; set; }
@@ -29,7 +27,7 @@ namespace LaborVolumeCalculator.Data
         public DbSet<OkrInnovationProperty> OkrInnovationProperties { get; set; }
         public DbSet<DeviceComplexityRate> DeviceComplexityRates { get; set; }
         public DbSet<OkrInnovationRate> OkrInnovationRates { get; set; }
-        public DbSet<DeviceCountRange> DeviceCountRange { get; set; }
+        public DbSet<DeviceCountRange> DeviceCountRanges { get; set; }
 
         public DbSet<Labor> Labors { get; set; }
         public DbSet<NirLabor> NirLabors { get; set; }
@@ -104,25 +102,25 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(n => n.DeviceCountRange).WithMany().OnDelete(DeleteBehavior.NoAction);
             });
 
-            modelBuilder.Entity<NirScale>().ToTable("NirScale");
-            modelBuilder.Entity<NirInnovationProperty>().ToTable("NirInnovationProperty");
+            modelBuilder.Entity<NirScale>().ToTable("NirScale", Schema.Dictionary);
+            modelBuilder.Entity<NirInnovationProperty>().ToTable("NirInnovationProperty", Schema.Dictionary);
             modelBuilder
-                .Entity<NirInnovationRate>().ToTable("NirInnovationRate")
+                .Entity<NirInnovationRate>().ToTable("NirInnovationRate", Schema.Dictionary)
                 .HasIndex(key => new { key.NirScaleID, key.NirInnovationPropertyID })
                 .IsUnique();
 
-            modelBuilder.Entity<DeviceComposition>().ToTable("DeviceComposition");
-            modelBuilder.Entity<OkrInnovationProperty>().ToTable("OkrInnovationProperty");
+            modelBuilder.Entity<DeviceComposition>().ToTable("DeviceComposition", Schema.Dictionary);
+            modelBuilder.Entity<OkrInnovationProperty>().ToTable("OkrInnovationProperty", Schema.Dictionary);
 
-            modelBuilder.Entity<OkrInnovationRate>().ToTable("OkrInnovationRate")
+            modelBuilder.Entity<OkrInnovationRate>().ToTable("OkrInnovationRate", Schema.Dictionary)
                 .HasIndex(key => new { key.OkrInnovationPropertyID, key.DeviceCompositionID })
                 .IsUnique();
             modelBuilder.Entity<OkrInnovationRate>()
                 .Property("Value").HasColumnType("DECIMAL(8, 4)");
 
-            modelBuilder.Entity<DeviceCountRange>().ToTable("DeviceCountRange");
+            modelBuilder.Entity<DeviceCountRange>().ToTable("DeviceCountRange", Schema.Dictionary);
 
-            modelBuilder.Entity<DeviceComplexityRate>().ToTable("DeviceComplexityRate")
+            modelBuilder.Entity<DeviceComplexityRate>().ToTable("DeviceComplexityRate", Schema.Dictionary)
                 .HasIndex(key => new { key.DeviceCompositionID, key.DeviceCountRangeID })
                 .IsUnique();
             modelBuilder.Entity<DeviceComplexityRate>()
@@ -163,6 +161,10 @@ namespace LaborVolumeCalculator.Data
             {
                 e.ToTable("SoftwareDevEnv", Schema.Dictionary);
             });
+
+            modelBuilder.Entity<PlatePointsCountRange>().ToTable("PlatePointsCountRange", Schema.Dictionary);
+
+            modelBuilder.Entity<DbEntityCountRange>().ToTable("DbEntityCountRange", Schema.Dictionary);
 
             modelBuilder.Entity<NirStageLaborVolume>(e =>
             {

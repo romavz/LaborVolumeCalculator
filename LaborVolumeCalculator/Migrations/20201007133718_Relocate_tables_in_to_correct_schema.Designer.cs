@@ -4,14 +4,16 @@ using LaborVolumeCalculator.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaborVolumeCalculator.Migrations
 {
     [DbContext(typeof(LVCContext))]
-    partial class LVCContextModelSnapshot : ModelSnapshot
+    [Migration("20201007133718_Relocate_tables_in_to_correct_schema")]
+    partial class Relocate_tables_in_to_correct_schema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
