@@ -11,6 +11,8 @@ using LaborVolumeCalculator.Models.Registers;
 using LaborVolumeCalculator.DTO;
 using AutoMapper;
 using LaborVolumeCalculator.Utils;
+using LaborVolumeCalculator.Repositories.Contracts;
+using LaborVolumeCalculator.Repositories;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -18,18 +20,18 @@ namespace LaborVolumeCalculator.Controllers
     [ApiController]
     public class NirStageController : ControllerBase<NirStage, NirStageDto>
     {
-        private readonly LVCContext _context;
+        private readonly INirStageRepository _nirStages;
 
-        public NirStageController(LVCContext context, IMapper mapper) : base(mapper)
+        public NirStageController(INirStageRepository nirStages, IMapper mapper) : base(mapper)
         {
-            _context = context;
+            _nirStages = nirStages;
         }
 
         // GET: api/NirStage
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirStageDto>>> GetNirStages(int nirId)
         {
-            var items = await StagesRequest()
+            var items = await _nirStages.WithIncludes
                 .Where(r => r.NirID == nirId)
                 .ToListAsync();
 
@@ -40,21 +42,11 @@ namespace LaborVolumeCalculator.Controllers
             return result;
         }
 
-        private IQueryable<NirStage> StagesRequest()
-        {
-            return _context.NirStages
-                .Include(m => m.NirInnovationRate)
-                .Include(m => m.LaborVolumes)
-                    .ThenInclude(lv => lv.Labor)
-                .AsNoTracking();
-        }
-
-
         // GET: api/NirStage/5
         [HttpGet("{id}")]
         public async Task<ActionResult<NirStageDto>> GetNirStage(int id)
         {
-            var nirStage = await StagesRequest().FirstOrDefaultAsync(m => m.ID == id);
+            var nirStage = await _nirStages.WithIncludes.FirstOrDefaultAsync(m => m.ID == id);
 
             if (nirStage == null)
             {
@@ -76,12 +68,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             var nirStage = ConvertToSource(item);
-            await RemoveDeletedLaborVolumes(nirStage.ID, actualLaborVolumesIDs: nirStage.LaborVolumes.Select(lv => lv.ID));
-            _context.Update(nirStage);
+            _nirStages.Update(nirStage);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _nirStages.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -98,15 +89,6 @@ namespace LaborVolumeCalculator.Controllers
             return Ok();
         }
 
-        private async Task RemoveDeletedLaborVolumes(int nirStageID, IEnumerable<int> actualLaborVolumesIDs)
-        {
-            var deletedVolumes = await _context.NirStageLaborVolumes
-                .Where(lv => lv.StageID == nirStageID && !actualLaborVolumesIDs.Contains(lv.ID))
-                .ToListAsync();
-
-            _context.RemoveRange(deletedVolumes);
-        }
-
         // POST: api/NirStage
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -114,46 +96,40 @@ namespace LaborVolumeCalculator.Controllers
         public async Task<ActionResult<NirStageDto>> PostNirStage(NirStageCreateDto itemDto)
         {
             var nirStage = ConvertToSource(itemDto);
-            _context.NirStages.Add(nirStage);
+            _nirStages.Add(nirStage);
             
             try
             {
-                await _context.SaveChangesAsync();
+                await _nirStages.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
                 return BadRequest();
             }
 
-            nirStage = await StagesRequest().FirstOrDefaultAsync(m => m.ID == nirStage.ID);
+            nirStage = await _nirStages.FirstOrDefaultAsync(m => m.ID == nirStage.ID);
             return CreatedAtAction("GetNirStage", new { id = nirStage.ID }, ConvertToDto(nirStage));
-        }
-
-        private void DeleteStageLaborVolumes(int stageID)
-        {
-            var laborVolumes = _context.NirStageLaborVolumes.Where(m => m.StageID == stageID);
-            _context.NirStageLaborVolumes.RemoveRange(laborVolumes);
         }
 
         // DELETE: api/NirStage/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<NirStageDeleteDto>> DeleteNirStage(int id)
         {
-            var nirStage = await _context.NirStages.FindAsync(id);
+            var nirStage = await _nirStages.FirstOrDefaultAsync(m => m.ID == id);
             if (nirStage == null)
             {
                 return NotFound();
             }
 
-            _context.NirStages.Remove(nirStage);
-            await _context.SaveChangesAsync();
+            _nirStages.Remove(nirStage);
+            await _nirStages.SaveChangesAsync();
 
             return ConvertToDto<NirStageDeleteDto>(nirStage);
         }
 
         private bool NirStageExists(int id)
         {
-            return _context.NirStages.Any(e => e.ID == id);
+            return _nirStages.Any(e => e.ID == id);
         }
     }
 }
