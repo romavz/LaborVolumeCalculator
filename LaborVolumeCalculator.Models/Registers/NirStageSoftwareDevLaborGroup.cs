@@ -2,9 +2,10 @@ using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Models.Registers
 {
-    public class NirStageLaborVolume : LaborVolumeBase
+    public class NirStageSoftwareDevLaborGroup : StageSoftwareDevLaborGroup
     {
         public NirStage Stage { get; set; }
-        public NirLabor Labor { get; set; }
+
+        public NirSoftwareDevLaborGroup SoftwareDevLaborGroup { get; set; }
     }
 }

@@ -36,7 +36,7 @@ namespace LaborVolumeCalculator
             services.AddRazorPages();
 
             services.AddDbContext<LVCContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("LVCContext")));
+                    options.UseSqlServer(Configuration.GetConnectionString("LVCContext"), b => b.MigrationsAssembly("LaborVolumeCalculator")));
             
             services.AddScoped<DbContext, LVCContext>();
             services.AddScoped<INirStageRepository, NirStageRepository>();

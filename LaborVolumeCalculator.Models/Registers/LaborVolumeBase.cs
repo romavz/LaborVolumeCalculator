@@ -4,7 +4,7 @@ namespace LaborVolumeCalculator.Models.Registers
     {
         public int ID { get; set; }
         public int StageID { get; set; }
-
         public double Volume { get; set; }
+        public int LaborID { get; set; }
     }
 }
