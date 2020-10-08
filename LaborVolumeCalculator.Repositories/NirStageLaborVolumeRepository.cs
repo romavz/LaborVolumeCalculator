@@ -1,10 +1,10 @@
 using System.Reflection.PortableExecutable;
 using System.Linq;
 using System.Collections.Generic;
-using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Registers;
 using LaborVolumeCalculator.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Repositories
 {
@@ -14,9 +14,12 @@ namespace LaborVolumeCalculator.Repositories
         {
         }
 
-        public void RemoveOutdated(int stageID, IEnumerable<int> actualItemsIDs)
+        public async Task RemoveOutdatedAsync(int stageID, IEnumerable<int> actualItemsIDs)
         {
-            var outdatedItems = Items.Where(m => (m.StageID == stageID) && !actualItemsIDs.Contains(m.ID));
+            var outdatedItems = await Items
+                .Where(m => (m.StageID == stageID) && !actualItemsIDs.Contains(m.ID))
+                .ToListAsync();
+
             RemoveRange(outdatedItems);
         }
         

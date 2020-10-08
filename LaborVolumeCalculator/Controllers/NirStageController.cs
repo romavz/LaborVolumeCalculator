@@ -68,6 +68,7 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             var nirStage = ConvertToSource(item);
+            await _nirStages.RemoveOutdatedIncludesAsync(nirStage);
             _nirStages.Update(nirStage);
 
             try

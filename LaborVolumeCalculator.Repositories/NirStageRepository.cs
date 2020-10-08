@@ -28,12 +28,9 @@ namespace LaborVolumeCalculator.Repositories
             }
         }
 
-        public override void Update(NirStage item)
+        public async Task RemoveOutdatedIncludesAsync(NirStage stage)
         {
-            laborsVolumes.RemoveOutdated(item.ID, item.LaborVolumes.Select(m => m.ID));
-            base.Update(item);
-        }
-
-        
+            await laborsVolumes.RemoveOutdatedAsync(stage.ID, stage.LaborVolumes.Select(m => m.ID));
+        }        
     }
 }

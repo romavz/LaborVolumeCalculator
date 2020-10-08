@@ -41,7 +41,7 @@ namespace LaborVolumeCalculator.Repositories
         {
             get 
             {
-                return Items.AsNoTracking();
+                throw new NotImplementedException("override this method in children classes if applicable");
             }
         }
 
