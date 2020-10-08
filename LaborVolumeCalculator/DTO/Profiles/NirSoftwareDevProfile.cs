@@ -28,7 +28,7 @@ namespace LaborVolumeCalculator.DTO.Profiles
                 .ForPath(p => p.ComponentsMakroArchitecture.Name, opt => opt.Ignore())
                 .ForPath(p => p.ComponentsInteractionArchitecture.Name, opt => opt.Ignore());
 
-            CreateMap<NirSoftwareDevLaborGroupReg, NirSoftwareDevLaborGroupRegDto>()
+            CreateMap<NirStageSoftwareDevLaborGroup, NirStageSoftwareDevLaborGroupDto>()
                 .ReverseMap()
                 .ForPath(p => p.SoftwareDevLaborGroup.Name, opt => opt.Ignore());
             

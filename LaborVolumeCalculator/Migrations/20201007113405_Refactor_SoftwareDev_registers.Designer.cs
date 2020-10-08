@@ -4,14 +4,16 @@ using LaborVolumeCalculator.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaborVolumeCalculator.Migrations
 {
     [DbContext(typeof(LVCContext))]
-    partial class LVCContextModelSnapshot : ModelSnapshot
+    [Migration("20201007113405_Refactor_SoftwareDev_registers")]
+    partial class Refactor_SoftwareDev_registers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,7 +154,7 @@ namespace LaborVolumeCalculator.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("DbEntityCountRange","Dictionary");
+                    b.ToTable("DbEntityCountRanges");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.DevelopmentLabor", b =>
@@ -226,7 +228,7 @@ namespace LaborVolumeCalculator.Migrations
                     b.HasIndex("DeviceCompositionID", "DeviceCountRangeID")
                         .IsUnique();
 
-                    b.ToTable("DeviceComplexityRate","Dictionary");
+                    b.ToTable("DeviceComplexityRate");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.DeviceComposition", b =>
@@ -241,7 +243,7 @@ namespace LaborVolumeCalculator.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("DeviceComposition","Dictionary");
+                    b.ToTable("DeviceComposition");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.DeviceCountRange", b =>
@@ -257,7 +259,7 @@ namespace LaborVolumeCalculator.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("DeviceCountRange","Dictionary");
+                    b.ToTable("DeviceCountRange");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.InfrastructureComplexityRate", b =>
@@ -315,6 +317,28 @@ namespace LaborVolumeCalculator.Migrations
                     b.ToTable("Labor","Dictionary");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Labor");
+                });
+
+            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Niokr", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Niokrs");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.Nir", b =>
@@ -375,7 +399,7 @@ namespace LaborVolumeCalculator.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("NirInnovationProperty","Dictionary");
+                    b.ToTable("NirInnovationProperty");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.NirInnovationRate", b =>
@@ -404,7 +428,7 @@ namespace LaborVolumeCalculator.Migrations
                     b.HasIndex("NirScaleID", "NirInnovationPropertyID")
                         .IsUnique();
 
-                    b.ToTable("NirInnovationRate","Dictionary");
+                    b.ToTable("NirInnovationRate");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.NirScale", b =>
@@ -426,7 +450,7 @@ namespace LaborVolumeCalculator.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("NirScale","Dictionary");
+                    b.ToTable("NirScale");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.NirStageDefaultLabor", b =>
@@ -511,7 +535,7 @@ namespace LaborVolumeCalculator.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("OkrInnovationProperty","Dictionary");
+                    b.ToTable("OkrInnovationProperty");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.OkrInnovationRate", b =>
@@ -537,7 +561,7 @@ namespace LaborVolumeCalculator.Migrations
                     b.HasIndex("OkrInnovationPropertyID", "DeviceCompositionID")
                         .IsUnique();
 
-                    b.ToTable("OkrInnovationRate","Dictionary");
+                    b.ToTable("OkrInnovationRate");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.PlatePointsCountRange", b =>
@@ -552,7 +576,7 @@ namespace LaborVolumeCalculator.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("PlatePointsCountRange","Dictionary");
+                    b.ToTable("PlatePointsCountRanges");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.SoftwareDevEnv", b =>

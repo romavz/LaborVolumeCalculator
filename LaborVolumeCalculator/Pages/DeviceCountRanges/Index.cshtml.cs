@@ -23,7 +23,7 @@ namespace LaborVolumeCalculator.Pages.DeviceCountRanges
 
         public async Task OnGetAsync()
         {
-            DeviceCountRanges = await _context.DeviceCountRange.ToListAsync();
+            DeviceCountRanges = await _context.DeviceCountRanges.ToListAsync();
         }
     }
 }

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
 using AutoMapper;
+using LaborVolumeCalculator.Repositories.Contracts;
+using LaborVolumeCalculator.Repositories;
 
 namespace LaborVolumeCalculator
 {
@@ -34,7 +36,12 @@ namespace LaborVolumeCalculator
             services.AddRazorPages();
 
             services.AddDbContext<LVCContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("LVCContext")));
+                    options.UseSqlServer(Configuration.GetConnectionString("LVCContext"), b => b.MigrationsAssembly("LaborVolumeCalculator")));
+            
+            services.AddScoped<DbContext, LVCContext>();
+            services.AddScoped<INirStageRepository, NirStageRepository>();
+            services.AddScoped<INirStageLaborVolumeRepository, NirStageLaborVolumeRepository>();
+
             services.AddScoped<DbSeed>();
 
             services.AddSwaggerDocument();

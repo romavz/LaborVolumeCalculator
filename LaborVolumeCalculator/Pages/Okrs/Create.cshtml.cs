@@ -24,7 +24,7 @@ namespace LaborVolumeCalculator.Pages.Okrs
         public IActionResult OnGet()
         {
         ViewData["DeviceCompositionID"] = new SelectList(_context.DeviceCompositions, "ID", "Name");
-        ViewData["DeviceCountRangeID"] = new SelectList(_context.DeviceCountRange, "ID", "Name");
+        ViewData["DeviceCountRangeID"] = new SelectList(_context.DeviceCountRanges, "ID", "Name");
         ViewData["OkrInnovationPropertyID"] = new SelectList(_context.OkrInnovationProperties, "ID", "Name");
             return Page();
         }

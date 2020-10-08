@@ -1,6 +1,6 @@
 namespace LaborVolumeCalculator.DTO
 {
-    public class NirSoftwareDevLaborGroupRegDto : SoftwareDevLaborGroupRegDto
+    public class NirStageSoftwareDevLaborGroupDto : StageSoftwareDevLaborGroupDto
     {
         public int NirID { get; set; }
     }

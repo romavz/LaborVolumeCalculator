@@ -3,9 +3,9 @@ using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Models.Registers
 {
-    public class SoftwareDevLaborGroupReg
+    public class StageSoftwareDevLaborGroup
     {
-        public SoftwareDevLaborGroupReg()
+        public StageSoftwareDevLaborGroup()
         {
         }
 
