@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Models
 {
-    public class BasicModel
+    public class BasicModel : ITimeTreckable
     {
         public BasicModel()
         {
-            CreateTime = DateTime.Now;
-            UpdateTime = CreateTime;
         }
 
         public BasicModel(string name):this()
