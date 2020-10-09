@@ -51,12 +51,11 @@ namespace LaborVolumeCalculator.Controllers
             return ConvertToDto(softwareDevLaborVolumeRange);
         }
 
-        // GET: api/SoftwareDevLaborVolumeRange/GetByLabor/12
-        [HttpGet("[action]/{laborId}")]
-        public async Task<ActionResult<IEnumerable<SoftwareDevLaborVolumeRangeDto>>> GetByLabor(int laborId)
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<SoftwareDevLaborVolumeRangeDto>>> GetByDevEnv(int devEnvId)
         {
             var items = await RangesRequest()
-                .Where(m => m.LaborID == laborId)
+                .Where(m => m.DevEnvID == devEnvId)
                 .ToListAsync();
             
             var orderedItems = ConvertToDto(items)
