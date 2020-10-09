@@ -332,7 +332,7 @@ namespace LaborVolumeCalculator.Data
                 new SoftwareDevLabor("104", "Консольный интерфейс ввода", categories[0]),
                 new SoftwareDevLabor("105", "Графический веб интерфейс (формы ввода данных)", categories[0]),
                 new SoftwareDevLabor("106", "Интерфейс управления миниатюрным устройством, оснащенным тачскрином", categories[0]),
-                new SoftwareDevLabor("107", "Обработка входящий сообщений от системы обмена сообщениями", categories[0])
+                new SoftwareDevLabor("107", "Обработка входящих сообщений от системы обмена сообщениями", categories[0])
             };
 
             dbContext.SoftwareDevLabors.AddRange(labors);
@@ -366,7 +366,7 @@ namespace LaborVolumeCalculator.Data
                 rb.Create(labors[4], _PHP_JS, 1, 2),
                 rb.Create(labors[5], _Cpp_Cs_Java_ObjC, 1.5, 2),
                 
-                rb.Create(labors[6], _PHP_JS, 1,5),
+                rb.Create(labors[6], _PHP_JS, 1.5),
                 rb.Create(_Perl_Ruby_Pyton, 1.5),
                 rb.Create(_Cpp_Cs_Java_ObjC, 1.5)
             };
