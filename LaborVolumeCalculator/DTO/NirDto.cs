@@ -21,6 +21,7 @@ namespace LaborVolumeCalculator.DTO
     public class NirDto : NirChangeDto
     {
         public DateTime CreateTime { get; set; }
+        public DateTime UpdateTime { get; set; }
         public List<NirStageDto> Stages { get; set; }
     }
 
