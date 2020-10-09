@@ -1,9 +1,13 @@
-﻿using System;
+﻿using System.Linq;
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.Models.Registers;
+using LaborVolumeCalculator.Models;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace LaborVolumeCalculator.Data
 {
@@ -12,7 +16,39 @@ namespace LaborVolumeCalculator.Data
         public LVCContext(DbContextOptions<LVCContext> options)
             : base(options)
         {
-            new TimeUpdateService(this.ChangeTracker);
+        }
+
+        public override int SaveChanges()
+        {
+            UpdateStampsOnTimeTreckableEntries();
+
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            UpdateStampsOnTimeTreckableEntries();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void UpdateStampsOnTimeTreckableEntries()
+        {
+            var modifiedEntries = ChangeTracker.Entries()
+                            .Where(entry => entry.State == EntityState.Added || entry.State == EntityState.Modified);
+            
+            DateTime now = DateTime.Now;
+
+            foreach (var entry in modifiedEntries)
+            {
+                ITimeTreckable entity = entry.Entity as ITimeTreckable;
+                if (entity != null) 
+                {
+                    if (entry.State == EntityState.Added) entity.CreateTime = now;
+                    else Entry<ITimeTreckable>(entity).Property(p => p.CreateTime).IsModified = false;
+
+                    entity.UpdateTime = now;
+                }
+            }
         }
 
         public DbSet<Nir> Nirs { get; set; } 
@@ -322,29 +358,6 @@ namespace LaborVolumeCalculator.Data
             public static string Dictionary => "Dictionary";
             public static string Registers => "Registers";
             public static string Documents => "Documents";
-        }
-
-        private class TimeUpdateService
-        {
-            public TimeUpdateService(ChangeTracker changeTracker)
-            {
-                changeTracker.StateChanged += ChangeTracker_StateChanged;
-            }
-            public void ChangeTracker_StateChanged(object sender, EntityStateChangedEventArgs e)
-            {
-                if (e.NewState == EntityState.Modified)
-                {
-                    UpdateTimeStampField(e.Entry, "UpdateTime", DateTime.Now);
-                }
-            }
-
-            private void UpdateTimeStampField(EntityEntry entityEntry, string fieldName, DateTime newTime)
-            {
-                IProperty timeProperty = entityEntry.Metadata.FindProperty(fieldName);
-                if (timeProperty == null) return;
-
-                entityEntry.Property(fieldName).CurrentValue = newTime;
-            }
         }
     }
 }
