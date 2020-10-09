@@ -60,7 +60,7 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut]
-        public async Task<IActionResult> PutNirStage(int id, NirStageChangeDto item)
+        public async Task<ActionResult<NirStageDto>> PutNirStage(int id, NirStageChangeDto item)
         {
             if (id != item.ID)
             {
@@ -86,8 +86,10 @@ namespace LaborVolumeCalculator.Controllers
                     throw;
                 }
             }
+            
+            nirStage = await _nirStages.WithIncludes.FirstOrDefaultAsync(m => m.ID == nirStage.ID);
 
-            return Ok();
+            return Ok(ConvertToDto(nirStage));
         }
 
         // POST: api/NirStage
@@ -108,7 +110,7 @@ namespace LaborVolumeCalculator.Controllers
                 return BadRequest();
             }
 
-            nirStage = await _nirStages.FirstOrDefaultAsync(m => m.ID == nirStage.ID);
+            nirStage = await _nirStages.WithIncludes.FirstOrDefaultAsync(m => m.ID == nirStage.ID);
             return CreatedAtAction("GetNirStage", new { id = nirStage.ID }, ConvertToDto(nirStage));
         }
 
