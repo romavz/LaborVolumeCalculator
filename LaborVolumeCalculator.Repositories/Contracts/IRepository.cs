@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace LaborVolumeCalculator.Repositories.Contracts
 {
-    public interface IRepositoryBase<TEntity> where TEntity: class
+    public interface IRepository<TEntity> where TEntity: class
     {
         IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> condition);
         IQueryable<TEntity> GetAll();
@@ -14,6 +14,7 @@ namespace LaborVolumeCalculator.Repositories.Contracts
 
         void Add(TEntity entity);
         void Update(TEntity entity);
+        void UpdateRecursive(TEntity entity);
         void Remove(TEntity entity);
         void RemoveRange(IEnumerable<TEntity> entities);
 

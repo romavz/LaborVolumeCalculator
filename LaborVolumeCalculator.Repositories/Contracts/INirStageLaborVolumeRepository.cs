@@ -4,7 +4,7 @@ using LaborVolumeCalculator.Models.Registers;
 
 namespace LaborVolumeCalculator.Repositories.Contracts
 {
-    public interface INirStageLaborVolumeRepository : IRepositoryBase<NirStageLaborVolume>
+    public interface INirStageLaborVolumeRepository : IRepository<NirStageLaborVolume>
     {
         Task RemoveOutdatedAsync(int stageID, IEnumerable<int> actualItemsIDs);
     }
