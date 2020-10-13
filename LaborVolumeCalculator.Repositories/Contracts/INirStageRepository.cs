@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Repositories.Contracts
 {
-    public interface INirStageRepository : IRepositoryBase<NirStage>
+    public interface INirStageRepository : IRepository<NirStage>
     {
         /// <summary>
         /// Отмечает на удаление неактуальные элементы: <br/>

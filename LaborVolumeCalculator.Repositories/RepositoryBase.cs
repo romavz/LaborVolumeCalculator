@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LaborVolumeCalculator.Repositories
 {
-    public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity: class
+    public class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity: class
     {
         protected readonly DbSet<TEntity> _items;
         protected readonly DbContext _context;
@@ -49,8 +49,13 @@ namespace LaborVolumeCalculator.Repositories
         {
             Items.Add(item);
         }
+        
+        public void Update(TEntity entity)
+        {
+            _context.Entry<TEntity>(entity).State = EntityState.Modified;
+        }
 
-        public virtual void Update(TEntity item)
+        public virtual void UpdateRecursive(TEntity item)
         {
             Items.Update(item);
         }
@@ -79,5 +84,6 @@ namespace LaborVolumeCalculator.Repositories
         {
             return Items.AsNoTracking().FirstOrDefaultAsync(predicate);
         }
+
     }
 }
