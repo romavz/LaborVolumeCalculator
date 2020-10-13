@@ -16,6 +16,10 @@ namespace LaborVolumeCalculator.DTO.Profiles
                 .ReverseMap()
                 .ForPath(p => p.Labor, opt => opt.Ignore())
                 .ForPath(p => p.DevEnv, opt => opt.Ignore());
+        
+            CreateMap<SoftwareDevEnv, SoftwareDevEnvDto>().ReverseMap();
+            CreateMap<SoftwareDevEnvCreateDto, SoftwareDevEnv>();
+            CreateMap<SoftwareDevEnvChangeDto, SoftwareDevEnv>();
         }
     }
 }
