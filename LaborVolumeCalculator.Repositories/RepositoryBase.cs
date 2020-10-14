@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -57,8 +56,11 @@ namespace LaborVolumeCalculator.Repositories
 
         public virtual void UpdateRecursive(TEntity item)
         {
+            if (UpdateRecursiveEvent != null) UpdateRecursiveEvent(item);
             Items.Update(item);
         }
+
+        public event Action<TEntity> UpdateRecursiveEvent;
 
         public virtual void Remove(TEntity item)
         {
@@ -68,6 +70,24 @@ namespace LaborVolumeCalculator.Repositories
         public virtual void RemoveRange(IEnumerable<TEntity> items)
         {
             Items.RemoveRange(items);
+        }
+
+        protected virtual async Task RemoveOutdatedAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            var outdatedItems = await Items
+                .Where(predicate)
+                .ToListAsync();
+
+            RemoveRange(outdatedItems);
+        }
+
+        protected virtual void RemoveOutdated(Expression<Func<TEntity, bool>> predicate)
+        {
+            var outdatedItems = Items
+                .Where(predicate)
+                .ToList();
+            
+            RemoveRange(outdatedItems);
         }
 
         public bool Any(Expression<Func<TEntity, bool>> predicate)
