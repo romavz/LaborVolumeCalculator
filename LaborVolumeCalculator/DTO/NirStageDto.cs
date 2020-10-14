@@ -41,5 +41,6 @@ namespace LaborVolumeCalculator.DTO
         public double NirInnovationRateValue { get; set; }
         public double Volume { get; set; }
         public List<NirStageLaborVolumeDto> LaborVolumes { get; set; }
+        public List<StageSoftwareDevLaborGroupShortDto> SoftwareDevGroups { get; set; }
     }
 }

@@ -1,13 +1,9 @@
 namespace LaborVolumeCalculator.DTO
 {
-    public class StageSoftwareDevLaborGroupDto
+
+    public class StageSoftwareDevLaborGroupBaseDto
     {
-        public int ID { get; set; }
-
-        public int StageID { get; set; }
-
         public int SoftwareDevLaborGroupID { get; set; }
-        public string SoftwareDevLaborGroupName { get; set; }
 
         public int SolutionInnovationRateID { get; set; }
         public double SolutionInnovationRateValue { get; set; }
@@ -23,5 +19,29 @@ namespace LaborVolumeCalculator.DTO
 
         public int ArchitectureComplexityRateID { get; set; }
         public double ArchitectureComplexityRateValue { get; set; }
+    }
+
+    public class StageSoftwareDevLaborGroupCreateDto : StageSoftwareDevLaborGroupBaseDto
+    {
+        public int StageID { get; set; }
+    }
+
+    public class StageSoftwareDevLaborGroupChangeDto : StageSoftwareDevLaborGroupCreateDto
+    {
+        public int ID { get; set; }
+    }
+
+
+    public class StageSoftwareDevLaborGroupShortDto : StageSoftwareDevLaborGroupBaseDto
+    {
+        public int ID { get; set; }
+
+        public string SoftwareDevLaborGroupName { get; set; }
+    }
+
+    public class StageSoftwareDevLaborGroupDto : StageSoftwareDevLaborGroupShortDto
+    {
+        public int StageID { get; set; }
+        public string StageName { get; set; }
     }
 }
