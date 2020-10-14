@@ -51,7 +51,7 @@ namespace LaborVolumeCalculator.Controllers
 
         private IQueryable<NirSoftwareDevLaborVolume> ItemsRequest()
         {
-            return _context.NirSoftwareDevLaborVolums
+            return _context.NirSoftwareDevLaborVolumes
                 .Include(m => m.SoftwareDevLaborGroup)
                 .Include(m => m.LaborVolumeRange)
                     .ThenInclude(range => range.Labor)
@@ -100,7 +100,7 @@ namespace LaborVolumeCalculator.Controllers
         public async Task<ActionResult<NirSoftwareDevLaborVolumeDto>> PostNirSoftwareDevLaborVolume(NirSoftwareDevLaborVolumeDto nirSoftwareDevLaborVolumeDto)
         {
             var nirSoftwareDevLaborVolume = ConvertToSource(nirSoftwareDevLaborVolumeDto);
-            _context.NirSoftwareDevLaborVolums.Add(nirSoftwareDevLaborVolume);
+            _context.NirSoftwareDevLaborVolumes.Add(nirSoftwareDevLaborVolume);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetNirSoftwareDevLaborVolume", new { id = nirSoftwareDevLaborVolume.ID }, nirSoftwareDevLaborVolume);
@@ -116,7 +116,7 @@ namespace LaborVolumeCalculator.Controllers
                 return NotFound();
             }
 
-            _context.NirSoftwareDevLaborVolums.Remove(nirSoftwareDevLaborVolume);
+            _context.NirSoftwareDevLaborVolumes.Remove(nirSoftwareDevLaborVolume);
             await _context.SaveChangesAsync();
 
             return ConvertToDto(nirSoftwareDevLaborVolume);
@@ -124,7 +124,7 @@ namespace LaborVolumeCalculator.Controllers
 
         private bool NirSoftwareDevLaborVolumeExists(int id)
         {
-            return _context.NirSoftwareDevLaborVolums.Any(e => e.ID == id);
+            return _context.NirSoftwareDevLaborVolumes.Any(e => e.ID == id);
         }
     }
 }
