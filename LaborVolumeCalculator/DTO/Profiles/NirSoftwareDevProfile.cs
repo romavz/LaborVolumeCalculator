@@ -28,13 +28,11 @@ namespace LaborVolumeCalculator.DTO.Profiles
                 .ForPath(p => p.ComponentsMakroArchitecture.Name, opt => opt.Ignore())
                 .ForPath(p => p.ComponentsInteractionArchitecture.Name, opt => opt.Ignore());
 
-            CreateMap<NirStageSoftwareDevLaborGroup, NirStageSoftwareDevLaborGroupDto>()
-                .ReverseMap()
-                .ForPath(p => p.SoftwareDevLaborGroup.Name, opt => opt.Ignore());
+            CreateMap<NirStageSoftwareDevLaborGroup, StageSoftwareDevLaborGroupDto>();
+            CreateMap<StageSoftwareDevLaborGroupDto_ListItem, NirStageSoftwareDevLaborGroup>();
+            CreateMap<NirSoftwareDevLaborVolume, SoftwareDevLaborVolumeDto>();
+            CreateMap<SoftwareDevLaborVolumeDto_ListItem, NirSoftwareDevLaborVolume>();
             
-            CreateMap<NirSoftwareDevLaborVolume, NirSoftwareDevLaborVolumeDto>()
-                .ReverseMap()
-                .ForPath(p => p.LaborVolumeRange, opt => opt.Ignore());
         }
     }
 }

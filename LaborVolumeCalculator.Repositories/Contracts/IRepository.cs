@@ -15,6 +15,7 @@ namespace LaborVolumeCalculator.Repositories.Contracts
         void Add(TEntity entity);
         void Update(TEntity entity);
         void UpdateRecursive(TEntity entity);
+        event Action<TEntity> UpdateRecursiveEvent;
         void Remove(TEntity entity);
         void RemoveRange(IEnumerable<TEntity> entities);
 

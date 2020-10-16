@@ -30,7 +30,7 @@ namespace LaborVolumeCalculator.Controllers
         {
             var items = await RangesRequest().ToListAsync();
             var orderedItems = ConvertToDto(items)
-                .OrderBy(m => m.LaborCode, CodeComparer.Instance)
+                .OrderBy(m => m.Labor.Code, CodeComparer.Instance)
                 .ToArray();
             
             return orderedItems;
@@ -59,7 +59,7 @@ namespace LaborVolumeCalculator.Controllers
                 .ToListAsync();
             
             var orderedItems = ConvertToDto(items)
-                .OrderBy(m => m.DevEnvName)
+                .OrderBy(m => m.Labor.Code, CodeComparer.Instance)
                 .ToArray();
             
             return orderedItems;

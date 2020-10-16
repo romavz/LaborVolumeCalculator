@@ -24,6 +24,17 @@ namespace LaborVolumeCalculator.Repositories
                     .Include(m => m.NirInnovationRate)
                     .Include(m => m.LaborVolumes)
                         .ThenInclude(lv => lv.Labor)
+                    .Include(m => m.SoftwareDevLaborGroups)
+                        .ThenInclude(g => g.SoftwareDevLaborGroup)
+                    .Include(m => m.SoftwareDevLaborGroups)
+                        .ThenInclude(m => m.LaborVolumes)
+                            .ThenInclude(lv => lv.LaborVolumeRange)
+                                .ThenInclude(lvr => lvr.Labor)
+                                    .ThenInclude(l => l.LaborCategory)
+                    .Include(m => m.SoftwareDevLaborGroups)
+                        .ThenInclude(m => m.LaborVolumes)
+                            .ThenInclude(lv => lv.LaborVolumeRange)
+                                .ThenInclude(lvr => lvr.DevEnv)
                     .AsNoTracking();
             }
         }

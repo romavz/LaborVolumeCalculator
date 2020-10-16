@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Models.Registers
@@ -7,5 +8,6 @@ namespace LaborVolumeCalculator.Models.Registers
         public NirStage Stage { get; set; }
 
         public NirSoftwareDevLaborGroup SoftwareDevLaborGroup { get; set; }
+        public List<NirSoftwareDevLaborVolume> LaborVolumes { get; set; }
     }
 }

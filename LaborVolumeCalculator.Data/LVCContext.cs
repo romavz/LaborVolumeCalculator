@@ -41,13 +41,12 @@ namespace LaborVolumeCalculator.Data
             foreach (var entry in modifiedEntries)
             {
                 ITimeTreckable entity = entry.Entity as ITimeTreckable;
-                if (entity != null) 
-                {
-                    if (entry.State == EntityState.Added) entity.CreateTime = now;
-                    else Entry<ITimeTreckable>(entity).Property(p => p.CreateTime).IsModified = false;
+                if (entity == null) continue; 
+                
+                if (entry.State == EntityState.Added) entity.CreateTime = now;
+                else Entry<ITimeTreckable>(entity).Property(p => p.CreateTime).IsModified = false;
 
-                    entity.UpdateTime = now;
-                }
+                entity.UpdateTime = now;
             }
         }
 
@@ -94,7 +93,7 @@ namespace LaborVolumeCalculator.Data
         public DbSet<DbEntityCountRange> DbEntityCountRanges { get; set; }
 
         public DbSet<NirStageLaborVolume> NirStageLaborVolumes { get; set; }
-        public DbSet<NirSoftwareDevLaborVolume> NirSoftwareDevLaborVolums { get; set; }
+        public DbSet<NirSoftwareDevLaborVolume> NirSoftwareDevLaborVolumes { get; set; }
         public DbSet<OkrStageLaborVolume> OkrStageLaborVolumes { get; set; }
 
         public DbSet<DevelopmentLaborCategory> LaborCategories { get; set; }
@@ -216,7 +215,7 @@ namespace LaborVolumeCalculator.Data
                 e.ToTable("NirSoftwareDevLaborVolume", Schema.Registers)
                     .HasIndex(key => new { key.SoftwareDevLaborGroupID, key.LaborVolumeRangeID })
                     .IsUnique();
-                e.HasOne(r => r.SoftwareDevLaborGroup).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.SoftwareDevLaborGroup).WithMany(lg => lg.LaborVolumes).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<OkrStageLaborVolume>(e =>
@@ -318,7 +317,7 @@ namespace LaborVolumeCalculator.Data
                 e.ToTable("NirStageSoftwareDevLaborGroup", Schema.Registers)
                     .HasIndex(key => new { key.StageID, key.SoftwareDevLaborGroupID })
                     .IsUnique();
-                e.HasOne(r => r.Stage).WithMany().IsRequired().OnDelete(DeleteBehavior.Cascade);
+                e.HasOne(r => r.Stage).WithMany(stage => stage.SoftwareDevLaborGroups).IsRequired().OnDelete(DeleteBehavior.Cascade);
                 e.HasOne(r => r.SoftwareDevLaborGroup).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
             });
 

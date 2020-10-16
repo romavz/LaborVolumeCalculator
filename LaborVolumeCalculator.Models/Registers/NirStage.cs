@@ -20,5 +20,6 @@ namespace LaborVolumeCalculator.Models.Registers
 
         public double Volume { get; set; }
         public List<NirStageLaborVolume> LaborVolumes { get; set; }
+        public List<NirStageSoftwareDevLaborGroup> SoftwareDevLaborGroups { get; set; }
     }
 }
