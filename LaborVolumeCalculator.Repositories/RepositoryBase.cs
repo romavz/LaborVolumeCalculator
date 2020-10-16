@@ -72,22 +72,13 @@ namespace LaborVolumeCalculator.Repositories
             Items.RemoveRange(items);
         }
 
-        protected virtual async Task RemoveOutdatedAsync(Expression<Func<TEntity, bool>> predicate)
+        protected virtual void RemoveItems(Expression<Func<TEntity, bool>> predicate)
         {
-            var outdatedItems = await Items
-                .Where(predicate)
-                .ToListAsync();
-
-            RemoveRange(outdatedItems);
-        }
-
-        protected virtual void RemoveOutdated(Expression<Func<TEntity, bool>> predicate)
-        {
-            var outdatedItems = Items
+            var itemsList = Items
                 .Where(predicate)
                 .ToList();
             
-            RemoveRange(outdatedItems);
+            RemoveRange(itemsList);
         }
 
         public bool Any(Expression<Func<TEntity, bool>> predicate)

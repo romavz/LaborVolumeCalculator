@@ -19,8 +19,7 @@ namespace LaborVolumeCalculator.Repositories
        
         protected void OnNirStageRecursiveUpdate(NirStage nirStage)
         {
-            var actualItemsIDs = nirStage.SoftwareDevLaborGroups.Select(m => m.ID);
-            RemoveOutdated(m => m.StageID == nirStage.ID && !actualItemsIDs.Contains(m.ID));
+            RemoveItems(m => m.StageID == nirStage.ID);
         }
 
     }
