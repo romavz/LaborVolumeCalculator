@@ -75,7 +75,7 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSoftwareDevLabor(int id, DevelopmentLaborDto softwareDevLaborDto)
+        public async Task<ActionResult<DevelopmentLaborDto>> PutSoftwareDevLabor(int id, DevelopmentLaborChangeDto softwareDevLaborDto)
         {
             if (id != softwareDevLaborDto.ID)
             {
@@ -100,15 +100,16 @@ namespace LaborVolumeCalculator.Controllers
                     throw;
                 }
             }
+            softwareDevLabor = await LaborsRequest().FirstOrDefaultAsync(m => m.ID == softwareDevLabor.ID);
 
-            return Ok();
+            return Ok(ConvertToDto(softwareDevLabor));
         }
 
         // POST: api/SoftwareDevLabor
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<DevelopmentLaborDto>> PostSoftwareDevLabor(DevelopmentLaborDto softwareDevLaborDto)
+        public async Task<ActionResult<DevelopmentLaborDto>> PostSoftwareDevLabor(DevelopmentLaborCreateDto softwareDevLaborDto)
         {
             var softwareDevLabor = ConvertToSource(softwareDevLaborDto);
             _context.SoftwareDevLabors.Add(softwareDevLabor);
@@ -122,7 +123,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<DevelopmentLaborDto>> DeleteSoftwareDevLabor(int id)
         {
-            var softwareDevLabor = await _context.SoftwareDevLabors.FindAsync(id);
+            var softwareDevLabor = await LaborsRequest().FirstOrDefaultAsync(m => m.ID == id);
             if (softwareDevLabor == null)
             {
                 return NotFound();
