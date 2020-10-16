@@ -36,7 +36,6 @@ namespace LaborVolumeCalculator.Models.Dictionary
         public NirInnovationProperty NirInnovationProperty { get; set; }
         
         [DisplayName("Значение")]
-        [Column(TypeName = "DECIMAL(8, 4)")]
         public double Value { get; set; }
      
         [DataType(DataType.DateTime)]

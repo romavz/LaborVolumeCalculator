@@ -150,16 +150,12 @@ namespace LaborVolumeCalculator.Data
             modelBuilder.Entity<OkrInnovationRate>().ToTable("OkrInnovationRate", Schema.Dictionary)
                 .HasIndex(key => new { key.OkrInnovationPropertyID, key.DeviceCompositionID })
                 .IsUnique();
-            modelBuilder.Entity<OkrInnovationRate>()
-                .Property("Value").HasColumnType("DECIMAL(8, 4)");
 
             modelBuilder.Entity<DeviceCountRange>().ToTable("DeviceCountRange", Schema.Dictionary);
 
             modelBuilder.Entity<DeviceComplexityRate>().ToTable("DeviceComplexityRate", Schema.Dictionary)
                 .HasIndex(key => new { key.DeviceCompositionID, key.DeviceCountRangeID })
                 .IsUnique();
-            modelBuilder.Entity<DeviceComplexityRate>()
-                .Property("Value").HasColumnType("DECIMAL(8, 4)");
 
             modelBuilder.Entity<Labor>(e =>
             {
