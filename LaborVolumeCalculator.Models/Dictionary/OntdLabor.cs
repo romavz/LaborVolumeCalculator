@@ -13,7 +13,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
         {
         }
 
-        public OntdLabor(string code, string name, float minVolume, float maxVolume) : base(code, name, minVolume, maxVolume)
+        public OntdLabor(string code, string name, double minVolume, double maxVolume) : base(code, name, minVolume, maxVolume)
         {
         }
     }

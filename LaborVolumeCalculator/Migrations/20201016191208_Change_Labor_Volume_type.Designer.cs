@@ -4,14 +4,16 @@ using LaborVolumeCalculator.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaborVolumeCalculator.Migrations
 {
     [DbContext(typeof(LVCContext))]
-    partial class LVCContextModelSnapshot : ModelSnapshot
+    [Migration("20201016191208_Change_Labor_Volume_type")]
+    partial class Change_Labor_Volume_type
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,8 +218,8 @@ namespace LaborVolumeCalculator.Migrations
                     b.Property<int>("DeviceCountRangeID")
                         .HasColumnType("int");
 
-                    b.Property<double>("Value")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Value")
+                        .HasColumnType("DECIMAL(8, 4)");
 
                     b.HasKey("ID");
 
@@ -394,8 +396,8 @@ namespace LaborVolumeCalculator.Migrations
                     b.Property<int>("NirScaleID")
                         .HasColumnType("int");
 
-                    b.Property<double>("Value")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Value")
+                        .HasColumnType("DECIMAL(8, 4)");
 
                     b.HasKey("ID");
 
@@ -527,8 +529,8 @@ namespace LaborVolumeCalculator.Migrations
                     b.Property<int>("OkrInnovationPropertyID")
                         .HasColumnType("int");
 
-                    b.Property<double>("Value")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Value")
+                        .HasColumnType("DECIMAL(8, 4)");
 
                     b.HasKey("ID");
 
