@@ -12,6 +12,8 @@ namespace LaborVolumeCalculator.DTO.Profiles
                 .ReverseMap()
                 .ForPath(p => p.LaborCategory, opt => opt.Ignore());
 
+            CreateMap<DevelopmentLaborCategory, DevelopmentLaborCategoryDto>();
+
             CreateMap<SoftwareDevLaborVolumeRange, SoftwareDevLaborVolumeRangeDto>()
                 .ReverseMap()
                 .ForPath(p => p.Labor, opt => opt.Ignore())

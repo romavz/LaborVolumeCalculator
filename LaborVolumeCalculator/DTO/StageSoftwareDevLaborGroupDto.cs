@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace LaborVolumeCalculator.DTO
 {
 
@@ -21,27 +23,17 @@ namespace LaborVolumeCalculator.DTO
         public double ArchitectureComplexityRateValue { get; set; }
     }
 
-    public class StageSoftwareDevLaborGroupCreateDto : StageSoftwareDevLaborGroupBaseDto
-    {
-        public int StageID { get; set; }
-    }
-
-    public class StageSoftwareDevLaborGroupChangeDto : StageSoftwareDevLaborGroupCreateDto
-    {
-        public int ID { get; set; }
-    }
-
-
-    public class StageSoftwareDevLaborGroupShortDto : StageSoftwareDevLaborGroupBaseDto
+    public class StageSoftwareDevLaborGroupDto : StageSoftwareDevLaborGroupBaseDto
     {
         public int ID { get; set; }
 
         public string SoftwareDevLaborGroupName { get; set; }
+        public List<SoftwareDevLaborVolumeDto> LaborVolumes { get; set; }
     }
 
-    public class StageSoftwareDevLaborGroupDto : StageSoftwareDevLaborGroupShortDto
+    public class StageSoftwareDevLaborGroupDto_ListItem : StageSoftwareDevLaborGroupBaseDto
     {
-        public int StageID { get; set; }
-        public string StageName { get; set; }
+        public List<SoftwareDevLaborVolumeDto_ListItem> LaborVolumes { get; set; }
     }
+
 }
