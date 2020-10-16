@@ -19,7 +19,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
             Name = name;
         }
 
-        public Labor(string code, string name, float minVolume, float maxVolume) : this(code, name)
+        public Labor(string code, string name, double minVolume, double maxVolume) : this(code, name)
         {
             MinVolume = minVolume;
             MaxVolume = maxVolume;
@@ -34,9 +34,9 @@ namespace LaborVolumeCalculator.Models.Dictionary
         public string Name { get; set; }
 
         [Display(Name = "Минимум")]
-        public float MinVolume { get; set; }
+        public double MinVolume { get; set; }
 
         [Display(Name = "Маскимум")]
-        public float MaxVolume { get; set; }
+        public double MaxVolume { get; set; }
     }
 }

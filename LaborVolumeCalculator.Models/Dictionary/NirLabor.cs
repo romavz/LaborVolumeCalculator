@@ -13,7 +13,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
         public NirLabor() : base() { }
 
 
-        public NirLabor(string code, string name, float minVolume, float maxVolume) : base(code, name, minVolume, maxVolume)
+        public NirLabor(string code, string name, double minVolume, double maxVolume) : base(code, name, minVolume, maxVolume)
         {
         }
     }
