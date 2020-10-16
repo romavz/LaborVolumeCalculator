@@ -8,9 +8,9 @@ namespace LaborVolumeCalculator.DTO.Profiles
     {
         public SharedProfile()
         {
-            CreateMap<SoftwareDevLabor, DevelopmentLaborDto>()
-                .ReverseMap()
-                .ForPath(p => p.LaborCategory, opt => opt.Ignore());
+            CreateMap<SoftwareDevLabor, DevelopmentLaborDto>();
+            CreateMap<DevelopmentLaborCreateDto, SoftwareDevLabor>();
+            CreateMap<DevelopmentLaborChangeDto, SoftwareDevLabor>();
 
             CreateMap<DevelopmentLaborCategory, DevelopmentLaborCategoryDto>();
 
