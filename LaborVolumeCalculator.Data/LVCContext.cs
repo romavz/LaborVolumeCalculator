@@ -206,6 +206,15 @@ namespace LaborVolumeCalculator.Data
                 e.HasIndex(key => new { key.StageID, key.LaborID }).IsUnique();
             });
 
+            modelBuilder.Entity<NirStageOntdLaborVolume>(e => 
+            {
+                e.ToTable("NirStageOntdLaborVolume", Schema.Registers);
+                e.HasOne(r => r.Stage).WithMany(s => s.OntdLaborVolumes).OnDelete(DeleteBehavior.Cascade);
+                e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
+                e.Property(p => p.Volume).IsRequired();
+                e.HasIndex(key => new { key.StageID, key.LaborID }).IsUnique();
+            });
+
             modelBuilder.Entity<NirSoftwareDevLaborVolume>(e =>
             {
                 e.ToTable("NirSoftwareDevLaborVolume", Schema.Registers)
