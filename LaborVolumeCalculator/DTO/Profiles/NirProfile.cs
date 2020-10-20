@@ -17,7 +17,7 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<NirCreateDto, Nir>();
             CreateMap<NirChangeDto, Nir>().ReverseMap();
 
-            CreateMap<NirLabor, NirLaborDto>().ReverseMap();
+            CreateMap<Labor, LaborDto>().ReverseMap();
 
             CreateMap<NirScale, NirScaleDto>().ReverseMap();
             CreateMap<NirInnovationProperty, NirInnovationPropertyDto>().ReverseMap();
@@ -26,15 +26,10 @@ namespace LaborVolumeCalculator.DTO.Profiles
                 .ForPath(p => p.NirInnovationProperty.Name, opt => opt.Ignore());
             
             // Регистры
-            CreateMap<NirStageLaborVolume, NirStageLaborVolumeDto>().ReverseMap()
-                .ForPath(p => p.LaborID, opt => opt.MapFrom(dto => dto.Labor.ID))
-                .ForPath(p => p.Labor, opt => opt.Ignore());
-            
-            CreateMap<NirStageLaborVolumeCreateDto, NirStageLaborVolume>();
-            CreateMap<NirStageLaborVolumeChangeDto, NirStageLaborVolume>();
-            CreateMap<NirStageLaborVolumeDto_ListItem, NirStageLaborVolume>();
+            CreateMap<NirStageLaborVolume, StageLaborVolumeDto>();
+            CreateMap<StageLaborVolumeDto_ListItem, NirStageLaborVolume>();
 
-            CreateMap<StageLaborVolumeDto, NirStageOntdLaborVolume>();
+            CreateMap<NirStageOntdLaborVolume, StageLaborVolumeDto>();
             CreateMap<StageLaborVolumeDto_ListItem, NirStageOntdLaborVolume>();
 
             CreateMap<NirStage, NirStageDto>().ReverseMap()
