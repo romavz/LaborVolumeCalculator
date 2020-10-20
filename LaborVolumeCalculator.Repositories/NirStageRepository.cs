@@ -7,13 +7,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LaborVolumeCalculator.Repositories
 {
-    public class NirStageRepository : RepositoryBase<NirStage>, INirStageRepository
+    public class NirStageRepository : RepositoryBase<NirStage>, IRepository<NirStage>
     {
-        protected readonly INirStageLaborVolumeRepository laborsVolumes;
+        private readonly DbContext context;
+        protected readonly IRepository<NirStageLaborVolume> laborsVolumes;
+        private readonly IRepository<NirStageSoftwareDevLaborGroup> sdlvGroups;
+        private readonly IRepository<NirStageOntdLaborVolume> ontdLaborsVolumes;
 
-        public NirStageRepository(DbContext context, INirStageLaborVolumeRepository laborsVolumes) : base(context)
+        public NirStageRepository(DbContext context,
+            IRepository<NirStageLaborVolume> laborsVolumes,
+            IRepository<NirStageSoftwareDevLaborGroup> sdlvGroups,
+            IRepository<NirStageOntdLaborVolume> ontdLaborsVolumes
+            ) : base(context)
         {
+            this.context = context;
             this.laborsVolumes = laborsVolumes;
+            this.sdlvGroups = sdlvGroups;
+            this.ontdLaborsVolumes = ontdLaborsVolumes;
         }
 
         public override IQueryable<NirStage> WithIncludes
@@ -40,9 +50,24 @@ namespace LaborVolumeCalculator.Repositories
             }
         }
 
-        public async Task RemoveOutdatedIncludesAsync(NirStage stage)
+        public override void UpdateRecursive(NirStage item)
         {
-            await laborsVolumes.RemoveOutdatedAsync(stage.ID, stage.LaborVolumes.Select(m => m.ID));
+            RemoveOutdatedIncludes(item);
+            base.UpdateRecursive(item);
+        }
+
+        /// <summary>
+        /// Отмечает на удаление неактуальные элементы: <br/>
+        ///     - Трудозатраты Этапа; <br/>
+        ///     - Группы трудозатрат СПО Этапа; <br/>
+        ///     - Трудозатраты ОНТД Этапа;
+        /// </summary>
+        /// <param name="stage"> Этап НИР </param>
+        protected virtual void RemoveOutdatedIncludes(NirStage stage)
+        {
+            laborsVolumes.RemoveItems(m => m.StageID == stage.ID);
+            sdlvGroups.RemoveItems(m => m.StageID == stage.ID);
+            ontdLaborsVolumes.RemoveItems(m => m.StageID == stage.ID);
         }        
     }
 }

@@ -56,11 +56,8 @@ namespace LaborVolumeCalculator.Repositories
 
         public virtual void UpdateRecursive(TEntity item)
         {
-            if (UpdateRecursiveEvent != null) UpdateRecursiveEvent(item);
             Items.Update(item);
         }
-
-        public event Action<TEntity> UpdateRecursiveEvent;
 
         public virtual void Remove(TEntity item)
         {
@@ -72,7 +69,7 @@ namespace LaborVolumeCalculator.Repositories
             Items.RemoveRange(items);
         }
 
-        protected virtual void RemoveItems(Expression<Func<TEntity, bool>> predicate)
+        public virtual void RemoveItems(Expression<Func<TEntity, bool>> predicate)
         {
             var itemsList = Items
                 .Where(predicate)

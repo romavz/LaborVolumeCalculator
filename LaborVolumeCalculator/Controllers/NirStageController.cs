@@ -20,9 +20,9 @@ namespace LaborVolumeCalculator.Controllers
     [ApiController]
     public class NirStageController : ControllerBase<NirStage, NirStageDto>
     {
-        private readonly INirStageRepository _nirStages;
+        private readonly IRepository<NirStage> _nirStages;
 
-        public NirStageController(INirStageRepository nirStages, IMapper mapper) : base(mapper)
+        public NirStageController(IRepository<NirStage> nirStages, IMapper mapper) : base(mapper)
         {
             _nirStages = nirStages;
         }
@@ -68,7 +68,6 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             var nirStage = ConvertToSource(item);
-            await _nirStages.RemoveOutdatedIncludesAsync(nirStage);
             _nirStages.UpdateRecursive(nirStage);
 
             try
