@@ -35,6 +35,7 @@ namespace LaborVolumeCalculator.Repositories
                     .Include(m => m.LaborVolumes)
                         .ThenInclude(lv => lv.Labor)
                     .Include(m => m.OntdLaborVolumes)
+                        .ThenInclude(lv => lv.Labor)
                     .Include(m => m.SoftwareDevLaborGroups)
                         .ThenInclude(g => g.SoftwareDevLaborGroup)
                     .Include(m => m.SoftwareDevLaborGroups)
