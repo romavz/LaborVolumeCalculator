@@ -9,11 +9,11 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<INirStageRepository, NirStageRepository>();
-            services.AddScoped<INirStageLaborVolumeRepository, NirStageLaborVolumeRepository>();
+            services.AddScoped<IRepository<NirStage>, NirStageRepository>();
+            services.AddScoped<IRepository<NirStageLaborVolume>, RepositoryBase<NirStageLaborVolume>>();
             services.AddScoped<IRepository<SoftwareDevEnv>, SoftwareDevEnvRepository>();
-            services.AddScoped<IRepository<NirStageSoftwareDevLaborGroup>, NirStageSoftwareDevLaborGroupRepository>();
-            services.AddScoped<IRepository<NirStageOntdLaborVolume>, NirStageOntdLaborVolumeRepository>();
+            services.AddScoped<IRepository<NirStageSoftwareDevLaborGroup>, RepositoryBase<NirStageSoftwareDevLaborGroup>>();
+            services.AddScoped<IRepository<NirStageOntdLaborVolume>, RepositoryBase<NirStageOntdLaborVolume>>();
             return services;
         }
     }
