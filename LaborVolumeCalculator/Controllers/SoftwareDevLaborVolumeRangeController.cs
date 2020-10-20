@@ -69,6 +69,7 @@ namespace LaborVolumeCalculator.Controllers
         {
             return _context.SoftwareDevLaborVolumeRanges
                 .Include(m => m.Labor)
+                    .ThenInclude(l => l.LaborCategory)
                 .Include(m => m.DevEnv)
                 .AsNoTracking();
         }
