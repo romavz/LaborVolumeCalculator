@@ -4,7 +4,7 @@ namespace LaborVolumeCalculator.DTO
     {
         public int ID { get; set; }
         public double Volume { get; set; }
-        public NirLaborDto Labor { get; set; }
+        public LaborDto Labor { get; set; }
     }
 
     public class NirStageLaborVolumeCreateDto
