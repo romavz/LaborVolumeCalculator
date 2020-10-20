@@ -26,7 +26,7 @@ namespace LaborVolumeCalculator.DTO
     public class NirStageCreateDto : NirStageBaseDto
     {
         public int NirID { get; set; }
-        public List<NirStageLaborVolumeDto_ListItem> LaborVolumes { get; set; }
+        public List<StageLaborVolumeDto_ListItem> LaborVolumes { get; set; }
         public List<StageSoftwareDevLaborGroupDto_ListItem> SoftwareDevLaborGroups { get; set; }
 
         public List<StageLaborVolumeDto_ListItem> OntdLaborVolumes { get; set; }
@@ -43,7 +43,7 @@ namespace LaborVolumeCalculator.DTO
         public int ID { get; set; }
         public double NirInnovationRateValue { get; set; }
         public double Volume { get; set; }
-        public List<NirStageLaborVolumeDto> LaborVolumes { get; set; }
+        public List<StageLaborVolumeDto> LaborVolumes { get; set; }
         public List<StageSoftwareDevLaborGroupDto> SoftwareDevLaborGroups { get; set; }
         public List<StageLaborVolumeDto> OntdLaborVolumes { get; set; }
     }
