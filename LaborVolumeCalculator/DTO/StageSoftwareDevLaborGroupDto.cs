@@ -28,6 +28,7 @@ namespace LaborVolumeCalculator.DTO
         public int ID { get; set; }
 
         public string SoftwareDevLaborGroupName { get; set; }
+        public string SoftwareDevLaborGroupCode { get; set; }
         public List<SoftwareDevLaborVolumeDto> LaborVolumes { get; set; }
     }
 
