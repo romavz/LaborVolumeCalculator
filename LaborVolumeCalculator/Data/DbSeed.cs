@@ -37,13 +37,12 @@ namespace LaborVolumeCalculator.Data
                 return;
             }
 
-            (new NirSeeds(dbContext)).Initialize();
-            var dlcs = new DevLaborCategorySeeds(dbContext);
-            dlcs.Initialize();
-            (new SoftwareDevSeeds(dbContext)).Initialize(dlcs.Categories);
-            (new DbDevSeeds(dbContext)).Initialize(dlcs.Categories);
-            (new OntdSeeds(dbContext)).Initialize();
-            (new SoftwareDevLaborGroupRateSeeds(dbContext)).Initialize();
+            new NirSeeds(dbContext).Initialize();
+            var dlcs = new DevLaborCategorySeeds(dbContext).Initialize();
+            new SoftwareDevSeeds(dbContext).Initialize(dlcs.Categories);
+            new DbDevSeeds(dbContext).Initialize(dlcs.Categories);
+            new OntdSeeds(dbContext).Initialize();
+            new SoftwareDevLaborGroupRateSeeds(dbContext).Initialize();
 
             dbContext.SaveChanges();
         }               

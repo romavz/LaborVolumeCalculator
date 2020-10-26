@@ -11,7 +11,7 @@ namespace LaborVolumeCalculator.Data.Ontd
             this.dbContext = dbContext;
         }
 
-        public OntdSeeds Initialize()
+        public void Initialize()
         {
             var lb = new OntdLaborBuilder(); 
             OntdLabor[] labors = {
@@ -31,8 +31,6 @@ namespace LaborVolumeCalculator.Data.Ontd
                 lb.Create(14, "Служебная записка, справка", 0.02)
             };
             dbContext.AddRange(labors);
-
-            return this;
         }
     }
 }

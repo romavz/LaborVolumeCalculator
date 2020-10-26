@@ -12,7 +12,7 @@ namespace LaborVolumeCalculator.Data.DevLabors
 
         public DevelopmentLaborCategory[] Categories { get; private set; }
 
-        public void Initialize()
+        public DevLaborCategorySeeds Initialize()
         {
             Categories = new DevelopmentLaborCategory[]
             {
@@ -29,6 +29,8 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 new DevelopmentLaborCategory(11, "Разработка печатной платы")
             };
             dbContext.AddRange(Categories);
+
+            return this;
         }
     }
 }
