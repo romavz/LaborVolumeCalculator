@@ -43,6 +43,7 @@ namespace LaborVolumeCalculator.Data
             (new SoftwareDevSeeds(dbContext)).Initialize(dlcs.Categories);
             (new DbDevSeeds(dbContext)).Initialize(dlcs.Categories);
             (new OntdSeeds(dbContext)).Initialize();
+            (new SoftwareDevLaborGroupRateSeeds(dbContext)).Initialize();
 
             dbContext.SaveChanges();
         }               
