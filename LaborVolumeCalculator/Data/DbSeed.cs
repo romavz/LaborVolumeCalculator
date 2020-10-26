@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LaborVolumeCalculator.Data.Nir;
 using LaborVolumeCalculator.Data.DevLabors;
+using LaborVolumeCalculator.Data.Ontd;
 
 namespace LaborVolumeCalculator.Data
 {
@@ -41,6 +42,7 @@ namespace LaborVolumeCalculator.Data
             dlcs.Initialize();
             (new SoftwareDevSeeds(dbContext)).Initialize(dlcs.Categories);
             (new DbDevSeeds(dbContext)).Initialize(dlcs.Categories);
+            (new OntdSeeds(dbContext)).Initialize();
 
             dbContext.SaveChanges();
         }               
