@@ -94,6 +94,7 @@ namespace LaborVolumeCalculator.Data
 
         public DbSet<NirStageLaborVolume> NirStageLaborVolumes { get; set; }
         public DbSet<NirSoftwareDevLaborVolume> NirSoftwareDevLaborVolumes { get; set; }
+        public DbSet<NirDbDevLaborVolume> NirDbDevLaborVolumes { get; set; }
         public DbSet<OkrStageLaborVolume> OkrStageLaborVolumes { get; set; }
 
         public DbSet<DevelopmentLaborCategory> LaborCategories { get; set; }
@@ -221,6 +222,14 @@ namespace LaborVolumeCalculator.Data
                     .HasIndex(key => new { key.SoftwareDevLaborGroupID, key.LaborVolumeRangeID })
                     .IsUnique();
                 e.HasOne(r => r.SoftwareDevLaborGroup).WithMany(lg => lg.LaborVolumes).OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<NirDbDevLaborVolume>(e => 
+            {
+                e.ToTable("NirDbDevLaborVolume", Schema.Registers)
+                    .HasIndex(key => new { key.SoftwareDevLaborGroupID, key.LaborVolumeRangeID })
+                    .IsUnique();
+                e.HasOne(r => r.SoftwareDevLaborGroup).WithMany(lg => lg.DbDevLaborVolumes).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<OkrStageLaborVolume>(e =>
