@@ -8,6 +8,9 @@ namespace LaborVolumeCalculator.DTO.Profiles
     {
         public SharedProfile()
         {
+            CreateMap<LaborCreateDto, OntdLabor>();
+            CreateMap<LaborDto, OntdLabor>();
+
             CreateMap<SoftwareDevLabor, DevelopmentLaborDto>();
             CreateMap<DevelopmentLaborCreateDto, SoftwareDevLabor>();
             CreateMap<DevelopmentLaborChangeDto, SoftwareDevLabor>();
