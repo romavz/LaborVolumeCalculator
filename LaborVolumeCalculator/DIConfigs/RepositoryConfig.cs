@@ -13,6 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRepository<NirStageLaborVolume>, RepositoryBase<NirStageLaborVolume>>();
             services.AddScoped<IRepository<SoftwareDevEnv>, SoftwareDevEnvRepository>();
             services.AddScoped<IRepository<NirStageSoftwareDevLaborGroup>, RepositoryBase<NirStageSoftwareDevLaborGroup>>();
+            services.AddScoped<IRepository<OntdLabor>, RepositoryBase<OntdLabor>>();
             services.AddScoped<IRepository<NirStageOntdLaborVolume>, RepositoryBase<NirStageOntdLaborVolume>>();
             return services;
         }
