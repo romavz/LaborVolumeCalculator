@@ -9,7 +9,6 @@ namespace LaborVolumeCalculator.Repositories
 {
     public class NirStageRepository : RepositoryBase<NirStage>, IRepository<NirStage>
     {
-        private readonly DbContext context;
         protected readonly IRepository<NirStageLaborVolume> laborsVolumes;
         private readonly IRepository<NirStageSoftwareDevLaborGroup> sdlvGroups;
         private readonly IRepository<NirStageOntdLaborVolume> ontdLaborsVolumes;
@@ -20,7 +19,6 @@ namespace LaborVolumeCalculator.Repositories
             IRepository<NirStageOntdLaborVolume> ontdLaborsVolumes
             ) : base(context)
         {
-            this.context = context;
             this.laborsVolumes = laborsVolumes;
             this.sdlvGroups = sdlvGroups;
             this.ontdLaborsVolumes = ontdLaborsVolumes;
