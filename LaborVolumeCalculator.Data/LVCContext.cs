@@ -167,7 +167,14 @@ namespace LaborVolumeCalculator.Data
 
             modelBuilder.Entity<OkrLabor>().HasOne(r => r.OkrStage).WithMany().OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<DevelopmentLabor>().ToTable("DevelopmentLabor", Schema.Dictionary);
+            modelBuilder.Entity<DevelopmentLabor>(e => 
+            {
+                e.ToTable("DevelopmentLabor", Schema.Dictionary)
+                    .HasIndex(key => new { key.LaborCategoryID, key.Code })
+                    .IsUnique();
+                
+                e.HasOne(m => m.LaborCategory).WithMany().OnDelete(DeleteBehavior.Restrict);
+            });
 
             modelBuilder.Entity<Stage>().ToTable("Stage", Schema.Dictionary);
 
