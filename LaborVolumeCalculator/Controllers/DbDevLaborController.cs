@@ -37,18 +37,6 @@ namespace LaborVolumeCalculator.Controllers
             return itemsDto;
         }
 
-
-        // GET: api/DbDevLabor/GetByCategory/4
-        [HttpGet("[action]/{categoryId}")]
-        public async Task<ActionResult<IEnumerable<DevelopmentLaborShortDto>>> GetByCategory(int categoryId)
-        {
-            var items = await _labors.Get(m => m.LaborCategoryID == categoryId).ToListAsync();
-            var itemsDto = ConvertToDto<DevelopmentLaborShortDto>(items)
-                .OrderBy(item => item.Code, CodeComparer.Instance)
-                .ToList();
-            return itemsDto;
-        }
-
         // GET: api/DbDevLabor/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DevelopmentLaborDto>> GetDbDevLabor(int id)
