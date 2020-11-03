@@ -64,7 +64,7 @@ namespace LaborVolumeCalculator
             app.UseRouting();
             // разрешить крос доменные запросы (CORS)
             app.UseCors(builder => builder
-                .WithOrigins("http://localhost:8080")
+                .WithOrigins("http://localhost:8080", "http://10.17.0.163:8080")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
             );
