@@ -29,6 +29,13 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<CorrectionRatesBundle, CorrectionRatesBundleDto>().ReverseMap();
             CreateMap<CorrectionRatesBundle, CorrectionRatesBundleFullDto>();
             CreateMap<CorrectionRatesBundleCreateDto, CorrectionRatesBundle>();
+            
+            CreateMap<DbDevLaborVolumeRange, DbDevLaborVolumeRangeDto>();
+            CreateMap<DbEntityCountRange, DbEntityCountRangeDto>();
+            
+            CreateMap<DbDevLabor, DevelopmentLaborDto>();
+            CreateMap<DevelopmentLaborCreateDto, DbDevLabor>();
+            CreateMap<DevelopmentLaborChangeDto, DbDevLabor>();
         }
     }
 }
