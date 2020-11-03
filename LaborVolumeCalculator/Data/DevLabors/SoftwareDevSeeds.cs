@@ -1,3 +1,5 @@
+using System.Reflection.Metadata;
+using Microsoft.CSharp.RuntimeBinder;
 using System.Linq;
 using LaborVolumeCalculator.Models.Dictionary;
 
@@ -6,6 +8,8 @@ namespace LaborVolumeCalculator.Data.DevLabors
     public class SoftwareDevSeeds
     {
         private readonly LVCContext dbContext;
+        private SoftwareDevLabor[] softLabors;
+        private SoftwareDevEnv[] devEnvironments;
         public SoftwareDevSeeds(LVCContext dbContext)
         {
             this.dbContext = dbContext;
@@ -13,9 +17,9 @@ namespace LaborVolumeCalculator.Data.DevLabors
 
         public void Initialize(DevelopmentLaborCategory[] laborCategories)
         {
-            SoftwareDevEnv[] devEnvironments = SeedSoftwareDevEnvironments();
-            SoftwareDevLabor[] softLabors = SeedSoftwareDevLabors(laborCategories);
-            SeedSoftwareDevLaborVolumeRanges(softLabors, devEnvironments);
+            devEnvironments = SeedSoftwareDevEnvironments();
+            softLabors = SeedSoftwareDevLabors(laborCategories);
+            SeedSoftwareDevLaborVolumeRanges();
         }
 
         private SoftwareDevEnv[] SeedSoftwareDevEnvironments()
@@ -43,7 +47,7 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 lb.Create(105, "Графический веб интерфейс (формы ввода данных)"),
                 lb.Create(106, "Интерфейс управления миниатюрным устройством, оснащенным тачскрином"),
                 lb.Create(107, "Обработка входящих сообщений от системы обмена сообщениями"),
-                
+
                 lb.SetCategory(2).Create(201, "Графический интерфейс мониторинга и управления ПО"),
                 lb.Create(202, "Графический интерфейс на базе веб-приложения(одна страница)"),
                 lb.Create(203, "Консольный интерфейс управления и мониторинга ПО"),
@@ -78,7 +82,7 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 lb.Create(603, "Создание программ загрузки модулей на внешнее оборудование"),
                 lb.Create(604, "Разработка модулей программ, взаимодействующих с внешним оборудованием (без разработки драйверов)"),
                 lb.Create(605, "Разработка компонентов ОС кроме драйверов устройств (файловой системы, сетевой подсистемы, службы безопасности"),
-                
+
                 lb.SetCategory(7).Create(701, "Модуль клиента сети"),
                 lb.Create(702, "Серверный модуль"),
                 lb.Create(703, "Модуль поиска оборудования"),
@@ -94,40 +98,158 @@ namespace LaborVolumeCalculator.Data.DevLabors
             return labors;
         }
 
-        private SoftwareDevLaborVolumeRange[] SeedSoftwareDevLaborVolumeRanges(SoftwareDevLabor[] labors, SoftwareDevEnv[] devEnv)
+        private SoftwareDevLaborVolumeRange[] SeedSoftwareDevLaborVolumeRanges()
         {
-            var _PHP_JS = devEnv[0];
-            var _Perl_Ruby_Pyton = devEnv[1];
-            var _Cpp_Cs_Java_ObjC = devEnv[2];
-            var _Asm = devEnv[3];
+            var _PHP_JS = this.devEnvironments[0];
+            var _Perl_Ruby_Pyton = this.devEnvironments[1];
+            var _Cpp_Cs_Java_ObjC = this.devEnvironments[2];
+            var _Asm = this.devEnvironments[3];
 
-            var rb = new SoftwareDevLaborVolumeRangeBuilder(labors[0]);
+            var labors = new SoftwareDevLaborsContainer(softLabors);
+
+            var rb = new SoftwareDevLaborVolumeRangeBuilder(_PHP_JS);
             SoftwareDevLaborVolumeRange[] ranges = new SoftwareDevLaborVolumeRange[]
             {
-                rb.Create(_Perl_Ruby_Pyton, 0.5, 1),
-                rb.Create(_Cpp_Cs_Java_ObjC, 0.5, 1.5),
+                // _PHP_JS
+                rb.Create(labors[103], 1, 2),
+                rb.Create(labors[104], 1),
+                rb.Create(labors[105], 1, 2),
+                rb.Create(labors[107], 1.5),
                 
-                rb.Create(labors[1], _Perl_Ruby_Pyton, 0.5, 1.5),
-                rb.Create(_Cpp_Cs_Java_ObjC, 2),
+                rb.Create(labors[202], 0.5, 1.5),
+                rb.Create(labors[203], 1, 1.5),
+                rb.Create(labors[204], 1.5),
+                rb.Create(labors[205], 2.5),
+                rb.Create(labors[206], 1.5),
                 
-                rb.Create(labors[2], _PHP_JS, 1, 2),
-                rb.Create(_Cpp_Cs_Java_ObjC, 3, 4),
+                rb.Create(labors[301], 0.5, 1),
+                rb.Create(labors[303], 1),
+                rb.Create(labors[305], 1),
                 
-                rb.Create(labors[3], _PHP_JS, 1),
-                rb.Create(_Perl_Ruby_Pyton, 1, 2),
-                rb.Create(_Cpp_Cs_Java_ObjC, 2),
-                rb.Create(_Asm, 3, 4),
+                rb.Create(labors[401], 0.5, 1),
+                rb.Create(labors[402], 1),
+                rb.Create(labors[501], 3.5),
+                rb.Create(labors[504], 0.5, 1),
+                rb.Create(labors[506], 1),
+                
+                rb.Create(labors[704], 1),
+                
+                rb.Create(labors[801], 0),
+                rb.Create(labors[802], 0, 0.5),
+                rb.Create(labors[803], 0.5, 1),
+                
+                //_Perl_Ruby_Pyton
+                rb.Create(labors[101],_Perl_Ruby_Pyton, 0.5, 1),
+                rb.Create(labors[102], 0.5, 1.5),
+                rb.Create(labors[104], 1, 2),
+                rb.Create(labors[107], 1.5),
 
-                rb.Create(labors[4], _PHP_JS, 1, 2),
-                rb.Create(labors[5], _Cpp_Cs_Java_ObjC, 1.5, 2),
+                rb.Create(labors[201], 2, 3),
+                rb.Create(labors[203], 1, 1.5),
+                rb.Create(labors[205], 2.5),
+                rb.Create(labors[206], 1.5),
+
+                rb.Create(labors[301], 2, 2.5),
+                rb.Create(labors[302], 1.5),
+                rb.Create(labors[303], 1),
+                rb.Create(labors[306], 0, 0.5),
+
+                rb.Create(labors[401], 1),
+                rb.Create(labors[402], 1),
+                rb.Create(labors[403], 3, 4),
+
+                rb.Create(labors[501], 3.5),
+                rb.Create(labors[502], 4),
+                rb.Create(labors[503], 1.5, 2.5),
+                rb.Create(labors[504], 1),
+                rb.Create(labors[505], 1, 2),
+                rb.Create(labors[506], 1),
+                rb.Create(labors[507], 2, 3),
+                rb.Create(labors[508], 2, 3),
+                rb.Create(labors[509], 2),
+
+                rb.Create(labors[701], 1),
+                rb.Create(labors[702], 2),
+                rb.Create(labors[704], 0.5, 1),
+                rb.Create(labors[705], 3, 4),
+
+                rb.Create(labors[801], 0),
+                rb.Create(labors[802], 0, 0.5),
+                rb.Create(labors[803], 0.5, 1),
+
                 
-                rb.Create(labors[6], _PHP_JS, 1.5),
-                rb.Create(_Perl_Ruby_Pyton, 1.5),
-                rb.Create(_Cpp_Cs_Java_ObjC, 1.5)
+                //_Cpp_Cs_Java_ObjC
+                rb.Create(labors[101], _Cpp_Cs_Java_ObjC, 1.5, 2),
+                rb.Create(labors[102], 2),
+                rb.Create(labors[103], 3, 4),
+                rb.Create(labors[104], 2),
+                rb.Create(labors[106], 1.5, 2),
+                rb.Create(labors[107], 1.5),
+
+                rb.Create(labors[201], 3.5, 4),
+                rb.Create(labors[203], 1.5, 2),
+                rb.Create(labors[204], 2),
+                rb.Create(labors[205], 2.5),
+                rb.Create(labors[206], 1.5),
+                rb.Create(labors[207], 2, 2.5),
+
+                rb.Create(labors[301], 2.5),
+                rb.Create(labors[302], 3.5, 4),
+                rb.Create(labors[303], 2, 2.5),
+                rb.Create(labors[304], 4.5),
+                rb.Create(labors[305], 1),
+                rb.Create(labors[306], 2, 2.5),
+
+                rb.Create(labors[401], 2),
+                rb.Create(labors[402], 1.5),
+                rb.Create(labors[403], 4, 5),
+
+                rb.Create(labors[501], 3.5),
+                rb.Create(labors[502], 4),
+                rb.Create(labors[504], 3, 4),
+                rb.Create(labors[505], 2, 3),
+                rb.Create(labors[506], 1, 1.5),
+                rb.Create(labors[507], 4),
+                rb.Create(labors[508], 4.5),
+                rb.Create(labors[509], 3.5),
+
+                rb.Create(labors[601], 4, 5),
+                rb.Create(labors[602], 4, 5),
+                rb.Create(labors[603], 4, 5),
+                rb.Create(labors[604], 2, 3),
+                rb.Create(labors[605], 1, 2),
+
+                rb.Create(labors[701], 2, 3),
+                rb.Create(labors[702], 3, 4),
+                rb.Create(labors[703], 4, 5),
+                rb.Create(labors[704], 1),
+                rb.Create(labors[705], 4, 5),
+
+                rb.Create(labors[801], 0, 0.5),
+                rb.Create(labors[802], 0.5, 1),
+                rb.Create(labors[803], 1, 1.5),
+
             };
-            
+
             dbContext.SoftwareDevLaborVolumeRanges.AddRange(ranges);
             return ranges;
+        }
+    }
+
+    internal class SoftwareDevLaborsContainer
+    {
+        private readonly SoftwareDevLabor[] softLabors;
+        public SoftwareDevLaborsContainer(SoftwareDevLabor[] softLabors)
+        {
+            this.softLabors = softLabors;
+        }
+
+        public SoftwareDevLabor this[int code]
+        {
+            get
+            {
+                return softLabors.FirstOrDefault(m => m.Code == code.ToString());
+            }
         }
     }
 }
