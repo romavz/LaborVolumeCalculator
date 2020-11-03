@@ -32,6 +32,7 @@ namespace LaborVolumeCalculator.DTO.Profiles
             
             CreateMap<DbDevLaborVolumeRange, DbDevLaborVolumeRangeDto>();
             CreateMap<DbEntityCountRange, DbEntityCountRangeDto>();
+            CreateMap<DbEntityCountRangeCreateDto, DbEntityCountRange>();
             
             CreateMap<DbDevLabor, DevelopmentLaborDto>();
             CreateMap<DevelopmentLaborCreateDto, DbDevLabor>();
