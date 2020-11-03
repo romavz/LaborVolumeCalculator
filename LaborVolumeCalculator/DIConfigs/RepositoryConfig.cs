@@ -16,6 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRepository<OntdLabor>, RepositoryBase<OntdLabor>>();
             services.AddScoped<IRepository<NirStageOntdLaborVolume>, RepositoryBase<NirStageOntdLaborVolume>>();
             services.AddScoped<IRepository<CorrectionRatesBundle>, CorrectionRatesBundleRepository>();
+            services.AddScoped<IRepository<DbDevLabor>, DbDevLaborRepository>();
             return services;
         }
     }
