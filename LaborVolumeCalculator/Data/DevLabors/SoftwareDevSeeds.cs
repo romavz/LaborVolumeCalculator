@@ -128,6 +128,7 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 
                 rb.Create(labors[401], 0.5, 1),
                 rb.Create(labors[402], 1),
+                
                 rb.Create(labors[501], 3.5),
                 rb.Create(labors[504], 0.5, 1),
                 rb.Create(labors[506], 1),
@@ -229,6 +230,29 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 rb.Create(labors[802], 0.5, 1),
                 rb.Create(labors[803], 1, 1.5),
 
+                // Asm
+                rb.Create(labors[104], _Asm, 3, 4),
+                
+                rb.Create(labors[203], 2, 2.5),
+                
+                rb.Create(labors[301], 4.5),
+                rb.Create(labors[302], 3, 4),
+                
+                rb.Create(labors[401], 4, 4.5),
+                
+                rb.Create(labors[501], 4.5),
+                rb.Create(labors[504], 4, 5),
+                rb.Create(labors[505], 5, 6),
+                rb.Create(labors[506], 2),
+                
+                rb.Create(labors[601], 6, 7),
+                rb.Create(labors[602], 7, 8),
+                rb.Create(labors[603], 7, 8),
+                rb.Create(labors[604], 4, 5),
+
+                rb.Create(labors[703], 6, 7),
+                
+                rb.Create(labors[801], 0.5)
             };
 
             dbContext.SoftwareDevLaborVolumeRanges.AddRange(ranges);
