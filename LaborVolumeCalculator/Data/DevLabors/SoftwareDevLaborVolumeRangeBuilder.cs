@@ -4,24 +4,19 @@ namespace LaborVolumeCalculator.Data.DevLabors
 {
     internal class SoftwareDevLaborVolumeRangeBuilder
     {
-        private SoftwareDevEnv _devEnv;
 
-        public SoftwareDevLaborVolumeRangeBuilder(SoftwareDevEnv devEnv)
+        public SoftwareDevLaborVolumeRangeBuilder()
         {
-            _devEnv = devEnv;
         }
 
-        public SoftwareDevLaborVolumeRange Create(SoftwareDevLabor labor, SoftwareDevEnv devEnv, double volume)
-        {
-            return Create(labor, devEnv, volume, volume);
-        }
-
-        public SoftwareDevLaborVolumeRange Create(SoftwareDevLabor labor, SoftwareDevEnv devEnv, double minVolume, double maxVolume)
-        {
-            this._devEnv = devEnv;
-            return Create(labor, minVolume, maxVolume);
-        }
+        public SoftwareDevEnv DevEnv { get; private set; }
         
+        public SoftwareDevLaborVolumeRangeBuilder SetDevEnv(SoftwareDevEnv devEnv)
+        {
+            DevEnv = devEnv;
+            return this;
+        }
+
         public SoftwareDevLaborVolumeRange Create(SoftwareDevLabor labor, double volume)
         {
             return Create(labor, volume, volume);
@@ -29,7 +24,7 @@ namespace LaborVolumeCalculator.Data.DevLabors
 
         public SoftwareDevLaborVolumeRange Create(SoftwareDevLabor labor, double minVolume, double maxVolume)
         {
-            return new SoftwareDevLaborVolumeRange(labor, _devEnv, minVolume, maxVolume);
+            return new SoftwareDevLaborVolumeRange(labor, DevEnv, minVolume, maxVolume);
         }
     }
 }

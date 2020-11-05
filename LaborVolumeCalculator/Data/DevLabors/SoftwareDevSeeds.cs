@@ -107,11 +107,10 @@ namespace LaborVolumeCalculator.Data.DevLabors
 
             var labors = new SoftwareDevLaborsContainer(softLabors);
 
-            var rb = new SoftwareDevLaborVolumeRangeBuilder(_PHP_JS);
+            var rb = new SoftwareDevLaborVolumeRangeBuilder();
             SoftwareDevLaborVolumeRange[] ranges = new SoftwareDevLaborVolumeRange[]
             {
-                // _PHP_JS
-                rb.Create(labors[103], 1, 2),
+                rb.SetDevEnv(_PHP_JS).Create(labors[103], 1, 2),
                 rb.Create(labors[104], 1),
                 rb.Create(labors[105], 1, 2),
                 rb.Create(labors[107], 1.5),
@@ -139,8 +138,7 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 rb.Create(labors[802], 0, 0.5),
                 rb.Create(labors[803], 0.5, 1),
                 
-                //_Perl_Ruby_Pyton
-                rb.Create(labors[101],_Perl_Ruby_Pyton, 0.5, 1),
+                rb.SetDevEnv(_Perl_Ruby_Pyton).Create(labors[101], 0.5, 1),
                 rb.Create(labors[102], 0.5, 1.5),
                 rb.Create(labors[104], 1, 2),
                 rb.Create(labors[107], 1.5),
@@ -179,8 +177,7 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 rb.Create(labors[803], 0.5, 1),
 
                 
-                //_Cpp_Cs_Java_ObjC
-                rb.Create(labors[101], _Cpp_Cs_Java_ObjC, 1.5, 2),
+                rb.SetDevEnv(_Cpp_Cs_Java_ObjC).Create(labors[101], 1.5, 2),
                 rb.Create(labors[102], 2),
                 rb.Create(labors[103], 3, 4),
                 rb.Create(labors[104], 2),
@@ -230,8 +227,8 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 rb.Create(labors[802], 0.5, 1),
                 rb.Create(labors[803], 1, 1.5),
 
-                // Asm
-                rb.Create(labors[104], _Asm, 3, 4),
+                
+                rb.SetDevEnv( _Asm).Create(labors[104], 3, 4),
                 
                 rb.Create(labors[203], 2, 2.5),
                 
