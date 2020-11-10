@@ -364,6 +364,22 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(r => r.Stage).WithMany().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.Labor).WithMany().OnDelete(DeleteBehavior.Restrict);
             });
+
+            modelBuilder.Entity<CorrectionRatesBundle>(e =>
+            {
+                e.ToTable("CorrectionRatesBundle", Schema.Dictionary);
+                e.Property(p => p.Number).IsRequired();
+                e.Property(p => p.SolutionInnovationRateValue).IsRequired();
+                e.Property(p => p.InfrastructureComplexityRateValue).IsRequired();
+                e.Property(p => p.StandardModulesUsingRateValue).IsRequired();
+                e.Property(p => p.ArchitectureComplexityRateValue).IsRequired();
+                e.Property(p => p.TestsDevelopmentRateValue).IsRequired();
+                e.HasOne(r => r.SolutionInnovationRate).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.InfrastructureComplexityRate).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.StandardModulesUsingRate).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.ArchitectureComplexityRate).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.ArchitectureComplexityRate).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+            });
         }
 
         private class Schema
