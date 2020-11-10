@@ -1,6 +1,6 @@
 using LaborVolumeCalculator.Models.Dictionary;
 
-namespace LaborVolumeCalculator.Data.DevLabors
+namespace LaborVolumeCalculator.Data.Rates
 {
     internal class TestsDevelopmentRateBuilder
     {
