@@ -1,4 +1,4 @@
-using Microsoft.CSharp.RuntimeBinder;
+﻿using Microsoft.CSharp.RuntimeBinder;
 using System.Runtime.ConstrainedExecution;
 using System.Security.Cryptography;
 using System.Reflection.Emit;
@@ -43,7 +43,7 @@ namespace LaborVolumeCalculator.Data
             new SoftwareDevSeeds(dbContext).Initialize(dlcs.Categories);
             new DbDevSeeds(dbContext).Initialize(dlcs.Categories);
             new OntdSeeds(dbContext).Initialize();
-            new SoftwareDevLaborGroupRateSeeds(dbContext).Initialize();
+            var sdlgrSeeds = new SoftwareDevLaborGroupRateSeeds(dbContext).Initialize();
             new CorrectionRatesBundleSeeds(dbContext, sdlgrSeeds).Initialize();
 
             dbContext.SaveChanges();
