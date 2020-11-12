@@ -1,8 +1,10 @@
-﻿using System;
+﻿using System.Collections.Immutable;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LaborVolumeCalculator.Data;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,13 +36,26 @@ namespace LaborVolumeCalculator
                 }
             }
 
-            host.Run();
+            try
+            {
+                host.Run();
+            }
+            catch (Exception ex)
+            {
+                var logger = host.Services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "Ошибка во время выполнения приложения.");
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
+                .ConfigureAppConfiguration((context, builder) => {
+                    var env = context.HostingEnvironment;
+                    builder.AddYamlFile("appsettings.yaml", optional: true);
+                    builder.AddYamlFile($"appsettings.{env.EnvironmentName}.yaml", optional: true);
+                })
+                .ConfigureWebHostDefaults(webBuilder => {
+                    webBuilder.UseUrls("http://localhost:5000;http://*:5000;");
                     webBuilder.UseStartup<Startup>();
                 });
     }

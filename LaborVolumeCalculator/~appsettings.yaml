@@ -1,0 +1,12 @@
+# чтоб параметры учитывались, необходимо переименовать файл в appsettings.yaml
+
+Logging:
+  LogLevel:
+    Default: Information
+    Microsoft: Warning
+    Microsoft.Hosting.Lifetime: Information
+
+AllowedHosts: '*'
+ConnectionStrings:
+  # заменить <user name> и <password> на реальные значения
+  LVCContext: Data Source=localhost\SQLEXPRESS;Initial Catalog=LaborVolumeCalculator; User ID=<user name>; Password=<password>;
