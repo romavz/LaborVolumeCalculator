@@ -56,7 +56,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
         public int ArchitectureComplexityRateID { get; set; }
         public double ArchitectureComplexityRateValue { get; set; }
 
-        TestsDevelopmentRate TestsDevelopmentRate { get; set; }
+        public TestsDevelopmentRate TestsDevelopmentRate { get; set; }
         public int TestsDevelopmentRateID { get; set; }
         public double TestsDevelopmentRateValue { get; set; }
     }
