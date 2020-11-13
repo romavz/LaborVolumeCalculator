@@ -29,8 +29,16 @@ namespace LaborVolumeCalculator.DTO
         public int ID { get; set; }
     }
 
-    public class CorrectionRatesBundleFullDto : CorrectionRatesBundleDto
+    public class CorrectionRatesBundleFullDto
     {
+        public int ID { get; set; }
+         public int Number { get; set; }
+        public string Name { get; set; }
+        public double SolutionInnovationRateValue { get; set; }
+        public double StandardModulesUsingRateValue { get; set; }
+        public double InfrastructureComplexityRateValue { get; set; }
+        public double ArchitectureComplexityRateValue { get; set; }
+        public double TestsDevelopmentRateValue { get; set; }
         public SolutionInnovationRateDto SolutionInnovationRate { get; set; }
         public StandardModulesUsingRateDto StandardModulesUsingRate { get; set; }
         public InfrastructureComplexityRateDto InfrastructureComplexityRate { get; set; }

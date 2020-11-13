@@ -15,6 +15,7 @@ namespace LaborVolumeCalculator.Repositories
         public override IQueryable<CorrectionRatesBundle> WithIncludes => this.GetAll()
             .Include(m => m.SolutionInnovationRate)
             .Include(m => m.StandardModulesUsingRate)
+            .Include(m => m.InfrastructureComplexityRate)
             .Include(m => m.ArchitectureComplexityRate)
                 .ThenInclude(a => a.ComponentsInteractionArchitecture)
             .Include(m => m.ArchitectureComplexityRate)

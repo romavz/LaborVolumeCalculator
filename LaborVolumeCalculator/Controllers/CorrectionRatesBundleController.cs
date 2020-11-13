@@ -9,30 +9,36 @@ using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.Repositories.Contracts;
 using LaborVolumeCalculator.Repositories.Extentions;
+using LaborVolumeCalculator.DTO;
+using AutoMapper;
 
 namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CorrectionRatesBundleController : ControllerBase
+    public class CorrectionRatesBundleController : ControllerBase<CorrectionRatesBundle, CorrectionRatesBundleFullDto>
     {
         private readonly IRepository<CorrectionRatesBundle> _bundles;
 
-        public CorrectionRatesBundleController(IRepository<CorrectionRatesBundle> context)
+        public CorrectionRatesBundleController(IRepository<CorrectionRatesBundle> context, IMapper mapper) : base(mapper)
         {
             _bundles = context;
         }
 
         // GET: api/CorrectionRatesBundle
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CorrectionRatesBundle>>> GetCorrectionRatesBundles()
+        public async Task<ActionResult<IEnumerable<CorrectionRatesBundleFullDto>>> GetCorrectionRatesBundles()
         {
-            return await _bundles.WithIncludes.ToListAsync();
+            var items = await _bundles.WithIncludes.ToListAsync();
+            var itemsDto = ConvertToDto(items)
+                .OrderBy(m => m.Number)
+                .ToList();
+            return itemsDto;
         }
 
         // GET: api/CorrectionRatesBundle/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CorrectionRatesBundle>> GetCorrectionRatesBundle(int id)
+        public async Task<ActionResult<CorrectionRatesBundleFullDto>> GetCorrectionRatesBundle(int id)
         {
             var correctionRatesBundle = await _bundles.WithIncludes.FindAsync(id);
 
@@ -41,19 +47,21 @@ namespace LaborVolumeCalculator.Controllers
                 return NotFound();
             }
 
-            return correctionRatesBundle;
+            return ConvertToDto(correctionRatesBundle);
         }
 
         // PUT: api/CorrectionRatesBundle/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCorrectionRatesBundle(int id, CorrectionRatesBundle correctionRatesBundle)
+        public async Task<ActionResult<CorrectionRatesBundleDto>> PutCorrectionRatesBundle(int id, CorrectionRatesBundleDto correctionRatesBundleDto)
         {
-            if (id != correctionRatesBundle.ID)
+            if (id != correctionRatesBundleDto.ID)
             {
                 return BadRequest();
             }
+
+            var correctionRatesBundle = ConvertToSource<CorrectionRatesBundleDto>(correctionRatesBundleDto);
 
             _bundles.Update(correctionRatesBundle);
 
@@ -73,24 +81,29 @@ namespace LaborVolumeCalculator.Controllers
                 }
             }
 
-            return NoContent();
+            correctionRatesBundle = await _bundles.FindAsync(correctionRatesBundle.ID);
+            return Ok(ConvertToDto<CorrectionRatesBundleDto>(correctionRatesBundle));
         }
 
         // POST: api/CorrectionRatesBundle
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<CorrectionRatesBundle>> PostCorrectionRatesBundle(CorrectionRatesBundle correctionRatesBundle)
+        public async Task<ActionResult<CorrectionRatesBundleDto>> PostCorrectionRatesBundle(CorrectionRatesBundleCreateDto correctionRatesBundleDto)
         {
+            var correctionRatesBundle = ConvertToSource<CorrectionRatesBundleCreateDto>(correctionRatesBundleDto);
+            
             _bundles.Add(correctionRatesBundle);
             await _bundles.SaveChangesAsync();
 
-            return CreatedAtAction("GetCorrectionRatesBundle", new { id = correctionRatesBundle.ID }, correctionRatesBundle);
+            correctionRatesBundle = await _bundles.FindAsync(correctionRatesBundle.ID);
+
+            return CreatedAtAction("GetCorrectionRatesBundle", new { id = correctionRatesBundle.ID }, ConvertToDto<CorrectionRatesBundleDto>(correctionRatesBundle));
         }
 
         // DELETE: api/CorrectionRatesBundle/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<CorrectionRatesBundle>> DeleteCorrectionRatesBundle(int id)
+        public async Task<ActionResult<CorrectionRatesBundleDto>> DeleteCorrectionRatesBundle(int id)
         {
             var correctionRatesBundle = await _bundles.FindAsync(id);
             if (correctionRatesBundle == null)
@@ -101,7 +114,7 @@ namespace LaborVolumeCalculator.Controllers
             _bundles.Remove(correctionRatesBundle);
             await _bundles.SaveChangesAsync();
 
-            return correctionRatesBundle;
+            return ConvertToDto<CorrectionRatesBundleDto>(correctionRatesBundle);
         }
 
         private bool CorrectionRatesBundleExists(int id)
