@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Security.Principal;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LaborVolumeCalculator.Models
 {
-    public class BasicModel : ITimeTreckable
+    public class BasicModel : ITimeTreckable, IIdentable
     {
         public BasicModel()
         {
