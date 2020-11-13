@@ -1,6 +1,6 @@
 namespace LaborVolumeCalculator.Models.Dictionary
 {
-    public class LaborVolumeRange
+    public class LaborVolumeRange : IIdentable
     {
         public LaborVolumeRange()
         {

@@ -4,14 +4,16 @@ using LaborVolumeCalculator.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaborVolumeCalculator.Migrations
 {
     [DbContext(typeof(LVCContext))]
-    partial class LVCContextModelSnapshot : ModelSnapshot
+    [Migration("20201102121934_Add_unique_index_to_DevelopmentLabor")]
+    partial class Add_unique_index_to_DevelopmentLabor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,69 +111,6 @@ namespace LaborVolumeCalculator.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("ComponentsMicroArchitecture","Dictionary");
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.CorrectionRatesBundle", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ArchitectureComplexityRateID")
-                        .HasColumnType("int");
-
-                    b.Property<double>("ArchitectureComplexityRateValue")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("InfrastructureComplexityRateID")
-                        .HasColumnType("int");
-
-                    b.Property<double>("InfrastructureComplexityRateValue")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SolutionInnovationRateID")
-                        .HasColumnType("int");
-
-                    b.Property<double>("SolutionInnovationRateValue")
-                        .HasColumnType("float");
-
-                    b.Property<int>("StandardModulesUsingRateID")
-                        .HasColumnType("int");
-
-                    b.Property<double>("StandardModulesUsingRateValue")
-                        .HasColumnType("float");
-
-                    b.Property<int>("TestsDevelopmentRateID")
-                        .HasColumnType("int");
-
-                    b.Property<double>("TestsDevelopmentRateValue")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ArchitectureComplexityRateID");
-
-                    b.HasIndex("InfrastructureComplexityRateID");
-
-                    b.HasIndex("SolutionInnovationRateID");
-
-                    b.HasIndex("StandardModulesUsingRateID");
-
-                    b.ToTable("CorrectionRatesBundle","Dictionary");
                 });
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.DbDevLaborVolumeRange", b =>
@@ -1231,33 +1170,6 @@ namespace LaborVolumeCalculator.Migrations
                     b.HasOne("LaborVolumeCalculator.Models.Dictionary.ComponentsMakroArchitecture", "ComponentsMakroArchitecture")
                         .WithMany()
                         .HasForeignKey("ComponentsMakroArchitectureID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.CorrectionRatesBundle", b =>
-                {
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.ArchitectureComplexityRate", "ArchitectureComplexityRate")
-                        .WithMany()
-                        .HasForeignKey("ArchitectureComplexityRateID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.InfrastructureComplexityRate", "InfrastructureComplexityRate")
-                        .WithMany()
-                        .HasForeignKey("InfrastructureComplexityRateID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.SolutionInnovationRate", "SolutionInnovationRate")
-                        .WithMany()
-                        .HasForeignKey("SolutionInnovationRateID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.StandardModulesUsingRate", "StandardModulesUsingRate")
-                        .WithMany()
-                        .HasForeignKey("StandardModulesUsingRateID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

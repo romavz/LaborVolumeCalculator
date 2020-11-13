@@ -30,11 +30,13 @@ namespace LaborVolumeCalculator.DTO
         public string SoftwareDevLaborGroupName { get; set; }
         public string SoftwareDevLaborGroupCode { get; set; }
         public List<SoftwareDevLaborVolumeDto> LaborVolumes { get; set; }
+        public List<DbDevLaborVolumeDto> DbDevLaborVolumes { get; set; }
     }
 
     public class StageSoftwareDevLaborGroupDto_ListItem : StageSoftwareDevLaborGroupBaseDto
     {
-        public List<SoftwareDevLaborVolumeDto_ListItem> LaborVolumes { get; set; }
+        public List<DevLaborVolumeDto_ListItem> LaborVolumes { get; set; }
+        public List<DevLaborVolumeDto_ListItem> DbDevLaborVolumes { get; set; }
     }
 
 }
