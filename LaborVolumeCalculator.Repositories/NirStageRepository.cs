@@ -45,6 +45,16 @@ namespace LaborVolumeCalculator.Repositories
                         .ThenInclude(m => m.LaborVolumes)
                             .ThenInclude(lv => lv.LaborVolumeRange)
                                 .ThenInclude(lvr => lvr.DevEnv)
+                    .Include(m => m.SoftwareDevLaborGroups)
+                        .ThenInclude(lg => lg.DbDevLaborVolumes)
+                            .ThenInclude(lv => lv.LaborVolumeRange)
+                                .ThenInclude(lvr => lvr.Labor)
+                                    .ThenInclude(l => l.LaborCategory)
+                    .Include(m => m.SoftwareDevLaborGroups)
+                        .ThenInclude(lg => lg.DbDevLaborVolumes)
+                            .ThenInclude(lv => lv.LaborVolumeRange)
+                                .ThenInclude(lvr => lvr.DbEntityCountRange)
+                    
                     .AsNoTracking();
             }
         }
