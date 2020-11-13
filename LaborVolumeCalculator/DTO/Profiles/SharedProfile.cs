@@ -25,6 +25,10 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<SoftwareDevEnv, SoftwareDevEnvDto>().ReverseMap();
             CreateMap<SoftwareDevEnvCreateDto, SoftwareDevEnv>();
             CreateMap<SoftwareDevEnvChangeDto, SoftwareDevEnv>();
+
+            CreateMap<CorrectionRatesBundle, CorrectionRatesBundleDto>().ReverseMap();
+            CreateMap<CorrectionRatesBundle, CorrectionRatesBundleFullDto>();
+            CreateMap<CorrectionRatesBundleCreateDto, CorrectionRatesBundle>();
         }
     }
 }

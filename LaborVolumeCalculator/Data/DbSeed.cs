@@ -11,6 +11,7 @@ using System.Linq;
 using LaborVolumeCalculator.Data.Nir;
 using LaborVolumeCalculator.Data.DevLabors;
 using LaborVolumeCalculator.Data.Ontd;
+using LaborVolumeCalculator.Data.Rates;
 
 namespace LaborVolumeCalculator.Data
 {
@@ -42,7 +43,8 @@ namespace LaborVolumeCalculator.Data
             new SoftwareDevSeeds(dbContext).Initialize(dlcs.Categories);
             new DbDevSeeds(dbContext).Initialize(dlcs.Categories);
             new OntdSeeds(dbContext).Initialize();
-            new SoftwareDevLaborGroupRateSeeds(dbContext).Initialize();
+            var sdlgrSeeds = new SoftwareDevLaborGroupRateSeeds(dbContext).Initialize();
+            new CorrectionRatesBundleSeeds(dbContext, sdlgrSeeds).Initialize();
 
             dbContext.SaveChanges();
         }               
