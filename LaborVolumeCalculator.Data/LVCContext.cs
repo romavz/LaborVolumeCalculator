@@ -385,7 +385,7 @@ namespace LaborVolumeCalculator.Data
                 e.HasOne(r => r.InfrastructureComplexityRate).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.StandardModulesUsingRate).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
                 e.HasOne(r => r.ArchitectureComplexityRate).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
-                e.HasOne(r => r.ArchitectureComplexityRate).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.TestsDevelopmentRate).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
             });
         }
 
