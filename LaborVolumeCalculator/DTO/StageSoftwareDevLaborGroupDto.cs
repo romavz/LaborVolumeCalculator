@@ -6,6 +6,7 @@ namespace LaborVolumeCalculator.DTO
     public class StageSoftwareDevLaborGroupBaseDto
     {
         public int SoftwareDevLaborGroupID { get; set; }
+        public int? CorrectionRatesBundleID { get; set; }
 
         public int SolutionInnovationRateID { get; set; }
         public double SolutionInnovationRateValue { get; set; }

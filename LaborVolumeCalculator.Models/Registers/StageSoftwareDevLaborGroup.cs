@@ -15,6 +15,9 @@ namespace LaborVolumeCalculator.Models.Registers
 
         public int SoftwareDevLaborGroupID { get; set; }
 
+        public int? CorrectionRatesBundleID { get; set; }
+        public CorrectionRatesBundle CorrectionRatesBundle { get; set; }
+
         public int SolutionInnovationRateID { get; set; }
         public double SolutionInnovationRateValue { get; set; }
 

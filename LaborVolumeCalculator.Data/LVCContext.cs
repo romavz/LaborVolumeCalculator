@@ -340,6 +340,7 @@ namespace LaborVolumeCalculator.Data
                     .IsUnique();
                 e.HasOne(r => r.Stage).WithMany(stage => stage.SoftwareDevLaborGroups).IsRequired().OnDelete(DeleteBehavior.Cascade);
                 e.HasOne(r => r.SoftwareDevLaborGroup).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(r => r.CorrectionRatesBundle).WithMany().IsRequired(false).OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<OkrStageSoftwareDevLaborGroup>(e =>
