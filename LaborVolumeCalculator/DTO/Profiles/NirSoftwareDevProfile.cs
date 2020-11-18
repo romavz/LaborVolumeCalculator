@@ -30,12 +30,6 @@ namespace LaborVolumeCalculator.DTO.Profiles
 
             CreateMap<NirStageSoftwareDevLaborGroup, StageSoftwareDevLaborGroupDto>();
             CreateMap<StageSoftwareDevLaborGroupDto_ListItem, NirStageSoftwareDevLaborGroup>();
-            
-            CreateMap<NirSoftwareDevLaborVolume, SoftwareDevLaborVolumeDto>();
-            CreateMap<DevLaborVolumeDto_ListItem, NirSoftwareDevLaborVolume>();
-
-            CreateMap<NirDbDevLaborVolume, DbDevLaborVolumeDto>();
-            CreateMap<DevLaborVolumeDto_ListItem, NirDbDevLaborVolume>();
         }
     }
 }
