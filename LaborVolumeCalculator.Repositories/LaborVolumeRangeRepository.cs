@@ -15,6 +15,6 @@ namespace LaborVolumeCalculator.Repositories
             .Include(m => m.Labor)
                 .ThenInclude(l => l.LaborCategory)
             .Include(m => m.RangeFeature)
-                .ThenInclude(rf => rf.Category);
+                .ThenInclude(rf => rf.RangeFeatureCategory);
     }
 }

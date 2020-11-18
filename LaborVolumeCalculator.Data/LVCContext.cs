@@ -195,7 +195,7 @@ namespace LaborVolumeCalculator.Data
             {
                 e.ToTable("RangeFeature", Schema.Dictionary);
                 e.Property(m => m.Name).IsRequired();
-                e.HasOne(m => m.Category).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(m => m.RangeFeatureCategory).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<NirStageLaborVolume>(e =>

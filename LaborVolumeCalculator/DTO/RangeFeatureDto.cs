@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 namespace LaborVolumeCalculator.DTO
 {
     public class RangeFeatureDto
@@ -5,7 +6,7 @@ namespace LaborVolumeCalculator.DTO
         public int ID { get; set; }
         public string Name { get; set; }
         
-        public RangeFeatureCategoryDto Category { get; set; }
+        public RangeFeatureCategoryDto RangeFeatureCategory { get; set; }
     }
 
     public class RangeFeatureCreateDto
