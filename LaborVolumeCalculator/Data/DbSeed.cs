@@ -39,9 +39,7 @@ namespace LaborVolumeCalculator.Data
             }
 
             new NirSeeds(dbContext).Initialize();
-            var dlcs = new DevLaborCategorySeeds(dbContext).Initialize();
-            new SoftwareDevSeeds(dbContext).Initialize(dlcs.Categories);
-            new DbDevSeeds(dbContext).Initialize(dlcs.Categories);
+            new DevelopmentLaborSeeds(dbContext).Initialize();
             new OntdSeeds(dbContext).Initialize();
             var sdlgrSeeds = new SoftwareDevLaborGroupRateSeeds(dbContext).Initialize();
             new CorrectionRatesBundleSeeds(dbContext, sdlgrSeeds).Initialize();
