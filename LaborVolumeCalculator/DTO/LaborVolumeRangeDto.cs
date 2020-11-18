@@ -10,10 +10,17 @@ namespace LaborVolumeCalculator.DTO
     {
         public int ID { get; set; }
         public DevelopmentLaborDto Labor { get; set; }
+        public RangeFeatureDto RangeFeature { get; set; }
     }
 
     public class LaborVolumeRangeCreateDto : LaborVolumeRangeBaseDto
     {
         public int LaborID { get; set; }
+        public int RangeFeatureID { get; set; }
+    }
+
+    public class LaborVolumeRangeChangeDto : LaborVolumeRangeCreateDto
+    {
+        public int ID { get; set; }
     }
 }
