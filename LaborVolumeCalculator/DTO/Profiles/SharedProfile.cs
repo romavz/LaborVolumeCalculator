@@ -24,6 +24,13 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<LaborVolumeRange, LaborVolumeRangeDto>();
             CreateMap<LaborVolumeRangeChangeDto, LaborVolumeRange>();
             CreateMap<LaborVolumeRangeCreateDto, LaborVolumeRange>();
+
+            CreateMap<RangeFeature, RangeFeatureDto>();
+            CreateMap<RangeFeatureCreateDto, RangeFeature>();
+            CreateMap<RangeFeatureChangeDto, RangeFeature>();
+
+            CreateMap<RangeFeatureCategory, RangeFeatureCategoryDto>().ReverseMap();
+            CreateMap<RangeFeatureCategoryCreateDto, RangeFeatureCategory>();
         }
     }
 }

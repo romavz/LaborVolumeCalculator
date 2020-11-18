@@ -1,6 +1,6 @@
 namespace LaborVolumeCalculator.Models.Dictionary
 {
-    public class RangeFeatureCategory
+    public class RangeFeatureCategory : IIdentable
     {
         public RangeFeatureCategory()
         {
