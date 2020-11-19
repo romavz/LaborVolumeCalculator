@@ -20,5 +20,15 @@ namespace LaborVolumeCalculator.DTO
         public int ID { get; set; }
     }
 
+    public class RangeFeatureDto_ListItem
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class RangeFeatureCreateDto_ListItem
+    {
+        public string Name { get; set; }
+    }
 
 }

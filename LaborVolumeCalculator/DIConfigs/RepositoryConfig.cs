@@ -17,6 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRepository<CorrectionRatesBundle>, CorrectionRatesBundleRepository>();
             services.AddScoped<IRepository<LaborVolumeRange>, LaborVolumeRangeRepository>();
             services.AddScoped<IRepository<RangeFeature>, RangeFeatureRepository>();
+            services.AddScoped<IRepository<RangeFeatureCategory>, RangeFeatureCategoryRepository>();
             return services;
         }
     }

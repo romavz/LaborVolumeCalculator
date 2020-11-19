@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace LaborVolumeCalculator.Models.Dictionary
 {
     public class RangeFeatureCategory : IIdentable
@@ -13,5 +15,6 @@ namespace LaborVolumeCalculator.Models.Dictionary
 
         public int ID { get; set; }
         public string Name { get; set; }
+        public List<RangeFeature> RangeFeatures { get; set; }
     }
 }

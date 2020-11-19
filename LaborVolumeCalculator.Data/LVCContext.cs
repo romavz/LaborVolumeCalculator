@@ -81,6 +81,8 @@ namespace LaborVolumeCalculator.Data
         public DbSet<NirStage> NirStages { get; set; }
         public DbSet<OkrStage> OkrStages { get; set; }
 
+        public DbSet<RangeFeatureCategory> RangeFeatureCategories { get; set; }
+
         public DbSet<RangeFeature> RangeFeatures { get; set; }
 
         public DbSet<NirStageLaborVolume> NirStageLaborVolumes { get; set; }
@@ -195,7 +197,10 @@ namespace LaborVolumeCalculator.Data
             {
                 e.ToTable("RangeFeature", Schema.Dictionary);
                 e.Property(m => m.Name).IsRequired();
-                e.HasOne(m => m.RangeFeatureCategory).WithMany().IsRequired().OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(m => m.RangeFeatureCategory)
+                    .WithMany(m => m.RangeFeatures)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<NirStageLaborVolume>(e =>
