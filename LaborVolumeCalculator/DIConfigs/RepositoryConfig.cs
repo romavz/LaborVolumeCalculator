@@ -18,6 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRepository<LaborVolumeRange>, LaborVolumeRangeRepository>();
             services.AddScoped<IRepository<RangeFeature>, RangeFeatureRepository>();
             services.AddScoped<IRepository<RangeFeatureCategory>, RangeFeatureCategoryRepository>();
+            services.AddScoped<IRepository<DevelopmentLaborCategory>, DevelopmentLaborCategoryRepository>();
             return services;
         }
     }

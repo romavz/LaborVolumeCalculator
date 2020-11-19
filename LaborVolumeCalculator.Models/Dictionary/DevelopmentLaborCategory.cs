@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace LaborVolumeCalculator.Models.Dictionary
 {
-    public class DevelopmentLaborCategory
+    public class DevelopmentLaborCategory : IIdentable
     {
         public DevelopmentLaborCategory(int number, string name)
         {

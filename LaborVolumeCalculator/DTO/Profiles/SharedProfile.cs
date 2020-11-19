@@ -11,11 +11,17 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<LaborCreateDto, OntdLabor>();
             CreateMap<LaborDto, OntdLabor>();
 
-            CreateMap<DevelopmentLabor, DevelopmentLaborDto>();
+            CreateMap<DevelopmentLabor, DevelopmentLaborFullDto>();
             CreateMap<DevelopmentLaborCreateDto, DevelopmentLabor>();
             CreateMap<DevelopmentLaborChangeDto, DevelopmentLabor>();
+            CreateMap<DevelopmentLaborCreateDto_ListItem, DevelopmentLabor>();
+            CreateMap<DevelopmentLabor, DevelopmentLaborDto_ListItem>();
 
-            CreateMap<DevelopmentLaborCategory, DevelopmentLaborCategoryDto>();
+
+            CreateMap<DevelopmentLaborCategory, DevelopmentLaborCategoryDto>().ReverseMap();
+            CreateMap<DevelopmentLaborCategory, DevelopmentLaborCategoryFullDto>();
+            CreateMap<DevelopmentLaborCategoryCreateDto, DevelopmentLaborCategory>();
+
 
             CreateMap<CorrectionRatesBundle, CorrectionRatesBundleDto>().ReverseMap();
             CreateMap<CorrectionRatesBundle, CorrectionRatesBundleFullDto>();

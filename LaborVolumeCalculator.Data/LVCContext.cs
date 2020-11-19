@@ -165,7 +165,7 @@ namespace LaborVolumeCalculator.Data
                     .HasIndex(key => new { key.LaborCategoryID, key.Code })
                     .IsUnique();
                 
-                e.HasOne(m => m.LaborCategory).WithMany(lc => lc.Labors).OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(m => m.LaborCategory).WithMany(lc => lc.Labors).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Stage>().ToTable("Stage", Schema.Dictionary);
