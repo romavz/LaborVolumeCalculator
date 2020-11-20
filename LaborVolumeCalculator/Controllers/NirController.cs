@@ -58,6 +58,12 @@ namespace LaborVolumeCalculator.Controllers
                                 .ThenInclude(lvr => lvr.Labor)
                                     .ThenInclude(l => l.LaborCategory)
                 .Include(m => m.Stages)
+                    .ThenInclude(m => m.SoftwareDevLaborGroups)
+                        .ThenInclude(m => m.LaborVolumes)
+                            .ThenInclude(lv => lv.LaborVolumeRange)
+                                .ThenInclude(r => r.RangeFeature)
+                                    .ThenInclude(f => f.RangeFeatureCategory)
+                .Include(m => m.Stages)
                     .ThenInclude(s => s.OntdLaborVolumes)
                         .ThenInclude(lv => lv.Labor)
                 .FirstOrDefaultAsync(n => n.ID == id);
