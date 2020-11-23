@@ -4,14 +4,16 @@ using LaborVolumeCalculator.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaborVolumeCalculator.Migrations
 {
     [DbContext(typeof(LVCContext))]
-    partial class LVCContextModelSnapshot : ModelSnapshot
+    [Migration("20201118111441_Chage_DevelopmentLabors_architecture")]
+    partial class Chage_DevelopmentLabors_architecture
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1190,7 +1192,7 @@ namespace LaborVolumeCalculator.Migrations
                     b.HasOne("LaborVolumeCalculator.Models.Dictionary.DevelopmentLaborCategory", "LaborCategory")
                         .WithMany("Labors")
                         .HasForeignKey("LaborCategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1304,10 +1306,10 @@ namespace LaborVolumeCalculator.Migrations
 
             modelBuilder.Entity("LaborVolumeCalculator.Models.Dictionary.RangeFeature", b =>
                 {
-                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.RangeFeatureCategory", "RangeFeatureCategory")
-                        .WithMany("RangeFeatures")
+                    b.HasOne("LaborVolumeCalculator.Models.Dictionary.RangeFeatureCategory", "Category")
+                        .WithMany()
                         .HasForeignKey("RangeFeatureCategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

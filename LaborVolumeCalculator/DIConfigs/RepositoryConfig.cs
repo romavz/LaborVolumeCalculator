@@ -11,14 +11,14 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<IRepository<NirStage>, NirStageRepository>();
             services.AddScoped<IRepository<NirStageLaborVolume>, RepositoryBase<NirStageLaborVolume>>();
-            services.AddScoped<IRepository<SoftwareDevEnv>, SoftwareDevEnvRepository>();
             services.AddScoped<IRepository<NirStageSoftwareDevLaborGroup>, RepositoryBase<NirStageSoftwareDevLaborGroup>>();
             services.AddScoped<IRepository<OntdLabor>, RepositoryBase<OntdLabor>>();
             services.AddScoped<IRepository<NirStageOntdLaborVolume>, RepositoryBase<NirStageOntdLaborVolume>>();
             services.AddScoped<IRepository<CorrectionRatesBundle>, CorrectionRatesBundleRepository>();
-            services.AddScoped<IRepository<DbDevLabor>, DbDevLaborRepository>();
-            services.AddScoped<IRepository<DbEntityCountRange>, RepositoryBase<DbEntityCountRange>>();
-            services.AddScoped<IRepository<DbDevLaborVolumeRange>, DbDevLaborVolumeRangeRepository>();
+            services.AddScoped<IRepository<LaborVolumeRange>, LaborVolumeRangeRepository>();
+            services.AddScoped<IRepository<RangeFeature>, RangeFeatureRepository>();
+            services.AddScoped<IRepository<RangeFeatureCategory>, RangeFeatureCategoryRepository>();
+            services.AddScoped<IRepository<DevelopmentLaborCategory>, DevelopmentLaborCategoryRepository>();
             return services;
         }
     }

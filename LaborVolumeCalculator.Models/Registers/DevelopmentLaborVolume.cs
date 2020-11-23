@@ -8,14 +8,14 @@ using LaborVolumeCalculator.Models.Dictionary;
 
 namespace LaborVolumeCalculator.Models.Registers
 {
-    public class DevLaborVolume<TLaborVolumeRange> where TLaborVolumeRange : class
+    public class DevelopmentLaborVolume
     {
         public int ID { get; set; }
         public double Volume { get; set; }
         public int SoftwareDevLaborGroupID { get; set; }
 
         public int LaborVolumeRangeID { get; set; }
-        public TLaborVolumeRange LaborVolumeRange { get; set; }
+        public LaborVolumeRange LaborVolumeRange { get; set; }
         
     }
 }

@@ -8,10 +8,12 @@ namespace LaborVolumeCalculator.Data.DevLabors
     public class SoftwareDevSeeds
     {
         private readonly LVCContext dbContext;
-        private SoftwareDevLabor[] softLabors;
-        private SoftwareDevEnv[] devEnvironments;
-        public SoftwareDevSeeds(LVCContext dbContext)
+        private DevelopmentLabor[] softLabors;
+        private RangeFeature[] devEnvironments;
+        private readonly RangeFeatureCategory category;
+        public SoftwareDevSeeds(LVCContext dbContext, RangeFeatureCategory category)
         {
+            this.category = category;
             this.dbContext = dbContext;
         }
 
@@ -22,24 +24,24 @@ namespace LaborVolumeCalculator.Data.DevLabors
             SeedSoftwareDevLaborVolumeRanges();
         }
 
-        private SoftwareDevEnv[] SeedSoftwareDevEnvironments()
+        private RangeFeature[] SeedSoftwareDevEnvironments()
         {
-            SoftwareDevEnv[] environments =
+            RangeFeature[] environments =
             {
-                new SoftwareDevEnv("PHP/JavaScript"),
-                new SoftwareDevEnv("Perl/Ruby/Python"),
-                new SoftwareDevEnv("C++/C#/Java/Objective-C"),
-                new SoftwareDevEnv("ASM")
+                new RangeFeature("PHP/JavaScript", category),
+                new RangeFeature("Perl/Ruby/Python", category),
+                new RangeFeature("C++/C#/Java/Objective-C", category),
+                new RangeFeature("ASM", category)
             };
-            dbContext.SoftwareDevEnvs.AddRange(environments);
+            dbContext.AddRange(environments);
             return environments;
         }
 
-        private SoftwareDevLabor[] SeedSoftwareDevLabors(DevelopmentLaborCategory[] categories)
+        private DevelopmentLabor[] SeedSoftwareDevLabors(DevelopmentLaborCategory[] categories)
         {
-            var lb = new SoftwareDevLaborBuilder(categories).SetCategory(1);
+            var lb = new DevelopmentLaborBuilder(categories).SetCategory(1);
 
-            SoftwareDevLabor[] labors = new SoftwareDevLabor[] {
+            DevelopmentLabor[] labors = new DevelopmentLabor[] {
                 lb.Create(101, "Разбор файлов входных данных заданного формата"),
                 lb.Create(102, "Разрбор потока данных заданного формата"),
                 lb.Create(103, "Графический интерфейс ввода"),
@@ -94,51 +96,51 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 lb.Create(803, "Микроядерная архитектура")
             };
 
-            dbContext.SoftwareDevLabors.AddRange(labors);
+            dbContext.AddRange(labors);
             return labors;
         }
 
-        private SoftwareDevLaborVolumeRange[] SeedSoftwareDevLaborVolumeRanges()
+        private LaborVolumeRange[] SeedSoftwareDevLaborVolumeRanges()
         {
             var _PHP_JS = this.devEnvironments[0];
             var _Perl_Ruby_Pyton = this.devEnvironments[1];
             var _Cpp_Cs_Java_ObjC = this.devEnvironments[2];
             var _Asm = this.devEnvironments[3];
 
-            var labors = new SoftwareDevLaborsContainer(softLabors);
+            var labors = new DevelopmentLaborsContainer(softLabors);
 
-            var rb = new SoftwareDevLaborVolumeRangeBuilder();
-            SoftwareDevLaborVolumeRange[] ranges = new SoftwareDevLaborVolumeRange[]
+            var rb = new DevelopmentLaborVolumeRangeBuilder();
+            LaborVolumeRange[] ranges = new LaborVolumeRange[]
             {
-                rb.SetDevEnv(_PHP_JS).Create(labors[103], 1, 2),
+                rb.SetRangeFeature(_PHP_JS).Create(labors[103], 1, 2),
                 rb.Create(labors[104], 1),
                 rb.Create(labors[105], 1, 2),
                 rb.Create(labors[107], 1.5),
-                
+
                 rb.Create(labors[202], 0.5, 1.5),
                 rb.Create(labors[203], 1, 1.5),
                 rb.Create(labors[204], 1.5),
                 rb.Create(labors[205], 2.5),
                 rb.Create(labors[206], 1.5),
-                
+
                 rb.Create(labors[301], 0.5, 1),
                 rb.Create(labors[303], 1),
                 rb.Create(labors[305], 1),
-                
+
                 rb.Create(labors[401], 0.5, 1),
                 rb.Create(labors[402], 1),
-                
+
                 rb.Create(labors[501], 3.5),
                 rb.Create(labors[504], 0.5, 1),
                 rb.Create(labors[506], 1),
-                
+
                 rb.Create(labors[704], 1),
-                
+
                 rb.Create(labors[801], 0),
                 rb.Create(labors[802], 0, 0.5),
                 rb.Create(labors[803], 0.5, 1),
-                
-                rb.SetDevEnv(_Perl_Ruby_Pyton).Create(labors[101], 0.5, 1),
+
+                rb.SetRangeFeature(_Perl_Ruby_Pyton).Create(labors[101], 0.5, 1),
                 rb.Create(labors[102], 0.5, 1.5),
                 rb.Create(labors[104], 1, 2),
                 rb.Create(labors[107], 1.5),
@@ -176,8 +178,8 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 rb.Create(labors[802], 0, 0.5),
                 rb.Create(labors[803], 0.5, 1),
 
-                
-                rb.SetDevEnv(_Cpp_Cs_Java_ObjC).Create(labors[101], 1.5, 2),
+
+                rb.SetRangeFeature(_Cpp_Cs_Java_ObjC).Create(labors[101], 1.5, 2),
                 rb.Create(labors[102], 2),
                 rb.Create(labors[103], 3, 4),
                 rb.Create(labors[104], 2),
@@ -227,50 +229,34 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 rb.Create(labors[802], 0.5, 1),
                 rb.Create(labors[803], 1, 1.5),
 
-                
-                rb.SetDevEnv( _Asm).Create(labors[104], 3, 4),
-                
+
+                rb.SetRangeFeature( _Asm).Create(labors[104], 3, 4),
+
                 rb.Create(labors[203], 2, 2.5),
-                
+
                 rb.Create(labors[301], 4.5),
                 rb.Create(labors[302], 3, 4),
-                
+
                 rb.Create(labors[401], 4, 4.5),
-                
+
                 rb.Create(labors[501], 4.5),
                 rb.Create(labors[504], 4, 5),
                 rb.Create(labors[505], 5, 6),
                 rb.Create(labors[506], 2),
-                
+
                 rb.Create(labors[601], 6, 7),
                 rb.Create(labors[602], 7, 8),
                 rb.Create(labors[603], 7, 8),
                 rb.Create(labors[604], 4, 5),
 
                 rb.Create(labors[703], 6, 7),
-                
+
                 rb.Create(labors[801], 0.5)
             };
 
-            dbContext.SoftwareDevLaborVolumeRanges.AddRange(ranges);
+            dbContext.AddRange(ranges);
             return ranges;
         }
     }
 
-    internal class SoftwareDevLaborsContainer
-    {
-        private readonly SoftwareDevLabor[] softLabors;
-        public SoftwareDevLaborsContainer(SoftwareDevLabor[] softLabors)
-        {
-            this.softLabors = softLabors;
-        }
-
-        public SoftwareDevLabor this[int code]
-        {
-            get
-            {
-                return softLabors.FirstOrDefault(m => m.Code == code.ToString());
-            }
-        }
-    }
 }

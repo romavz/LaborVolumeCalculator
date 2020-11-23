@@ -11,35 +11,36 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<LaborCreateDto, OntdLabor>();
             CreateMap<LaborDto, OntdLabor>();
 
-            CreateMap<SoftwareDevLabor, DevelopmentLaborDto>();
-            CreateMap<DevelopmentLaborCreateDto, SoftwareDevLabor>();
-            CreateMap<DevelopmentLaborChangeDto, SoftwareDevLabor>();
+            CreateMap<DevelopmentLabor, DevelopmentLaborFullDto>();
+            CreateMap<DevelopmentLaborCreateDto, DevelopmentLabor>();
+            CreateMap<DevelopmentLaborChangeDto, DevelopmentLabor>();
+            CreateMap<DevelopmentLaborCreateDto_ListItem, DevelopmentLabor>();
+            CreateMap<DevelopmentLabor, DevelopmentLaborDto_ListItem>();
 
-            CreateMap<DevelopmentLaborCategory, DevelopmentLaborCategoryDto>();
 
-            CreateMap<SoftwareDevLaborVolumeRange, SoftwareDevLaborVolumeRangeDto>()
-                .ReverseMap()
-                .ForPath(p => p.Labor, opt => opt.Ignore())
-                .ForPath(p => p.DevEnv, opt => opt.Ignore());
-        
-            CreateMap<SoftwareDevEnv, SoftwareDevEnvDto>().ReverseMap();
-            CreateMap<SoftwareDevEnvCreateDto, SoftwareDevEnv>();
-            CreateMap<SoftwareDevEnvChangeDto, SoftwareDevEnv>();
+            CreateMap<DevelopmentLaborCategory, DevelopmentLaborCategoryDto>().ReverseMap();
+            CreateMap<DevelopmentLaborCategory, DevelopmentLaborCategoryFullDto>();
+            CreateMap<DevelopmentLaborCategoryCreateDto, DevelopmentLaborCategory>();
+
 
             CreateMap<CorrectionRatesBundle, CorrectionRatesBundleDto>().ReverseMap();
             CreateMap<CorrectionRatesBundle, CorrectionRatesBundleFullDto>();
             CreateMap<CorrectionRatesBundleCreateDto, CorrectionRatesBundle>();
-            
-            CreateMap<DbDevLaborVolumeRange, DbDevLaborVolumeRangeDto>();
-            CreateMap<DbDevLaborVolumeRangeCreateDto, DbDevLaborVolumeRange>();
-            CreateMap<DbDevLaborVolumeRangeChangeDto, DbDevLaborVolumeRange>();
 
-            CreateMap<DbEntityCountRange, DbEntityCountRangeDto>();
-            CreateMap<DbEntityCountRangeCreateDto, DbEntityCountRange>();
-            
-            CreateMap<DbDevLabor, DevelopmentLaborDto>();
-            CreateMap<DevelopmentLaborCreateDto, DbDevLabor>();
-            CreateMap<DevelopmentLaborChangeDto, DbDevLabor>();
+            CreateMap<LaborVolumeRange, LaborVolumeRangeDto>();
+            CreateMap<LaborVolumeRangeChangeDto, LaborVolumeRange>();
+            CreateMap<LaborVolumeRangeCreateDto, LaborVolumeRange>();
+
+            CreateMap<RangeFeature, RangeFeatureDto>();
+            CreateMap<RangeFeatureCreateDto, RangeFeature>();
+            CreateMap<RangeFeatureChangeDto, RangeFeature>();
+            CreateMap<RangeFeature, RangeFeatureDto_ListItem>();
+            CreateMap<RangeFeatureCreateDto_ListItem, RangeFeature>();
+
+            CreateMap<RangeFeatureCategory, RangeFeatureCategoryDto>().ReverseMap();
+            CreateMap<RangeFeatureCategoryCreateDto, RangeFeatureCategory>();
+            CreateMap<RangeFeatureCategory, RangeFeatureCategoryFullDto>();
+            CreateMap<RangeFeatureCategoryFullCreateDto, RangeFeatureCategory>();
         }
     }
 }

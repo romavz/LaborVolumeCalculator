@@ -8,7 +8,6 @@ namespace LaborVolumeCalculator.Models.Registers
         public NirStage Stage { get; set; }
 
         public NirSoftwareDevLaborGroup SoftwareDevLaborGroup { get; set; }
-        public List<NirSoftwareDevLaborVolume> LaborVolumes { get; set; }
-        public List<NirDbDevLaborVolume> DbDevLaborVolumes { get; set; }
+        public List<NirDevelopmentLaborVolume> LaborVolumes { get; set; }
     }
 }

@@ -1,10 +1,10 @@
 namespace LaborVolumeCalculator.DTO
 {
-    public class DevLaborVolumeDto<TLaborVolumeRangeDto> where TLaborVolumeRangeDto : class
+    public class DevLaborVolumeDto
     {
         public int ID { get; set; }
         public double Volume { get; set; }
-        public TLaborVolumeRangeDto LaborVolumeRange { get; set; }
+        public LaborVolumeRangeDto LaborVolumeRange { get; set; }
     }
 
     public class DevLaborVolumeDto_ListItem
