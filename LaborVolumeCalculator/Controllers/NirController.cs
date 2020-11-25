@@ -11,6 +11,8 @@ using NSwag.Annotations;
 using LaborVolumeCalculator.DTO;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore.Query;
+using LaborVolumeCalculator.Repositories.Contracts;
+using LaborVolumeCalculator.Repositories.Extentions;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -18,9 +20,11 @@ namespace LaborVolumeCalculator.Controllers
     [ApiController]
     public class NirController : ControllerBase<Nir, NirDto>
     {
-        private readonly LVCContext _context;
-        public NirController(LVCContext context, IMapper mapper) : base(mapper)
+        private readonly IRepository<Nir> _context;
+        private readonly IRepository<NirStage> _stages;
+        public NirController(IRepository<Nir> context, IRepository<NirStage> stages, IMapper mapper) : base(mapper)
         {
+            this._stages = stages;
             _context = context;
         }
 
@@ -28,8 +32,8 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirDto>>> GetNirs()
         {
-            var nirs = await NirsQuery().ToListAsync();
-            
+            var nirs = await _context.GetAll().ToListAsync();
+
             var nirsDto = ConvertToDto(nirs).ToList();
             return nirsDto;
         }
@@ -38,48 +42,15 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NirDto>> GetNir(int id)
         {
-            var nir = await NirsQuery()
-                .Include(m => m.Stages)
-                    .ThenInclude(s => s.LaborVolumes)
-                        .ThenInclude(lv => lv.Labor)
-                .Include(m => m.Stages)
-                    .ThenInclude(s => s.NirInnovationRate)
-                .Include(m => m.Stages)
-                    .ThenInclude(s => s.SoftwareDevLaborGroups)
-                        .ThenInclude(sdl => sdl.SoftwareDevLaborGroup)
-                .Include(m => m.Stages)
-                    .ThenInclude(s => s.SoftwareDevLaborGroups)
-                        .ThenInclude(g => g.LaborVolumes)
-                            .ThenInclude(lv => lv.LaborVolumeRange)
-                .Include(m => m.Stages)
-                    .ThenInclude(m => m.SoftwareDevLaborGroups)
-                        .ThenInclude(m => m.LaborVolumes)
-                            .ThenInclude(lv => lv.LaborVolumeRange)
-                                .ThenInclude(lvr => lvr.Labor)
-                                    .ThenInclude(l => l.LaborCategory)
-                .Include(m => m.Stages)
-                    .ThenInclude(m => m.SoftwareDevLaborGroups)
-                        .ThenInclude(m => m.LaborVolumes)
-                            .ThenInclude(lv => lv.LaborVolumeRange)
-                                .ThenInclude(r => r.RangeFeature)
-                                    .ThenInclude(f => f.RangeFeatureCategory)
-                .Include(m => m.Stages)
-                    .ThenInclude(s => s.OntdLaborVolumes)
-                        .ThenInclude(lv => lv.Labor)
-                .FirstOrDefaultAsync(n => n.ID == id);
+            var nir = await _context.FindAsync(id);
 
             if (nir == null)
             {
                 return NotFound();
             }
+            nir.Stages = await _stages.WithIncludes.Where(s => s.NirID == id).ToListAsync();
 
             return ConvertToDto(nir);
-        }
-
-        private IQueryable<Nir> NirsQuery()
-        {
-            return _context.Nirs
-                .AsNoTracking();
         }
 
         // PUT: api/Nir/5
@@ -94,7 +65,7 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             var nir = ConvertToSource(nirDto);
-            _context.Entry(nir).State = EntityState.Modified;
+            _context.Update(nir);
 
             try
             {
@@ -122,11 +93,11 @@ namespace LaborVolumeCalculator.Controllers
         public async Task<ActionResult<NirDto>> PostNir(NirCreateDto nirDto)
         {
             var nir = ConvertToSource(nirDto);
-            _context.Nirs.Add(nir);
+            _context.Add(nir);
             await _context.SaveChangesAsync();
 
-            nir = await NirsQuery().FirstOrDefaultAsync(m => m.ID == nir.ID);
-            
+            nir = await _context.FindAsync(nir.ID);
+
             return CreatedAtAction("GetNir", new { id = nir.ID }, ConvertToDto(nir));
         }
 
@@ -134,13 +105,13 @@ namespace LaborVolumeCalculator.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<NirChangeDto>> DeleteNir(int id)
         {
-            var nir = await _context.Nirs.FindAsync(id);
+            var nir = await _context.FindAsync(id);
             if (nir == null)
             {
                 return NotFound();
             }
 
-            _context.Nirs.Remove(nir);
+            _context.Remove(nir);
             await _context.SaveChangesAsync();
 
             return ConvertToDto<NirChangeDto>(nir);
@@ -148,7 +119,7 @@ namespace LaborVolumeCalculator.Controllers
 
         private bool NirExists(int id)
         {
-            return _context.Nirs.Any(e => e.ID == id);
+            return _context.Any(e => e.ID == id);
         }
     }
 }
