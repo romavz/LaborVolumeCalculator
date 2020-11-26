@@ -11,6 +11,9 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<LaborCreateDto, OntdLabor>();
             CreateMap<LaborDto, OntdLabor>();
 
+            CreateMap<LaborCreateDto, NirLabor>();
+            CreateMap<LaborDto, NirLabor>().ReverseMap();
+
             CreateMap<DevelopmentLabor, DevelopmentLaborFullDto>();
             CreateMap<DevelopmentLaborCreateDto, DevelopmentLabor>();
             CreateMap<DevelopmentLaborChangeDto, DevelopmentLabor>();

@@ -20,6 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRepository<RangeFeature>, RangeFeatureRepository>();
             services.AddScoped<IRepository<RangeFeatureCategory>, RangeFeatureCategoryRepository>();
             services.AddScoped<IRepository<DevelopmentLaborCategory>, DevelopmentLaborCategoryRepository>();
+            services.AddScoped<IRepository<NirLabor>, RepositoryBase<NirLabor>>();
             return services;
         }
     }
