@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name = "Трудозатраты НИР", GroupName = "Трудозатраты НИР")]
-    public class NirLabor : Labor
+    public class NirLabor : Labor, IIdentable
 
     {
         public NirLabor() : base() { }
