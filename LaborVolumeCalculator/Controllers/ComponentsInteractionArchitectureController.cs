@@ -9,30 +9,35 @@ using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.Repositories.Contracts;
 using LaborVolumeCalculator.Repositories.Extentions;
+using LaborVolumeCalculator.DTO;
+using AutoMapper;
 
 namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ComponentsInteractionArchitectureController : ControllerBase
+    public class ComponentsInteractionArchitectureController : ControllerBase<ComponentsInteractionArchitecture, ComponentsInteractionArchitectureDto>
     {
         private readonly IRepository<ComponentsInteractionArchitecture> _architectures;
 
-        public ComponentsInteractionArchitectureController(IRepository<ComponentsInteractionArchitecture> context)
+        public ComponentsInteractionArchitectureController(IRepository<ComponentsInteractionArchitecture> architectures, IMapper mapper) : base(mapper)
         {
-            _architectures = context;
+            _architectures = architectures;
         }
 
         // GET: api/ComponentsInteractionArchitecture
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ComponentsInteractionArchitecture>>> GetComponentsInteractionArchitectures()
+        public async Task<ActionResult<IEnumerable<ComponentsInteractionArchitectureDto>>> GetComponentsInteractionArchitectures()
         {
-            return await _architectures.ToListAsync();
+            var items = await _architectures.ToListAsync();
+            return ConvertToDto(items)
+                    .OrderBy(m => m.Name)
+                    .ToList();
         }
 
         // GET: api/ComponentsInteractionArchitecture/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ComponentsInteractionArchitecture>> GetComponentsInteractionArchitecture(int id)
+        public async Task<ActionResult<ComponentsInteractionArchitectureDto>> GetComponentsInteractionArchitecture(int id)
         {
             var componentsInteractionArchitecture = await _architectures.FindAsync(id);
 
@@ -41,21 +46,23 @@ namespace LaborVolumeCalculator.Controllers
                 return NotFound();
             }
 
-            return componentsInteractionArchitecture;
+            return ConvertToDto(componentsInteractionArchitecture);
         }
 
         // PUT: api/ComponentsInteractionArchitecture/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutComponentsInteractionArchitecture(int id, ComponentsInteractionArchitecture componentsInteractionArchitecture)
+        public async Task<ActionResult<ComponentsInteractionArchitectureDto>> PutComponentsInteractionArchitecture(int id, ComponentsInteractionArchitectureDto architectureDto)
         {
-            if (id != componentsInteractionArchitecture.ID)
+            var architecture = ConvertToSource(architectureDto);
+
+            if (id != architecture.ID)
             {
                 return BadRequest();
             }
 
-            _architectures.Update(componentsInteractionArchitecture);
+            _architectures.Update(architecture);
 
             try
             {
@@ -73,24 +80,25 @@ namespace LaborVolumeCalculator.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(ConvertToDto(architecture));
         }
 
         // POST: api/ComponentsInteractionArchitecture
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<ComponentsInteractionArchitecture>> PostComponentsInteractionArchitecture(ComponentsInteractionArchitecture componentsInteractionArchitecture)
+        public async Task<ActionResult<ComponentsInteractionArchitectureDto>> PostComponentsInteractionArchitecture(ComponentsInteractionArchitectureCreateDto architectureDto)
         {
-            _architectures.Add(componentsInteractionArchitecture);
+            var architecture = ConvertToSource(architectureDto);
+            _architectures.Add(architecture);
             await _architectures.SaveChangesAsync();
 
-            return CreatedAtAction("GetComponentsInteractionArchitecture", new { id = componentsInteractionArchitecture.ID }, componentsInteractionArchitecture);
+            return CreatedAtAction("GetComponentsInteractionArchitecture", new { id = architecture.ID }, ConvertToDto(architecture));
         }
 
         // DELETE: api/ComponentsInteractionArchitecture/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ComponentsInteractionArchitecture>> DeleteComponentsInteractionArchitecture(int id)
+        public async Task<ActionResult<ComponentsInteractionArchitectureDto>> DeleteComponentsInteractionArchitecture(int id)
         {
             var componentsInteractionArchitecture = await _architectures.FindAsync(id);
             if (componentsInteractionArchitecture == null)
@@ -101,7 +109,7 @@ namespace LaborVolumeCalculator.Controllers
             _architectures.Remove(componentsInteractionArchitecture);
             await _architectures.SaveChangesAsync();
 
-            return componentsInteractionArchitecture;
+            return ConvertToDto(componentsInteractionArchitecture);
         }
 
         private bool ComponentsInteractionArchitectureExists(int id)
