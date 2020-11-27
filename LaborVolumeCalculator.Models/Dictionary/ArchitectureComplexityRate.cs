@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name = "Архитектурный коэффициент", GroupName = "Архитектурные коэффициенты")]
-    public class ArchitectureComplexityRate
+    public class ArchitectureComplexityRate : IIdentable
     {
         public ArchitectureComplexityRate()
         {
