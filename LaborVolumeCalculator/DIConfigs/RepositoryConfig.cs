@@ -22,6 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRepository<DevelopmentLaborCategory>, DevelopmentLaborCategoryRepository>();
             services.AddScoped<IRepository<NirLabor>, RepositoryBase<NirLabor>>();
             services.AddScoped<IRepository<ArchitectureComplexityRate>, ArchitectureComplexityRateRepository>();
+            services.AddScoped<IRepository<ComponentsMakroArchitecture>, RepositoryBase<ComponentsMakroArchitecture>>();
             return services;
         }
     }
