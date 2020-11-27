@@ -24,9 +24,10 @@ namespace LaborVolumeCalculator.DTO.Profiles
             
             CreateMap<ComponentsMakroArchitecture, ComponentsMacroArchitectureDto>().ReverseMap();
             CreateMap<ComponentsInteractionArchitecture, ComponentsInteractionArchitectureDto>().ReverseMap();
-            CreateMap<ArchitectureComplexityRate, ArchitectureComplexityRateDto>().ReverseMap()
-                .ForPath(p => p.ComponentsMakroArchitecture.Name, opt => opt.Ignore())
-                .ForPath(p => p.ComponentsInteractionArchitecture.Name, opt => opt.Ignore());
+            
+            CreateMap<ArchitectureComplexityRate, ArchitectureComplexityRateDto>();
+            CreateMap<ArchitectureComplexityRateCreateDto, ArchitectureComplexityRate>();
+            CreateMap<ArchitectureComplexityRateShortDto, ArchitectureComplexityRate>().ReverseMap();
 
             CreateMap<NirStageSoftwareDevLaborGroup, StageSoftwareDevLaborGroupDto>();
             CreateMap<StageSoftwareDevLaborGroupDto_ListItem, NirStageSoftwareDevLaborGroup>();

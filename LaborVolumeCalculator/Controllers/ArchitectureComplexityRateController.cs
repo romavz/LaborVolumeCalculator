@@ -9,6 +9,8 @@ using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.DTO;
 using AutoMapper;
+using LaborVolumeCalculator.Repositories.Contracts;
+using LaborVolumeCalculator.Repositories.Extentions;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -16,18 +18,18 @@ namespace LaborVolumeCalculator.Controllers
     [ApiController]
     public class ArchitectureComplexityRateController : ControllerBase<ArchitectureComplexityRate, ArchitectureComplexityRateDto>
     {
-        private readonly LVCContext _context;
+        private readonly IRepository<ArchitectureComplexityRate> _rates;
 
-        public ArchitectureComplexityRateController(LVCContext context, IMapper mapper) : base(mapper)
+        public ArchitectureComplexityRateController(IRepository<ArchitectureComplexityRate> rates, IMapper mapper) : base(mapper)
         {
-            _context = context;
+            _rates = rates;
         }
 
         // GET: api/ArchitectureComplexityRate
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ArchitectureComplexityRateDto>>> GetArchitectureComplexityRates()
         {
-            var items = await RatesRequest().ToListAsync();
+            var items = await _rates.WithIncludes.ToListAsync();
             return ConvertToDto(items);
         }
 
@@ -35,7 +37,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ArchitectureComplexityRateDto>> GetArchitectureComplexityRate(int id)
         {
-            var architectureComplexityRate = await RatesRequest().FirstOrDefaultAsync(m => m.ID == id);
+            var architectureComplexityRate = await _rates.WithIncludes.FirstOrDefaultAsync(m => m.ID == id);
 
             if (architectureComplexityRate == null)
             {
@@ -45,31 +47,23 @@ namespace LaborVolumeCalculator.Controllers
             return ConvertToDto(architectureComplexityRate);
         }
 
-        private IQueryable<ArchitectureComplexityRate> RatesRequest()
-        {
-            return _context.ArchitectureComplexityRates
-                .Include(r => r.ComponentsInteractionArchitecture)
-                .Include(r => r.ComponentsMakroArchitecture)
-                .AsNoTracking();
-        }
-
         // PUT: api/ArchitectureComplexityRate/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArchitectureComplexityRate(int id, ArchitectureComplexityRateDto architectureComplexityRateDto)
+        public async Task<IActionResult> PutArchitectureComplexityRate(int id, ArchitectureComplexityRateShortDto architectureComplexityRateDto)
         {
             if (id != architectureComplexityRateDto.ID)
             {
                 return BadRequest();
             }
 
-            var architectureComplexityRate = ConvertToSource(architectureComplexityRateDto);
-            _context.Entry(architectureComplexityRate).State = EntityState.Modified;
+            var rate = ConvertToSource(architectureComplexityRateDto);
+            _rates.Update(rate);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _rates.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -83,50 +77,51 @@ namespace LaborVolumeCalculator.Controllers
                 }
             }
 
-            return Ok();
+            rate = await _rates.FindAsync(id);
+
+            return Ok(ConvertToDto<ArchitectureComplexityRateShortDto>(rate));
         }
 
         // POST: api/ArchitectureComplexityRate
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<ArchitectureComplexityRateDto>> PostArchitectureComplexityRate(ArchitectureComplexityRateDto architectureComplexityRateDto)
+        public async Task<ActionResult<ArchitectureComplexityRateDto>> PostArchitectureComplexityRate(ArchitectureComplexityRateCreateDto architectureComplexityRateDto)
         {
-            var architectureComplexityRate = ConvertToSource(architectureComplexityRateDto);
-            _context.ArchitectureComplexityRates.Add(architectureComplexityRate);
+            var rate = ConvertToSource(architectureComplexityRateDto);
+            _rates.Add(rate);
             try 
             {
-                await _context.SaveChangesAsync();
+                await _rates.SaveChangesAsync();
             }
             catch(DbUpdateException)
             {
                 return BadRequest();
             }
 
-            architectureComplexityRate = await RatesRequest().FirstOrDefaultAsync(m => m.ID == architectureComplexityRate.ID);
-
-            return CreatedAtAction("GetArchitectureComplexityRate", new { id = architectureComplexityRate.ID }, ConvertToDto(architectureComplexityRate));
+            rate = await _rates.WithIncludes.FindAsync(rate.ID);
+            return CreatedAtAction("GetArchitectureComplexityRate", new { id = rate.ID }, ConvertToDto(rate));
         }
 
         // DELETE: api/ArchitectureComplexityRate/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<ArchitectureComplexityRateDto>> DeleteArchitectureComplexityRate(int id)
         {
-            var architectureComplexityRate = await _context.ArchitectureComplexityRates.FindAsync(id);
-            if (architectureComplexityRate == null)
+            var rate = await _rates.FindAsync(id);
+            if (rate == null)
             {
                 return NotFound();
             }
 
-            _context.ArchitectureComplexityRates.Remove(architectureComplexityRate);
-            await _context.SaveChangesAsync();
+            _rates.Remove(rate);
+            await _rates.SaveChangesAsync();
 
-            return ConvertToDto(architectureComplexityRate);
+            return ConvertToDto(rate);
         }
 
         private bool ArchitectureComplexityRateExists(int id)
         {
-            return _context.ArchitectureComplexityRates.Any(e => e.ID == id);
+            return _rates.Any(e => e.ID == id);
         }
     }
 }
