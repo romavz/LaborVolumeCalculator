@@ -23,6 +23,8 @@ namespace LaborVolumeCalculator.DTO.Profiles
                 .ForPath(p => p.TestsScale.Name, opt => opt.Ignore());
             
             CreateMap<ComponentsMakroArchitecture, ComponentsMacroArchitectureDto>().ReverseMap();
+            CreateMap<ComponentsMacroArchitectureCreateDto, ComponentsMakroArchitecture>();
+            
             CreateMap<ComponentsInteractionArchitecture, ComponentsInteractionArchitectureDto>().ReverseMap();
             
             CreateMap<ArchitectureComplexityRate, ArchitectureComplexityRateDto>();
