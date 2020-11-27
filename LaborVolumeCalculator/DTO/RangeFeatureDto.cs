@@ -15,7 +15,7 @@ namespace LaborVolumeCalculator.DTO
         public int RangeFeatureCategoryID { get; set; }
     }
 
-    public class RangeFeatureChangeDto : RangeFeatureCategoryCreateDto
+    public class RangeFeatureChangeDto : RangeFeatureCreateDto
     {
         public int ID { get; set; }
     }
