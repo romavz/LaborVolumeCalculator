@@ -26,6 +26,7 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<ComponentsMacroArchitectureCreateDto, ComponentsMakroArchitecture>();
             
             CreateMap<ComponentsInteractionArchitecture, ComponentsInteractionArchitectureDto>().ReverseMap();
+            CreateMap<ComponentsInteractionArchitectureCreateDto, ComponentsInteractionArchitecture>();
             
             CreateMap<ArchitectureComplexityRate, ArchitectureComplexityRateDto>();
             CreateMap<ArchitectureComplexityRateCreateDto, ArchitectureComplexityRate>();
