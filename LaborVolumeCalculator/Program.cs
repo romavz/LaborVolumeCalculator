@@ -49,11 +49,6 @@ namespace LaborVolumeCalculator
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((context, builder) => {
-                    var env = context.HostingEnvironment;
-                    builder.AddYamlFile("appsettings.yaml", optional: true);
-                    builder.AddYamlFile($"appsettings.{env.EnvironmentName}.yaml", optional: true);
-                })
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseUrls("http://localhost:5000;http://*:5000;");
                     webBuilder.UseStartup<Startup>();
