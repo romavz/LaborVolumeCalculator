@@ -41,6 +41,11 @@ namespace LaborVolumeCalculator.Repositories
                             .ThenInclude(lv => lv.LaborVolumeRange)
                                 .ThenInclude(lvr => lvr.Labor)
                                     .ThenInclude(l => l.LaborCategory)
+                    .Include(m => m.SoftwareDevLaborGroups)
+                        .ThenInclude(m => m.LaborVolumes)
+                            .ThenInclude(lv => lv.LaborVolumeRange)
+                                .ThenInclude(r => r.RangeFeature)
+                                    .ThenInclude(f => f.RangeFeatureCategory)
                     .AsNoTracking();
             }
         }
