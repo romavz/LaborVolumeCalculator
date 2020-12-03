@@ -27,7 +27,7 @@ namespace LaborVolumeCalculator.Data.Rates
             var rb = new CorrectionRatesBundleBuilder();
             CorrectionRatesBundle[] ratesBundles = {
                  rb.Create(1, "Веб-ориентированный проект с алалогичным решением",
-                    solutionInnovationRates[3], standardModulesUsingRates[2], infrastructureComplexityRates[0], architectureComplexityRates[10], testsDevelopmentRates[0]
+                    solutionInnovationRates[3], standardModulesUsingRates[2], infrastructureComplexityRates[0], architectureComplexityRates[10], testsDevelopmentRates[0], bundle => bundle.TestsDevelopmentRateValue = 1.0
                  ),
                  rb.Create(2, "Веб-ориентированный проект с аналогичным решением, предназначенный для размещения в сети Интернет",
                     solutionInnovationRates[3], standardModulesUsingRates[2], infrastructureComplexityRates[1], architectureComplexityRates[10], testsDevelopmentRates[17], bundle => bundle.TestsDevelopmentRateValue = 1.58

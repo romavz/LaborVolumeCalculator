@@ -46,7 +46,7 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 lb.Create(102, "Разрбор потока данных заданного формата"),
                 lb.Create(103, "Графический интерфейс ввода"),
                 lb.Create(104, "Консольный интерфейс ввода"),
-                lb.Create(105, "Графический веб интерфейс (формы ввода данных)"),
+                lb.Create(105, "Графический веб-интерфейс (формы ввода данных)"),
                 lb.Create(106, "Интерфейс управления миниатюрным устройством, оснащенным тачскрином"),
                 lb.Create(107, "Обработка входящих сообщений от системы обмена сообщениями"),
 
@@ -83,7 +83,7 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 lb.Create(602, "Разработка модулей программ, функционирующих на внешнем оборудовании"),
                 lb.Create(603, "Создание программ загрузки модулей на внешнее оборудование"),
                 lb.Create(604, "Разработка модулей программ, взаимодействующих с внешним оборудованием (без разработки драйверов)"),
-                lb.Create(605, "Разработка компонентов ОС кроме драйверов устройств (файловой системы, сетевой подсистемы, службы безопасности"),
+                lb.Create(605, "Разработка компонент ОС кроме драйверов устройств (файловой системы, сетевой подсистемы, службы безопасности)"),
 
                 lb.SetCategory(7).Create(701, "Модуль клиента сети"),
                 lb.Create(702, "Серверный модуль"),
@@ -150,9 +150,10 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 rb.Create(labors[205], 2.5),
                 rb.Create(labors[206], 1.5),
 
-                rb.Create(labors[301], 2, 2.5),
-                rb.Create(labors[302], 1.5),
-                rb.Create(labors[303], 1),
+                rb.Create(labors[301], 1.5),
+                rb.Create(labors[302], 2, 2.5),
+                rb.Create(labors[303], 1.5),
+                rb.Create(labors[305], 1),
                 rb.Create(labors[306], 0, 0.5),
 
                 rb.Create(labors[401], 1),
@@ -179,7 +180,7 @@ namespace LaborVolumeCalculator.Data.DevLabors
                 rb.Create(labors[803], 0.5, 1),
 
 
-                rb.SetRangeFeature(_Cpp_Cs_Java_ObjC).Create(labors[101], 1.5, 2),
+                rb.SetRangeFeature(_Cpp_Cs_Java_ObjC).Create(labors[101], 0.5, 1.5),
                 rb.Create(labors[102], 2),
                 rb.Create(labors[103], 3, 4),
                 rb.Create(labors[104], 2),
@@ -234,10 +235,11 @@ namespace LaborVolumeCalculator.Data.DevLabors
 
                 rb.Create(labors[203], 2, 2.5),
 
-                rb.Create(labors[301], 4.5),
-                rb.Create(labors[302], 3, 4),
+                rb.Create(labors[302], 4.5),
+                rb.Create(labors[303], 3, 4),
 
                 rb.Create(labors[401], 4, 4.5),
+                rb.Create(labors[402], 4),
 
                 rb.Create(labors[501], 4.5),
                 rb.Create(labors[504], 4, 5),
