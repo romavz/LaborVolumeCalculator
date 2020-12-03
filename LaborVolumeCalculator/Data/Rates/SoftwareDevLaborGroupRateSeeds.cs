@@ -21,8 +21,8 @@ namespace LaborVolumeCalculator.Data.Rates
             SolutionInnovationRate[] inoRates = {
                 new SolutionInnovationRate("Разработка решения, предусматривающая применение принципиально новых методов разработки,"+
                     " проведение научно-исследовательских работ", 1.6),
-                new SolutionInnovationRate("Разработка типовых решений, оригитальных задач и систем, не имеющих аналогов", 1.3),
-                new SolutionInnovationRate("Разработка проекта ис использование типовыхпроектных решений при условии их изменения", 1.1),
+                new SolutionInnovationRate("Разработка типовых проектных решений, оригитальных задач и систем, не имеющих аналогов", 1.3),
+                new SolutionInnovationRate("Разработка проекта ис использование типовых проектных решений при условии их изменения", 1.1),
                 new SolutionInnovationRate("Разработка проектов, имеющих аналогичные решения", 0.8)
             };
             dbContext.AddRange(inoRates);
@@ -40,13 +40,13 @@ namespace LaborVolumeCalculator.Data.Rates
 
             InfrastructureComplexityRate[] infraRates = {
                 new InfrastructureComplexityRate("Стандартная инфраструктура разработки", 1),
-                new InfrastructureComplexityRate("Инфраструктура, включающая сложные логические и составные взаимодействия либо" +
-                    " взаимодействия большого числа элементов", 1.25),
+                new InfrastructureComplexityRate("Инфраструктура, включающая сложные логические и сетевые взаимодействия либо " +
+                    "взаимодействия большого числа элементов", 1.25),
                 new InfrastructureComplexityRate("Сложная виртуальная инфраструктура, содержащая взаимосвязанные виртуальные сети "+
                     "и средства автоматизации управлением виртуальными машинами", 1.4),
                 new InfrastructureComplexityRate("Инфраструктура с повышенными требованиями безопасности, на всех этапах выполнения проекта, "+
                     "в том числе: обособление элементов, использование дополнительных средств защиты и т.д.", 1.6),
-                new InfrastructureComplexityRate("Инфраструктура, включающая механическое взаимодействие компонентов", 1.9)
+                new InfrastructureComplexityRate("Инфраструктура, включающая механическое взаимодействие элементов", 1.9)
             };
             dbContext.AddRange(infraRates);
             InfrastructureComplexityRates = infraRates;
