@@ -8,7 +8,7 @@ namespace LaborVolumeCalculator.DTO
         public string Name { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
-        public int AnalogDurationMonthes { get; set; }
+        public double AnalogDurationMonthes { get; set; }
         public double IntensiveRateValue { get; set; }
     }
 
