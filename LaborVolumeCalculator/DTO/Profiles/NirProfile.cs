@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
 using AutoMapper;
@@ -20,10 +21,14 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<Labor, LaborDto>().ReverseMap();
 
             CreateMap<NirScale, NirScaleDto>().ReverseMap();
+            CreateMap<NirScaleCreateDto, NirScale>();
+            
             CreateMap<NirInnovationProperty, NirInnovationPropertyDto>().ReverseMap();
-            CreateMap<NirInnovationRate, NirInnovationRateDto>().ReverseMap()
-                .ForPath(p => p.NirScale.Name, opt => opt.Ignore())
-                .ForPath(p => p.NirInnovationProperty.Name, opt => opt.Ignore());
+            CreateMap<NirInnovationPropertyCreateDto, NirInnovationProperty>();
+
+            CreateMap<NirInnovationRate, NirInnovationRateDto>();
+            CreateMap<NirInnovationRateCreateDto, NirInnovationRate>();
+            CreateMap<NirInnovationRateUpdateDto, NirInnovationRate>();
             
             // Регистры
             CreateMap<NirStageLaborVolume, StageLaborVolumeDto>();

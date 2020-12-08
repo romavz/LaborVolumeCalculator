@@ -24,6 +24,15 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRepository<ArchitectureComplexityRate>, ArchitectureComplexityRateRepository>();
             services.AddScoped<IRepository<ComponentsMakroArchitecture>, RepositoryBase<ComponentsMakroArchitecture>>();
             services.AddScoped<IRepository<ComponentsInteractionArchitecture>, RepositoryBase<ComponentsInteractionArchitecture>>();
+            services.AddScoped<IRepository<InfrastructureComplexityRate>, RepositoryBase<InfrastructureComplexityRate>>();           
+            services.AddScoped<IRepository<NirInnovationRate>, NirInnovationRateRepository>();
+            services.AddScoped<IRepository<NirInnovationProperty>, RepositoryBase<NirInnovationProperty>>();
+            services.AddScoped<IRepository<NirScale>, RepositoryBase<NirScale>>();
+            services.AddScoped<IRepository<NirSoftwareDevLaborGroup>, RepositoryBase<NirSoftwareDevLaborGroup>>();
+            services.AddScoped<IRepository<SolutionInnovationRate>, RepositoryBase<SolutionInnovationRate>>();
+            services.AddScoped<IRepository<StandardModulesUsingRate>, RepositoryBase<StandardModulesUsingRate>>();
+            services.AddScoped<IRepository<TestsDevelopmentRate>, TestsDevelopmentRateRepository>();
+
             return services;
         }
     }

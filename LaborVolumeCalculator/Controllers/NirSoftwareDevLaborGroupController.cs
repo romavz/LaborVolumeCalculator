@@ -10,6 +10,8 @@ using LaborVolumeCalculator.Models.Dictionary;
 using AutoMapper;
 using LaborVolumeCalculator.DTO;
 using LaborVolumeCalculator.Utils;
+using LaborVolumeCalculator.Repositories.Contracts;
+using LaborVolumeCalculator.Repositories.Extentions;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -17,18 +19,18 @@ namespace LaborVolumeCalculator.Controllers
     [ApiController]
     public class NirSoftwareDevLaborGroupController : ControllerBase<NirSoftwareDevLaborGroup, NirSoftwareDevLaborGroupDto>
     {
-        private readonly LVCContext _context;
+        private readonly IRepository<NirSoftwareDevLaborGroup> _groups;
 
-        public NirSoftwareDevLaborGroupController(LVCContext context, IMapper mapper) : base(mapper)
+        public NirSoftwareDevLaborGroupController(IRepository<NirSoftwareDevLaborGroup> groups, IMapper mapper) : base(mapper)
         {
-            _context = context;
+            _groups = groups;
         }
 
         // GET: api/NirSoftwareDevLaborGroup
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirSoftwareDevLaborGroupDto>>> GetNirSoftwareDevLaborGroups()
         {
-            var groups = await GetGroupsQuery().ToListAsync();
+            var groups = await _groups.ToListAsync();
             var result = ConvertToDto(groups)
                 .OrderBy(m => m.Code, CodeComparer.Instance).ToArray();
             
@@ -39,7 +41,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NirSoftwareDevLaborGroupDto>> GetNirSoftwareDevLaborGroup(int id)
         {
-            var nirSoftwareDevLaborGroup = await GetGroupsQuery().FirstOrDefaultAsync(m => m.ID == id);
+            var nirSoftwareDevLaborGroup = await _groups.FirstOrDefaultAsync(m => m.ID == id);
 
             if (nirSoftwareDevLaborGroup == null)
             {
@@ -47,11 +49,6 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(nirSoftwareDevLaborGroup);
-        }
-
-        private IQueryable<NirSoftwareDevLaborGroup> GetGroupsQuery()
-        {
-            return _context.NirSoftwareDevLaborGroups.AsNoTracking();
         }
 
         // PUT: api/NirSoftwareDevLaborGroup/5
@@ -66,11 +63,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             var nirSoftwareDevLaborGroup = ConvertToSource(nirSoftwareDevLaborGroupDto);
-            _context.Entry(nirSoftwareDevLaborGroup).State = EntityState.Modified;
+            _groups.Update(nirSoftwareDevLaborGroup);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _groups.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -91,12 +88,12 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<NirSoftwareDevLaborGroupDto>> PostNirSoftwareDevLaborGroup(NirSoftwareDevLaborGroupDto nirSoftwareDevLaborGroupDto)
+        public async Task<ActionResult<NirSoftwareDevLaborGroupDto>> PostNirSoftwareDevLaborGroup(NirSoftwareDevLaborGroupCreateDto nirSoftwareDevLaborGroupDto)
         {
             var nirSoftwareDevLaborGroup = base.ConvertToSource(nirSoftwareDevLaborGroupDto);
             
-            _context.NirSoftwareDevLaborGroups.Add(nirSoftwareDevLaborGroup);
-            await _context.SaveChangesAsync();
+            _groups.Add(nirSoftwareDevLaborGroup);
+            await _groups.SaveChangesAsync();
 
             return CreatedAtAction("GetNirSoftwareDevLaborGroup", new { id = nirSoftwareDevLaborGroup.ID }, ConvertToDto(nirSoftwareDevLaborGroup));
         }
@@ -105,21 +102,21 @@ namespace LaborVolumeCalculator.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<NirSoftwareDevLaborGroupDto>> DeleteNirSoftwareDevLaborGroup(int id)
         {
-            var nirSoftwareDevLaborGroup = await _context.NirSoftwareDevLaborGroups.FindAsync(id);
+            var nirSoftwareDevLaborGroup = await _groups.FindAsync(id);
             if (nirSoftwareDevLaborGroup == null)
             {
                 return NotFound();
             }
 
-            _context.NirSoftwareDevLaborGroups.Remove(nirSoftwareDevLaborGroup);
-            await _context.SaveChangesAsync();
+            _groups.Remove(nirSoftwareDevLaborGroup);
+            await _groups.SaveChangesAsync();
 
             return ConvertToDto(nirSoftwareDevLaborGroup);
         }
 
         private bool NirSoftwareDevLaborGroupExists(int id)
         {
-            return _context.NirSoftwareDevLaborGroups.Any(e => e.ID == id);
+            return _groups.Any(e => e.ID == id);
         }
     }
 }

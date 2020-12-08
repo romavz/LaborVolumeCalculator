@@ -9,6 +9,8 @@ using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
 using AutoMapper;
 using LaborVolumeCalculator.DTO;
+using LaborVolumeCalculator.Repositories.Contracts;
+using LaborVolumeCalculator.Repositories.Extentions;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -16,18 +18,18 @@ namespace LaborVolumeCalculator.Controllers
     [ApiController]
     public class StandardModulesUsingRateController : ControllerBase<StandardModulesUsingRate, StandardModulesUsingRateDto>
     {
-        private readonly LVCContext _context;
+        private readonly IRepository<StandardModulesUsingRate> _rates;
 
-        public StandardModulesUsingRateController(LVCContext context, IMapper mapper) : base(mapper)
+        public StandardModulesUsingRateController(IRepository<StandardModulesUsingRate> rates, IMapper mapper) : base(mapper)
         {
-            _context = context;
+            _rates = rates;
         }
 
         // GET: api/StandardModulesUsingRate
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StandardModulesUsingRateDto>>> GetStandardModulesUsingRates()
         {
-            var items = await RatesRequest().ToListAsync();
+            var items = await _rates.ToListAsync();
             return ConvertToDto(items);
         }
 
@@ -35,7 +37,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<StandardModulesUsingRateDto>> GetStandardModulesUsingRate(int id)
         {
-            var standardModulesUsingRate = await RatesRequest().FirstOrDefaultAsync(m => m.ID == id);
+            var standardModulesUsingRate = await _rates.FirstOrDefaultAsync(m => m.ID == id);
 
             if (standardModulesUsingRate == null)
             {
@@ -43,11 +45,6 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(standardModulesUsingRate);
-        }
-
-        private IQueryable<StandardModulesUsingRate> RatesRequest()
-        {
-            return _context.StandardModulesUsingRates.AsNoTracking();
         }
 
         // PUT: api/StandardModulesUsingRate/5
@@ -62,11 +59,11 @@ namespace LaborVolumeCalculator.Controllers
             }
             
             var standardModulesUsingRate = ConvertToSource(standardModulesUsingRateDto);
-            _context.Entry(standardModulesUsingRate).State = EntityState.Modified;
+            _rates.Update(standardModulesUsingRate);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _rates.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -87,11 +84,11 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<StandardModulesUsingRateDto>> PostStandardModulesUsingRate(StandardModulesUsingRateDto standardModulesUsingRateDto)
+        public async Task<ActionResult<StandardModulesUsingRateDto>> PostStandardModulesUsingRate(StandardModulesUsingRateCreateDto standardModulesUsingRateDto)
         {
             var standardModulesUsingRate = ConvertToSource(standardModulesUsingRateDto);
-            _context.StandardModulesUsingRates.Add(standardModulesUsingRate);
-            await _context.SaveChangesAsync();
+            _rates.Add(standardModulesUsingRate);
+            await _rates.SaveChangesAsync();
 
             return CreatedAtAction("GetStandardModulesUsingRate", new { id = standardModulesUsingRate.ID }, ConvertToDto(standardModulesUsingRate));
         }
@@ -100,21 +97,21 @@ namespace LaborVolumeCalculator.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<StandardModulesUsingRateDto>> DeleteStandardModulesUsingRate(int id)
         {
-            var standardModulesUsingRate = await _context.StandardModulesUsingRates.FindAsync(id);
+            var standardModulesUsingRate = await _rates.FindAsync(id);
             if (standardModulesUsingRate == null)
             {
                 return NotFound();
             }
 
-            _context.StandardModulesUsingRates.Remove(standardModulesUsingRate);
-            await _context.SaveChangesAsync();
+            _rates.Remove(standardModulesUsingRate);
+            await _rates.SaveChangesAsync();
 
             return ConvertToDto(standardModulesUsingRate);
         }
 
         private bool StandardModulesUsingRateExists(int id)
         {
-            return _context.StandardModulesUsingRates.Any(e => e.ID == id);
+            return _rates.Any(e => e.ID == id);
         }
     }
 }

@@ -9,6 +9,8 @@ using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.DTO;
 using AutoMapper;
+using LaborVolumeCalculator.Repositories.Contracts;
+using LaborVolumeCalculator.Repositories.Extentions;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -16,18 +18,18 @@ namespace LaborVolumeCalculator.Controllers
     [ApiController]
     public class NirScaleController : ControllerBase<NirScale, NirScaleDto>
     {
-        private readonly LVCContext _context;
+        private readonly IRepository<NirScale> _scales;
 
-        public NirScaleController(LVCContext context, IMapper mapper) : base(mapper)
+        public NirScaleController(IRepository<NirScale> scales, IMapper mapper) : base(mapper)
         {
-            _context = context;
+            _scales = scales;
         }
 
         // GET: api/NirScale
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirScaleDto>>> GetNirScales()
         {
-            var result = await GetScalesQuery().ToListAsync();
+            var result = await _scales.ToListAsync();
             return ConvertToDto(result);
         }
 
@@ -35,7 +37,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NirScaleDto>> GetNirScale(int id)
         {
-            var nirScale = await GetScalesQuery().FirstOrDefaultAsync(m => m.ID == id);
+            var nirScale = await _scales.FirstOrDefaultAsync(m => m.ID == id);
 
             if (nirScale == null)
             {
@@ -43,11 +45,6 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(nirScale);
-        }
-
-        private IQueryable<NirScale> GetScalesQuery()
-        {
-            return _context.NirScales.AsNoTracking();
         }
 
         // PUT: api/NirScale/5
@@ -62,11 +59,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             var nirScale = ConvertToSource(nirScaleDto);
-            _context.Entry(nirScale).State = EntityState.Modified;
+            _scales.Update(nirScale);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _scales.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -87,11 +84,11 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<NirScaleDto>> PostNirScale(NirScaleDto nirScaleDto)
+        public async Task<ActionResult<NirScaleDto>> PostNirScale(NirScaleCreateDto nirScaleDto)
         {
             var nirScale = ConvertToSource(nirScaleDto);
-            _context.NirScales.Add(nirScale);
-            await _context.SaveChangesAsync();
+            _scales.Add(nirScale);
+            await _scales.SaveChangesAsync();
 
             return CreatedAtAction("GetNirScale", new { id = nirScale.ID }, ConvertToDto(nirScale));
         }
@@ -100,21 +97,21 @@ namespace LaborVolumeCalculator.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<NirScaleDto>> DeleteNirScale(int id)
         {
-            var nirScale = await _context.NirScales.FindAsync(id);
+            var nirScale = await _scales.FindAsync(id);
             if (nirScale == null)
             {
                 return NotFound();
             }
 
-            _context.NirScales.Remove(nirScale);
-            await _context.SaveChangesAsync();
+            _scales.Remove(nirScale);
+            await _scales.SaveChangesAsync();
 
             return ConvertToDto(nirScale);
         }
 
         private bool NirScaleExists(int id)
         {
-            return _context.NirScales.Any(e => e.ID == id);
+            return _scales.Any(e => e.ID == id);
         }
     }
 }

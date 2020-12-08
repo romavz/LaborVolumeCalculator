@@ -15,4 +15,18 @@ namespace LaborVolumeCalculator.DTO
 
         public string ComponentsMicroArchitectureName { get; set; } 
     }
+
+    public class TestsDevelopmentRateCreateDto
+    {
+        public int TestsScaleID { get; set; }
+        public int TestsCoverageLevelID { get; set; }
+        public int ComponentsMicroArchitectureID { get; set; }
+        public double Value { get; set; }
+    }
+
+    public class TestsDevelopmentRateUpdateDto : TestsDevelopmentRateCreateDto
+    {
+        public int ID { get; set; }
+    }
+
 }

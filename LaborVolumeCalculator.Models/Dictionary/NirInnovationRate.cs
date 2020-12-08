@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name ="Коэфициент новизны НИР", GroupName ="Коэффициенты новизны НИР")]
-    public class NirInnovationRate
+    public class NirInnovationRate : IIdentable
     {
         public NirInnovationRate()
         {

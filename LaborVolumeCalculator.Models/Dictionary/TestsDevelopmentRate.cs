@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name = "Коэффициент сложности разработки тестов", GroupName = "Коэффициенты сложности разработки тестов")]
-    public class TestsDevelopmentRate
+    public class TestsDevelopmentRate : IIdentable
     {
         public TestsDevelopmentRate()
         {

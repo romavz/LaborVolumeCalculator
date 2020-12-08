@@ -9,6 +9,8 @@ using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.DTO;
 using AutoMapper;
+using LaborVolumeCalculator.Repositories.Contracts;
+using LaborVolumeCalculator.Repositories.Extentions;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -16,18 +18,18 @@ namespace LaborVolumeCalculator.Controllers
     [ApiController]
     public class InfrastructureComplexityRateController : ControllerBase<InfrastructureComplexityRate, InfrastructureComplexityRateDto>
     {
-        private readonly LVCContext _context;
+        private readonly IRepository<InfrastructureComplexityRate> _rates;
 
-        public InfrastructureComplexityRateController(LVCContext context, IMapper mapper) : base(mapper)
+        public InfrastructureComplexityRateController(IRepository<InfrastructureComplexityRate> rates, IMapper mapper) : base(mapper)
         {
-            _context = context;
+            _rates = rates;
         }
 
         // GET: api/InfrastructureComplexityRate
         [HttpGet]
         public async Task<ActionResult<IEnumerable<InfrastructureComplexityRateDto>>> GetInfrastructureComplexities()
         {
-            var items = await RatesRequest().ToListAsync();
+            var items = await _rates.ToListAsync();
             return ConvertToDto(items);
         }
 
@@ -35,7 +37,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<InfrastructureComplexityRateDto>> GetInfrastructureComplexityRate(int id)
         {
-            var infrastructureComplexityRate = await RatesRequest().FirstOrDefaultAsync(m => m.ID == id);
+            var infrastructureComplexityRate = await _rates.FirstOrDefaultAsync(m => m.ID == id);
 
             if (infrastructureComplexityRate == null)
             {
@@ -43,11 +45,6 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(infrastructureComplexityRate);
-        }
-
-        private IQueryable<InfrastructureComplexityRate> RatesRequest()
-        {
-            return _context.InfrastructureComplexities.AsNoTracking();
         }
 
         // PUT: api/InfrastructureComplexityRate/5
@@ -62,11 +59,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             var infrastructureComplexityRate = ConvertToSource(infrastructureComplexityRateDto);
-            _context.Entry(infrastructureComplexityRate).State = EntityState.Modified;
+            _rates.Update(infrastructureComplexityRate);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _rates.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -87,11 +84,11 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<InfrastructureComplexityRateDto>> PostInfrastructureComplexityRate(InfrastructureComplexityRateDto infrastructureComplexityRateDto)
+        public async Task<ActionResult<InfrastructureComplexityRateDto>> PostInfrastructureComplexityRate(InfrastructureComplexityRateCreateDto infrastructureComplexityRateDto)
         {
             var infrastructureComplexityRate = ConvertToSource(infrastructureComplexityRateDto);
-            _context.InfrastructureComplexities.Add(infrastructureComplexityRate);
-            await _context.SaveChangesAsync();
+            _rates.Add(infrastructureComplexityRate);
+            await _rates.SaveChangesAsync();
 
             return CreatedAtAction("GetInfrastructureComplexityRate", new { id = infrastructureComplexityRate.ID }, ConvertToDto(infrastructureComplexityRate));
         }
@@ -100,21 +97,21 @@ namespace LaborVolumeCalculator.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<InfrastructureComplexityRateDto>> DeleteInfrastructureComplexityRate(int id)
         {
-            var infrastructureComplexityRate = await _context.InfrastructureComplexities.FindAsync(id);
+            var infrastructureComplexityRate = await _rates.FindAsync(id);
             if (infrastructureComplexityRate == null)
             {
                 return NotFound();
             }
 
-            _context.InfrastructureComplexities.Remove(infrastructureComplexityRate);
-            await _context.SaveChangesAsync();
+            _rates.Remove(infrastructureComplexityRate);
+            await _rates.SaveChangesAsync();
 
             return ConvertToDto(infrastructureComplexityRate);
         }
 
         private bool InfrastructureComplexityRateExists(int id)
         {
-            return _context.InfrastructureComplexities.Any(e => e.ID == id);
+            return _rates.Any(e => e.ID == id);
         }
     }
 }

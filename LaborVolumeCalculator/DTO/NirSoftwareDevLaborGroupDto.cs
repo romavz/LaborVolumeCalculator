@@ -9,4 +9,11 @@ namespace LaborVolumeCalculator.DTO
         public string Name { get; set; }
         
     }
+
+    public class NirSoftwareDevLaborGroupCreateDto
+    {
+        public string Code { get; set; }
+
+        public string Name { get; set; }
+    }
 }

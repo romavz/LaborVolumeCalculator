@@ -7,7 +7,7 @@ using System.Linq;
 namespace LaborVolumeCalculator.Models.Dictionary
 {
     [Display(Name = "Комплексная работа по разработке ПО", GroupName = "Комплексные работы по разработке ПО")]
-    public class SoftwareDevLaborGroup
+    public class SoftwareDevLaborGroup : IIdentable
     {
         public SoftwareDevLaborGroup() { }
         public SoftwareDevLaborGroup(string code, string name)
