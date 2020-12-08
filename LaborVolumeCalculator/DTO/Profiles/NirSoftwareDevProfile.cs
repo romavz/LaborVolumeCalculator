@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
 using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.Models.Registers;
@@ -9,18 +10,24 @@ namespace LaborVolumeCalculator.DTO.Profiles
         public NirSoftwareDevLaborGroupProfile()
         {
             CreateMap<NirSoftwareDevLaborGroup, NirSoftwareDevLaborGroupDto>().ReverseMap();
+            CreateMap<NirSoftwareDevLaborGroupCreateDto, NirSoftwareDevLaborGroup>();
             
             CreateMap<SolutionInnovationRate, SolutionInnovationRateDto>().ReverseMap();
+            CreateMap<SolutionInnovationRateCreateDto, SolutionInnovationRate>();
+
             CreateMap<StandardModulesUsingRate, StandardModulesUsingRateDto>().ReverseMap();
+            CreateMap<StandardModulesUsingRateCreateDto, StandardModulesUsingRate>();
+
             CreateMap<InfrastructureComplexityRate, InfrastructureComplexityRateDto>().ReverseMap();
+            CreateMap<InfrastructureComplexityRateCreateDto, InfrastructureComplexityRate>();
 
             CreateMap<ComponentsMicroArchitecture, ComponentsMicroArchitectureDto>().ReverseMap();
             CreateMap<TestsScale, TestsScaleDto>().ReverseMap();
             CreateMap<TestsCoverageLevel, TestsCoverageLevelDto>().ReverseMap();
-            CreateMap<TestsDevelopmentRate, TestsDevelopmentRateDto>().ReverseMap()
-                .ForPath(p => p.ComponentsMicroArchitecture.Name, opt => opt.Ignore())
-                .ForPath(p => p.TestsCoverageLevel.Name, opt => opt.Ignore())
-                .ForPath(p => p.TestsScale.Name, opt => opt.Ignore());
+            
+            CreateMap<TestsDevelopmentRate, TestsDevelopmentRateDto>();
+            CreateMap<TestsDevelopmentRateCreateDto, TestsDevelopmentRate>();
+            CreateMap<TestsDevelopmentRateUpdateDto, TestsDevelopmentRate>();
             
             CreateMap<ComponentsMakroArchitecture, ComponentsMacroArchitectureDto>().ReverseMap();
             CreateMap<ComponentsMacroArchitectureCreateDto, ComponentsMakroArchitecture>();
