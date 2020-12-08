@@ -9,6 +9,8 @@ using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.DTO;
 using AutoMapper;
+using LaborVolumeCalculator.Repositories.Contracts;
+using LaborVolumeCalculator.Repositories.Extentions;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -16,18 +18,18 @@ namespace LaborVolumeCalculator.Controllers
     [ApiController]
     public class SolutionInnovationRateController : ControllerBase<SolutionInnovationRate, SolutionInnovationRateDto>
     {
-        private readonly LVCContext _context;
+        private readonly IRepository<SolutionInnovationRate> _rates;
 
-        public SolutionInnovationRateController(LVCContext context, IMapper mapper) : base(mapper)
+        public SolutionInnovationRateController(IRepository<SolutionInnovationRate> rates, IMapper mapper) : base(mapper)
         {
-            _context = context;
+            _rates = rates;
         }
 
         // GET: api/SolutionInnovationRate
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SolutionInnovationRateDto>>> GetSolutionInnovationRates()
         {
-            var items = await RatesRequest().ToListAsync();
+            var items = await _rates.ToListAsync();
             return ConvertToDto(items);
         }
 
@@ -35,7 +37,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<SolutionInnovationRateDto>> GetSolutionInnovationRate(int id)
         {
-            var solutionInnovationRate = await RatesRequest().FirstOrDefaultAsync(m => m.ID == id);
+            var solutionInnovationRate = await _rates.FirstOrDefaultAsync(m => m.ID == id);
 
             if (solutionInnovationRate == null)
             {
@@ -43,11 +45,6 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(solutionInnovationRate);
-        }
-
-        private IQueryable<SolutionInnovationRate> RatesRequest()
-        {
-            return _context.SolutionInnovationRates.AsNoTracking();
         }
 
         // PUT: api/SolutionInnovationRate/5
@@ -62,11 +59,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             var solutionInnovationRate = ConvertToSource(solutionInnovationRateDto);
-            _context.Entry(solutionInnovationRate).State = EntityState.Modified;
+            _rates.Update(solutionInnovationRate);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _rates.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -87,11 +84,11 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<SolutionInnovationRateDto>> PostSolutionInnovationRate(SolutionInnovationRateDto solutionInnovationRateDto)
+        public async Task<ActionResult<SolutionInnovationRateDto>> PostSolutionInnovationRate(SolutionInnovationRateCreateDto solutionInnovationRateDto)
         {
             var solutionInnovationRate = ConvertToSource(solutionInnovationRateDto);
-            _context.SolutionInnovationRates.Add(solutionInnovationRate);
-            await _context.SaveChangesAsync();
+            _rates.Add(solutionInnovationRate);
+            await _rates.SaveChangesAsync();
 
             return CreatedAtAction("GetSolutionInnovationRate", new { id = solutionInnovationRate.ID }, ConvertToDto(solutionInnovationRate));
         }
@@ -100,21 +97,21 @@ namespace LaborVolumeCalculator.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<SolutionInnovationRateDto>> DeleteSolutionInnovationRate(int id)
         {
-            var solutionInnovationRate = await _context.SolutionInnovationRates.FindAsync(id);
+            var solutionInnovationRate = await _rates.FindAsync(id);
             if (solutionInnovationRate == null)
             {
                 return NotFound();
             }
 
-            _context.SolutionInnovationRates.Remove(solutionInnovationRate);
-            await _context.SaveChangesAsync();
+            _rates.Remove(solutionInnovationRate);
+            await _rates.SaveChangesAsync();
 
             return ConvertToDto(solutionInnovationRate);
         }
 
         private bool SolutionInnovationRateExists(int id)
         {
-            return _context.SolutionInnovationRates.Any(e => e.ID == id);
+            return _rates.Any(e => e.ID == id);
         }
     }
 }

@@ -10,6 +10,8 @@ using LaborVolumeCalculator.Models.Dictionary;
 using AutoMapper;
 using LaborVolumeCalculator.DTO;
 using Microsoft.EntityFrameworkCore.Query;
+using LaborVolumeCalculator.Repositories.Contracts;
+using LaborVolumeCalculator.Repositories.Extentions;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -17,34 +19,26 @@ namespace LaborVolumeCalculator.Controllers
     [ApiController]
     public class NirInnovationRateController : ControllerBase<NirInnovationRate, NirInnovationRateDto>
     {
-        private readonly LVCContext _context;
+        private readonly IRepository<NirInnovationRate> _rates;
 
-        public NirInnovationRateController(LVCContext context, IMapper mapper) : base(mapper)
+        public NirInnovationRateController(IRepository<NirInnovationRate> context, IMapper mapper) : base(mapper)
         {
-            _context = context;
+            _rates = context;
         }
 
         // GET: api/NirInnovationRate
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirInnovationRateDto>>> GetNirInnovationRates()
         {
-            var result = await GetRatesQuery().ToListAsync();
+            var result = await _rates.WithIncludes.ToListAsync();
             return ConvertToDto(result);
-        }
-
-        private IQueryable<NirInnovationRate> GetRatesQuery()
-        {
-            return _context.NirInnovationRates
-                .Include(r => r.NirInnovationProperty)
-                .Include(r => r.NirScale)
-                .AsNoTracking();
         }
 
         // GET: api/NirInnovationRate/5
         [HttpGet("{id}")]
         public async Task<ActionResult<NirInnovationRateDto>> GetNirInnovationRate(int id)
         {
-            var nirInnovationRate = await GetRatesQuery().FirstOrDefaultAsync(n => n.ID == id);
+            var nirInnovationRate = await _rates.WithIncludes.FirstOrDefaultAsync(n => n.ID == id);
 
             if (nirInnovationRate == null)
             {
@@ -58,7 +52,7 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNirInnovationRate(int id, NirInnovationRateDto nirInnovationRateDto)
+        public async Task<IActionResult> PutNirInnovationRate(int id, NirInnovationRateUpdateDto nirInnovationRateDto)
         {
             if (id != nirInnovationRateDto.ID)
             {
@@ -66,11 +60,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             var nirInnovationRate = ConvertToSource(nirInnovationRateDto);
-            _context.Entry(nirInnovationRate).State = EntityState.Modified;
+            _rates.Update(nirInnovationRate);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _rates.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -91,11 +85,11 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<NirInnovationRateDto>> PostNirInnovationRate(NirInnovationRateDto nirInnovationRateDto)
+        public async Task<ActionResult<NirInnovationRateDto>> PostNirInnovationRate(NirInnovationRateCreateDto nirInnovationRateDto)
         {
             var nirInnovationRate = ConvertToSource(nirInnovationRateDto);
-            _context.NirInnovationRates.Add(nirInnovationRate);
-            await _context.SaveChangesAsync();
+            _rates.Add(nirInnovationRate);
+            await _rates.SaveChangesAsync();
 
             return CreatedAtAction("GetNirInnovationRate", new { id = nirInnovationRate.ID }, ConvertToDto(nirInnovationRate));
         }
@@ -104,21 +98,21 @@ namespace LaborVolumeCalculator.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<NirInnovationRateDto>> DeleteNirInnovationRate(int id)
         {
-            var nirInnovationRate = await _context.NirInnovationRates.FindAsync(id);
+            var nirInnovationRate = await _rates.FindAsync(id);
             if (nirInnovationRate == null)
             {
                 return NotFound();
             }
 
-            _context.NirInnovationRates.Remove(nirInnovationRate);
-            await _context.SaveChangesAsync();
+            _rates.Remove(nirInnovationRate);
+            await _rates.SaveChangesAsync();
 
             return ConvertToDto(nirInnovationRate);
         }
 
         private bool NirInnovationRateExists(int id)
         {
-            return _context.NirInnovationRates.Any(e => e.ID == id);
+            return _rates.Any(e => e.ID == id);
         }
     }
 }

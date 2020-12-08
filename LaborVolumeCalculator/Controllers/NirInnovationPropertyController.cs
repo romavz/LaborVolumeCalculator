@@ -9,6 +9,8 @@ using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.DTO;
 using AutoMapper;
+using LaborVolumeCalculator.Repositories.Contracts;
+using LaborVolumeCalculator.Repositories.Extentions;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -16,18 +18,18 @@ namespace LaborVolumeCalculator.Controllers
     [ApiController]
     public class NirInnovationPropertyController : ControllerBase<NirInnovationProperty, NirInnovationPropertyDto>
     {
-        private readonly LVCContext _context;
+        private readonly IRepository<NirInnovationProperty> _properties;
 
-        public NirInnovationPropertyController(LVCContext context, IMapper mapper) : base(mapper)
+        public NirInnovationPropertyController(IRepository<NirInnovationProperty> context, IMapper mapper) : base(mapper)
         {
-            _context = context;
+            _properties = context;
         }
 
         // GET: api/NirInnovationProperty
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NirInnovationPropertyDto>>> GetNirInnovationProperties()
         {
-            var result = await GetPropertiesQuery().ToListAsync();
+            var result = await _properties.ToListAsync();
             return ConvertToDto(result);
         }
 
@@ -35,7 +37,7 @@ namespace LaborVolumeCalculator.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<NirInnovationPropertyDto>> GetNirInnovationProperty(int id)
         {
-            var nirInnovationProperty = await GetPropertiesQuery().FirstOrDefaultAsync(m => m.ID == id);
+            var nirInnovationProperty = await _properties.FirstOrDefaultAsync(m => m.ID == id);
 
             if (nirInnovationProperty == null)
             {
@@ -43,11 +45,6 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             return ConvertToDto(nirInnovationProperty);
-        }
-
-        private IQueryable<NirInnovationProperty> GetPropertiesQuery()
-        {
-            return _context.NirInnovationProperties.AsNoTracking();
         }
 
         // PUT: api/NirInnovationProperty/5
@@ -62,11 +59,11 @@ namespace LaborVolumeCalculator.Controllers
             }
 
             var nirInnovationProperty = ConvertToSource(nirInnovationPropertyDto);
-            _context.Entry(nirInnovationProperty).State = EntityState.Modified;
+            _properties.Update(nirInnovationProperty);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _properties.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -87,11 +84,11 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<NirInnovationPropertyDto>> PostNirInnovationProperty(NirInnovationPropertyDto nirInnovationPropertyDto)
+        public async Task<ActionResult<NirInnovationPropertyDto>> PostNirInnovationProperty(NirInnovationPropertyCreateDto nirInnovationPropertyDto)
         {
             var nirInnovationProperty = ConvertToSource(nirInnovationPropertyDto);
-            _context.NirInnovationProperties.Add(nirInnovationProperty);
-            await _context.SaveChangesAsync();
+            _properties.Add(nirInnovationProperty);
+            await _properties.SaveChangesAsync();
 
             return CreatedAtAction("GetNirInnovationProperty", new { id = nirInnovationProperty.ID }, ConvertToDto(nirInnovationProperty));
         }
@@ -100,21 +97,21 @@ namespace LaborVolumeCalculator.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<NirInnovationPropertyDto>> DeleteNirInnovationProperty(int id)
         {
-            var nirInnovationProperty = await _context.NirInnovationProperties.FindAsync(id);
+            var nirInnovationProperty = await _properties.FindAsync(id);
             if (nirInnovationProperty == null)
             {
                 return NotFound();
             }
 
-            _context.NirInnovationProperties.Remove(nirInnovationProperty);
-            await _context.SaveChangesAsync();
+            _properties.Remove(nirInnovationProperty);
+            await _properties.SaveChangesAsync();
 
             return ConvertToDto(nirInnovationProperty);
         }
 
         private bool NirInnovationPropertyExists(int id)
         {
-            return _context.NirInnovationProperties.Any(e => e.ID == id);
+            return _properties.Any(e => e.ID == id);
         }
     }
 }
