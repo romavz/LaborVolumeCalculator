@@ -37,13 +37,13 @@ namespace LaborVolumeCalculator.DTO.Profiles
             
             CreateMap<ArchitectureComplexityRate, ArchitectureComplexityRateDto>();
             CreateMap<ArchitectureComplexityRateCreateDto, ArchitectureComplexityRate>();
-            CreateMap<ArchitectureComplexityRateShortDto, ArchitectureComplexityRate>().ReverseMap();
+            CreateMap<ArchitectureComplexityRateCnageDto, ArchitectureComplexityRate>().ReverseMap();
 
             CreateMap<NirStageSoftwareDevLaborGroup, StageSoftwareDevLaborGroupDto>();
-            CreateMap<StageSoftwareDevLaborGroupDto_ListItem, NirStageSoftwareDevLaborGroup>();
+            CreateMap<StageSoftwareDevLaborGroupCreateDto, NirStageSoftwareDevLaborGroup>();
 
             CreateMap<NirDevelopmentLaborVolume, DevLaborVolumeDto>().ReverseMap();
-            CreateMap<DevLaborVolumeDto_ListItem, NirDevelopmentLaborVolume>();
+            CreateMap<DevLaborVolumeCreateDto, NirDevelopmentLaborVolume>();
         }
     }
 }
