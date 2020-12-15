@@ -51,7 +51,7 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArchitectureComplexityRate(int id, ArchitectureComplexityRateShortDto architectureComplexityRateDto)
+        public async Task<IActionResult> PutArchitectureComplexityRate(int id, ArchitectureComplexityRateCnageDto architectureComplexityRateDto)
         {
             if (id != architectureComplexityRateDto.ID)
             {
@@ -79,7 +79,7 @@ namespace LaborVolumeCalculator.Controllers
 
             rate = await _rates.FindAsync(id);
 
-            return Ok(ConvertToDto<ArchitectureComplexityRateShortDto>(rate));
+            return Ok(ConvertToDto<ArchitectureComplexityRateCnageDto>(rate));
         }
 
         // POST: api/ArchitectureComplexityRate

@@ -33,9 +33,9 @@ namespace LaborVolumeCalculator.DTO
         public List<DevLaborVolumeDto> LaborVolumes { get; set; }
     }
 
-    public class StageSoftwareDevLaborGroupDto_ListItem : StageSoftwareDevLaborGroupBaseDto
+    public class StageSoftwareDevLaborGroupCreateDto : StageSoftwareDevLaborGroupBaseDto
     {
-        public List<DevLaborVolumeDto_ListItem> LaborVolumes { get; set; }
+        public List<DevLaborVolumeCreateDto> LaborVolumes { get; set; }
     }
 
 }

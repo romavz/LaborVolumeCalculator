@@ -17,7 +17,7 @@ namespace LaborVolumeCalculator.DTO
         public int ComponentsInteractionArchitectureID { get; set; }
     }
 
-    public class ArchitectureComplexityRateShortDto : ArchitectureComplexityRateCreateDto
+    public class ArchitectureComplexityRateCnageDto : ArchitectureComplexityRateCreateDto
     {
         public int ID { get; set; }
     }
