@@ -10,8 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
 using AutoMapper;
-using LaborVolumeCalculator.Repositories.Contracts;
-using LaborVolumeCalculator.Repositories;
+using FluentValidation.AspNetCore;
 
 namespace LaborVolumeCalculator
 {
@@ -27,7 +26,9 @@ namespace LaborVolumeCalculator
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc()
+                .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
+            
             services.AddAutoMapper(typeof(Startup));    // для конвертации объектов EF в DTO и обратно
             services.AddControllers().AddNewtonsoftJson(options =>
                 // Чтоб в JSON не выгружались циклические ссылки
