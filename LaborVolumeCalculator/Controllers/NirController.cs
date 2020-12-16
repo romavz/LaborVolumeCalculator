@@ -1,16 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-
-using LaborVolumeCalculator.Data;
 using LaborVolumeCalculator.Models.Dictionary;
 using LaborVolumeCalculator.Models.Registers;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using NSwag.Annotations;
 using LaborVolumeCalculator.DTO;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore.Query;
 using LaborVolumeCalculator.Repositories.Contracts;
 using LaborVolumeCalculator.Repositories.Extentions;
 

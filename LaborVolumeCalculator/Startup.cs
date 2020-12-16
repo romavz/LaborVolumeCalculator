@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using LaborVolumeCalculator.Data;
 using AutoMapper;
 using FluentValidation.AspNetCore;
+using Microsoft.OpenApi.Models;
 
 namespace LaborVolumeCalculator
 {
@@ -44,7 +45,10 @@ namespace LaborVolumeCalculator
 
             services.AddScoped<DbSeed>();
 
-            services.AddSwaggerDocument();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "LaborVolumeCalculator", Version = "v1" });
+            });
             services.AddCors();
         }
 
@@ -54,6 +58,9 @@ namespace LaborVolumeCalculator
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                // Register the Swagger generator and the Swagger UI middlewares
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "LaborVolumeCalculator v1"));
             }
             else
             {
@@ -72,10 +79,6 @@ namespace LaborVolumeCalculator
 
             app.UseAuthorization();
 
-             // Register the Swagger generator and the Swagger UI middlewares
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
-            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
