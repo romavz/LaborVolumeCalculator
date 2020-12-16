@@ -22,6 +22,8 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<InfrastructureComplexityRateCreateDto, InfrastructureComplexityRate>();
 
             CreateMap<ComponentsMicroArchitecture, ComponentsMicroArchitectureDto>().ReverseMap();
+            CreateMap<ComponentsMicroArchitectureCreateDto, ComponentsMicroArchitecture>();
+
             CreateMap<TestsScale, TestsScaleDto>().ReverseMap();
             CreateMap<TestsCoverageLevel, TestsCoverageLevelDto>().ReverseMap();
             

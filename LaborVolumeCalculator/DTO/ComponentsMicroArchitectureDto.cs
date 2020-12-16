@@ -4,4 +4,9 @@ namespace LaborVolumeCalculator.DTO
     {
         
     }
+
+    public class ComponentsMicroArchitectureCreateDto
+    {
+        public string Name { get; set ;}
+    }
 }
