@@ -28,6 +28,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/NirSoftwareDevLaborGroup
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<NirSoftwareDevLaborGroupDto>>> GetNirSoftwareDevLaborGroups()
         {
             var groups = await _groups.ToListAsync();
@@ -39,6 +40,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/NirSoftwareDevLaborGroup/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<NirSoftwareDevLaborGroupDto>> GetNirSoftwareDevLaborGroup(int id)
         {
             var nirSoftwareDevLaborGroup = await _groups.FirstOrDefaultAsync(m => m.ID == id);
@@ -55,6 +58,10 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> PutNirSoftwareDevLaborGroup(int id, NirSoftwareDevLaborGroupDto nirSoftwareDevLaborGroupDto)
         {
             if (id != nirSoftwareDevLaborGroupDto.ID)
@@ -77,7 +84,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
                 else
                 {
-                    throw;
+                    return Conflict();
                 }
             }
 
@@ -88,6 +95,8 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
         public async Task<ActionResult<NirSoftwareDevLaborGroupDto>> PostNirSoftwareDevLaborGroup(NirSoftwareDevLaborGroupCreateDto nirSoftwareDevLaborGroupDto)
         {
             var nirSoftwareDevLaborGroup = base.ConvertToSource(nirSoftwareDevLaborGroupDto);
@@ -100,6 +109,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/NirSoftwareDevLaborGroup/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<NirSoftwareDevLaborGroupDto>> DeleteNirSoftwareDevLaborGroup(int id)
         {
             var nirSoftwareDevLaborGroup = await _groups.FindAsync(id);

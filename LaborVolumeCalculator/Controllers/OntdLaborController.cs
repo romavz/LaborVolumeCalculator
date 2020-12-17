@@ -27,6 +27,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/OntdLabor
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<LaborDto>>> GetOntdLabors()
         {
             var labors = await _ontdLabors.GetAll().ToListAsync();
@@ -38,6 +39,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/OntdLabor/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<LaborDto>> GetOntdLabor(int id)
         {
             var ontdLabor = await _ontdLabors.FirstOrDefaultAsync(m => m.ID == id);
@@ -54,6 +57,10 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<LaborDto>> PutOntdLabor(int id, LaborDto ontdLaborDto)
         {
             if (id != ontdLaborDto.ID)
@@ -76,7 +83,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
                 else
                 {
-                    throw;
+                    return Conflict();
                 }
             }
 
@@ -88,6 +95,8 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
         public async Task<ActionResult<LaborDto>> PostOntdLabor(LaborCreateDto ontdLaborDto)
         {
             var ontdLabor = ConvertToSource(ontdLaborDto);
@@ -101,6 +110,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/OntdLabor/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<LaborDto>> DeleteOntdLabor(int id)
         {
             var ontdLabor = await _ontdLabors.FirstOrDefaultAsync(m => m.ID == id);

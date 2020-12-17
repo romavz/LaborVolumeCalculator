@@ -23,6 +23,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/OkrStage
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<OkrStage>>> GetOkrStages()
         {
             return await _context.OkrStages.ToListAsync();
@@ -30,6 +31,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/OkrStage/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<OkrStage>> GetOkrStage(int id)
         {
             var okrStageReg = await _context.OkrStages.FindAsync(id);
@@ -46,6 +49,8 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
         public async Task<ActionResult<OkrStage>> PostOkrStage(OkrStage okrStageReg)
         {
             _context.OkrStages.Add(okrStageReg);
@@ -64,6 +69,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/OkrStage/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<OkrStage>> DeleteOkrStage(int id)
         {
             var okrStageReg = await _context.OkrStages.FindAsync(id);

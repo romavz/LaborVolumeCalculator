@@ -27,6 +27,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/ComponentsMakroArchitecture
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ComponentsMacroArchitectureDto>>> GetComponentsMakroArchitectures()
         {
             var items = await _architectures.ToListAsync();
@@ -37,6 +38,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/ComponentsMakroArchitecture/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ComponentsMacroArchitectureDto>> GetComponentsMakroArchitecture(int id)
         {
             var architecture = await _architectures.FindAsync(id);
@@ -53,6 +56,10 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<ComponentsMacroArchitectureDto>> PutComponentsMakroArchitecture(int id, ComponentsMacroArchitectureDto architectureDto)
         {
             var architecture = ConvertToSource(architectureDto);
@@ -76,7 +83,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
                 else
                 {
-                    throw;
+                    return Conflict();
                 }
             }
 
@@ -87,6 +94,8 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ComponentsMacroArchitectureDto>> PostComponentsMakroArchitecture(ComponentsMacroArchitectureCreateDto architectureDto)
         {
             var architecture = ConvertToSource(architectureDto);
@@ -98,6 +107,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/ComponentsMakroArchitecture/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ComponentsMacroArchitectureDto>> DeleteComponentsMakroArchitecture(int id)
         {
             var architecture = await _architectures.FindAsync(id);

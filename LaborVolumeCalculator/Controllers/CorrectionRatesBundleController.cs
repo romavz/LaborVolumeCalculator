@@ -27,6 +27,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/CorrectionRatesBundle
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<CorrectionRatesBundleFullDto>>> GetCorrectionRatesBundles()
         {
             var items = await _bundles.WithIncludes.ToListAsync();
@@ -38,6 +39,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/CorrectionRatesBundle/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)] // validation errors
         public async Task<ActionResult<CorrectionRatesBundleFullDto>> GetCorrectionRatesBundle(int id)
         {
             var correctionRatesBundle = await _bundles.WithIncludes.FindAsync(id);
@@ -54,6 +57,10 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<CorrectionRatesBundleDto>> PutCorrectionRatesBundle(int id, CorrectionRatesBundleDto correctionRatesBundleDto)
         {
             if (id != correctionRatesBundleDto.ID)
@@ -77,7 +84,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
                 else
                 {
-                    throw;
+                    return Conflict();
                 }
             }
 
@@ -89,6 +96,8 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
         public async Task<ActionResult<CorrectionRatesBundleDto>> PostCorrectionRatesBundle(CorrectionRatesBundleCreateDto correctionRatesBundleDto)
         {
             var correctionRatesBundle = ConvertToSource<CorrectionRatesBundleCreateDto>(correctionRatesBundleDto);
@@ -103,6 +112,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/CorrectionRatesBundle/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
         public async Task<ActionResult<CorrectionRatesBundleDto>> DeleteCorrectionRatesBundle(int id)
         {
             var correctionRatesBundle = await _bundles.FindAsync(id);

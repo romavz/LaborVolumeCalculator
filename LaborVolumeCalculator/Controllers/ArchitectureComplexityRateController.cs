@@ -27,6 +27,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/ArchitectureComplexityRate
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ArchitectureComplexityRateDto>>> GetArchitectureComplexityRates()
         {
             var items = await _rates.WithIncludes.ToListAsync();
@@ -35,6 +36,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/ArchitectureComplexityRate/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ArchitectureComplexityRateDto>> GetArchitectureComplexityRate(int id)
         {
             var architectureComplexityRate = await _rates.WithIncludes.FirstOrDefaultAsync(m => m.ID == id);
@@ -51,6 +54,10 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> PutArchitectureComplexityRate(int id, ArchitectureComplexityRateCnageDto architectureComplexityRateDto)
         {
             if (id != architectureComplexityRateDto.ID)
@@ -73,7 +80,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
                 else
                 {
-                    throw;
+                    return Conflict();
                 }
             }
 
@@ -86,6 +93,8 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
         public async Task<ActionResult<ArchitectureComplexityRateDto>> PostArchitectureComplexityRate(ArchitectureComplexityRateCreateDto architectureComplexityRateDto)
         {
             var rate = ConvertToSource(architectureComplexityRateDto);
@@ -105,6 +114,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/ArchitectureComplexityRate/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ArchitectureComplexityRateDto>> DeleteArchitectureComplexityRate(int id)
         {
             var rate = await _rates.FindAsync(id);

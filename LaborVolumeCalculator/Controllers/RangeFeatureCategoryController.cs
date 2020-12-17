@@ -27,6 +27,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/RangeFeatureCategory
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<RangeFeatureCategoryDto>>> GetRangeFeatureCategories()
         {
             var items = await _rangeFeatureCategories.WithIncludes.ToListAsync();
@@ -39,6 +40,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/RangeFeatureCategory/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<RangeFeatureCategoryDto>> GetRangeFeatureCategory(int id)
         {
             var rangeFeatureCategory = await _rangeFeatureCategories.WithIncludes.FindAsync(id);
@@ -55,6 +58,10 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<RangeFeatureCategoryDto>> PutRangeFeatureCategory(int id, RangeFeatureCategoryChangeDto rangeFeatureCategoryDto)
         {
             if (id != rangeFeatureCategoryDto.ID)
@@ -77,7 +84,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
                 else
                 {
-                    throw;
+                    return Conflict();
                 }
             }
 
@@ -88,6 +95,8 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
         public async Task<ActionResult<RangeFeatureCategoryDto>> PostRangeFeatureCategory(RangeFeatureCategoryCreateDto rangeFeatureCategoryDto)
         {
             var rangeFeatureCategory = ConvertToSource(rangeFeatureCategoryDto);
@@ -100,6 +109,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/RangeFeatureCategory/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<RangeFeatureCategoryDto>> DeleteRangeFeatureCategory(int id)
         {
             var rangeFeatureCategory = await _rangeFeatureCategories.WithIncludes.FindAsync(id);

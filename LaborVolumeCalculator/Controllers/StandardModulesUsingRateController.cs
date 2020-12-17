@@ -27,6 +27,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/StandardModulesUsingRate
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<StandardModulesUsingRateDto>>> GetStandardModulesUsingRates()
         {
             var items = await _rates.ToListAsync();
@@ -35,6 +36,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/StandardModulesUsingRate/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<StandardModulesUsingRateDto>> GetStandardModulesUsingRate(int id)
         {
             var standardModulesUsingRate = await _rates.FirstOrDefaultAsync(m => m.ID == id);
@@ -51,6 +54,10 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> PutStandardModulesUsingRate(int id, StandardModulesUsingRateDto standardModulesUsingRateDto)
         {
             if (id != standardModulesUsingRateDto.ID)
@@ -73,7 +80,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
                 else
                 {
-                    throw;
+                    return Conflict();
                 }
             }
 
@@ -84,6 +91,8 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
         public async Task<ActionResult<StandardModulesUsingRateDto>> PostStandardModulesUsingRate(StandardModulesUsingRateCreateDto standardModulesUsingRateDto)
         {
             var standardModulesUsingRate = ConvertToSource(standardModulesUsingRateDto);
@@ -95,6 +104,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/StandardModulesUsingRate/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<StandardModulesUsingRateDto>> DeleteStandardModulesUsingRate(int id)
         {
             var standardModulesUsingRate = await _rates.FindAsync(id);
