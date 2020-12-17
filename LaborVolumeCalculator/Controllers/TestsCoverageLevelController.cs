@@ -77,7 +77,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
                 else
                 {
-                    Conflict();
+                    return Conflict();
                 }
             }
 
