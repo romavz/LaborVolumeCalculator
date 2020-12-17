@@ -16,7 +16,7 @@ namespace LaborVolumeCalculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RangeFeatureCategoryController : ControllerBase<RangeFeatureCategory, RangeFeatureCategoryFullDto>
+    public class RangeFeatureCategoryController : ControllerBase<RangeFeatureCategory, RangeFeatureCategoryDto>
     {
         private readonly IRepository<RangeFeatureCategory> _rangeFeatureCategories;
 
@@ -27,7 +27,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/RangeFeatureCategory
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RangeFeatureCategoryFullDto>>> GetRangeFeatureCategories()
+        public async Task<ActionResult<IEnumerable<RangeFeatureCategoryDto>>> GetRangeFeatureCategories()
         {
             var items = await _rangeFeatureCategories.WithIncludes.ToListAsync();
             var itemsDto = ConvertToDto(items)
@@ -39,7 +39,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/RangeFeatureCategory/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<RangeFeatureCategoryFullDto>> GetRangeFeatureCategory(int id)
+        public async Task<ActionResult<RangeFeatureCategoryDto>> GetRangeFeatureCategory(int id)
         {
             var rangeFeatureCategory = await _rangeFeatureCategories.WithIncludes.FindAsync(id);
 
@@ -55,7 +55,7 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<ActionResult<RangeFeatureCategoryFullDto>> PutRangeFeatureCategory(int id, RangeFeatureCategoryDto rangeFeatureCategoryDto)
+        public async Task<ActionResult<RangeFeatureCategoryDto>> PutRangeFeatureCategory(int id, RangeFeatureCategoryChangeDto rangeFeatureCategoryDto)
         {
             if (id != rangeFeatureCategoryDto.ID)
             {
@@ -81,15 +81,14 @@ namespace LaborVolumeCalculator.Controllers
                 }
             }
 
-            rangeFeatureCategory = await _rangeFeatureCategories.WithIncludes.FindAsync(rangeFeatureCategory.ID);
-            return Ok(ConvertToDto(rangeFeatureCategory));
+            return Ok();
         }
 
         // POST: api/RangeFeatureCategory
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<RangeFeatureCategoryFullDto>> PostRangeFeatureCategory(RangeFeatureCategoryFullCreateDto rangeFeatureCategoryDto)
+        public async Task<ActionResult<RangeFeatureCategoryDto>> PostRangeFeatureCategory(RangeFeatureCategoryCreateDto rangeFeatureCategoryDto)
         {
             var rangeFeatureCategory = ConvertToSource(rangeFeatureCategoryDto);
             _rangeFeatureCategories.Add(rangeFeatureCategory);
@@ -101,7 +100,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/RangeFeatureCategory/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<RangeFeatureCategoryFullDto>> DeleteRangeFeatureCategory(int id)
+        public async Task<ActionResult<RangeFeatureCategoryDto>> DeleteRangeFeatureCategory(int id)
         {
             var rangeFeatureCategory = await _rangeFeatureCategories.WithIncludes.FindAsync(id);
             if (rangeFeatureCategory == null)

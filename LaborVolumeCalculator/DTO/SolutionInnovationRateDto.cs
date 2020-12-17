@@ -1,10 +1,8 @@
 namespace LaborVolumeCalculator.DTO
 {
-    public class SolutionInnovationRateDto
+    public class SolutionInnovationRateDto : SolutionInnovationRateCreateDto
     {
         public int ID { get; set; }
-        public string Name { get; set; }
-        public double Value { get; set; }
     }
 
     public class SolutionInnovationRateCreateDto

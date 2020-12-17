@@ -9,7 +9,7 @@ namespace LaborVolumeCalculator.DTO
     public class LaborVolumeRangeDto : LaborVolumeRangeBaseDto
     {
         public int ID { get; set; }
-        public DevelopmentLaborFullDto Labor { get; set; }
+        public DevelopmentLaborDto Labor { get; set; }
         public RangeFeatureDto RangeFeature { get; set; }
     }
 
