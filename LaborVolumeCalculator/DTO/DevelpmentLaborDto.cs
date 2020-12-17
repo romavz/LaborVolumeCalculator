@@ -1,6 +1,6 @@
 namespace LaborVolumeCalculator.DTO
 {
-    public class DevelopmentLaborFullDto
+    public class DevelopmentLaborDto
     {
         public int ID { get; set; }
         public string Code { get; set; }
@@ -15,12 +15,9 @@ namespace LaborVolumeCalculator.DTO
         public int LaborCategoryID { get; set; }
     }
 
-    public class DevelopmentLaborChangeDto
+    public class DevelopmentLaborChangeDto : DevelopmentLaborCreateDto
     {
         public int ID { get; set; }
-        public string Code { get; set; }
-        public string Name { get; set; }
-        public int LaborCategoryID { get; set; }
     }
 
     public class DevelopmentLaborCreateDto_ListItem

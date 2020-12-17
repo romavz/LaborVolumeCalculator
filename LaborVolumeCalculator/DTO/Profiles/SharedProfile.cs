@@ -14,7 +14,7 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<LaborCreateDto, NirLabor>();
             CreateMap<LaborDto, NirLabor>().ReverseMap();
 
-            CreateMap<DevelopmentLabor, DevelopmentLaborFullDto>();
+            CreateMap<DevelopmentLabor, DevelopmentLaborDto>();
             CreateMap<DevelopmentLaborCreateDto, DevelopmentLabor>();
             CreateMap<DevelopmentLaborChangeDto, DevelopmentLabor>();
             CreateMap<DevelopmentLaborCreateDto_ListItem, DevelopmentLabor>();
@@ -40,10 +40,9 @@ namespace LaborVolumeCalculator.DTO.Profiles
             CreateMap<RangeFeature, RangeFeatureDto_ListItem>();
             CreateMap<RangeFeatureCreateDto_ListItem, RangeFeature>();
 
-            CreateMap<RangeFeatureCategory, RangeFeatureCategoryDto>().ReverseMap();
+            CreateMap<RangeFeatureCategory, RangeFeatureCategoryChangeDto>().ReverseMap();
+            CreateMap<RangeFeatureCategory, RangeFeatureCategoryDto>();
             CreateMap<RangeFeatureCategoryCreateDto, RangeFeatureCategory>();
-            CreateMap<RangeFeatureCategory, RangeFeatureCategoryFullDto>();
-            CreateMap<RangeFeatureCategoryFullCreateDto, RangeFeatureCategory>();
         }
     }
 }
