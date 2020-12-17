@@ -1,7 +1,13 @@
 namespace LaborVolumeCalculator.DTO
 {
-    public class TestsCoverageLevelDto : BaseModelDto
+    public class TestsCoverageLevelDto
     {
-        public string Value { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class TestsCoverageLevelCreateDto
+    {
+        public string Name { get; set; }
     }
 }

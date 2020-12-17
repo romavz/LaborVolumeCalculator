@@ -33,6 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRepository<SolutionInnovationRate>, RepositoryBase<SolutionInnovationRate>>();
             services.AddScoped<IRepository<StandardModulesUsingRate>, RepositoryBase<StandardModulesUsingRate>>();
             services.AddScoped<IRepository<TestsDevelopmentRate>, TestsDevelopmentRateRepository>();
+            services.AddScoped<IRepository<TestsCoverageLevel>, RepositoryBase<TestsCoverageLevel>>();
 
             return services;
         }
