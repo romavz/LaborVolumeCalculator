@@ -28,6 +28,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/NirInnovationRate
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<NirInnovationRateDto>>> GetNirInnovationRates()
         {
             var result = await _rates.WithIncludes.ToListAsync();
@@ -36,6 +37,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/NirInnovationRate/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<NirInnovationRateDto>> GetNirInnovationRate(int id)
         {
             var nirInnovationRate = await _rates.WithIncludes.FirstOrDefaultAsync(n => n.ID == id);
@@ -52,6 +55,10 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> PutNirInnovationRate(int id, NirInnovationRateUpdateDto nirInnovationRateDto)
         {
             if (id != nirInnovationRateDto.ID)
@@ -74,7 +81,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
                 else
                 {
-                    throw;
+                    return Conflict();
                 }
             }
 
@@ -85,6 +92,8 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
         public async Task<ActionResult<NirInnovationRateDto>> PostNirInnovationRate(NirInnovationRateCreateDto nirInnovationRateDto)
         {
             var nirInnovationRate = ConvertToSource(nirInnovationRateDto);
@@ -96,6 +105,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/NirInnovationRate/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<NirInnovationRateDto>> DeleteNirInnovationRate(int id)
         {
             var nirInnovationRate = await _rates.FindAsync(id);

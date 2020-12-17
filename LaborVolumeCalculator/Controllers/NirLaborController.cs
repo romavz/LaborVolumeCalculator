@@ -28,6 +28,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/NirLabor
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<LaborDto>>> GetNirLabors()
         {
             var labors = await _labors.ToListAsync();
@@ -39,6 +40,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/NirLabor/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<LaborDto>> GetNirLabor(int id)
         {
             var nirLabor = await _labors.FindAsync(id);
@@ -55,6 +58,10 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> PutNirLabor(int id, LaborDto nirLaborDto)
         {
             if (id != nirLaborDto.ID)
@@ -78,7 +85,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
                 else
                 {
-                    throw;
+                    return Conflict();
                 }
             }
 
@@ -89,6 +96,8 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
         public async Task<ActionResult<LaborDto>> PostNirLabor(LaborCreateDto nirLaborDto)
         {
             var nirLabor = ConvertToSource(nirLaborDto);
@@ -101,6 +110,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/NirLabor/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<LaborDto>> DeleteNirLabor(int id)
         {
             var nirLabor = await _labors.FindAsync(id);

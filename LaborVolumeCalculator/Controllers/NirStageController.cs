@@ -29,6 +29,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/NirStage
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<NirStageDto>>> GetNirStages(int nirId)
         {
             var items = await _nirStages.WithIncludes
@@ -44,6 +45,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/NirStage/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<NirStageDto>> GetNirStage(int id)
         {
             var nirStage = await _nirStages.WithIncludes.FirstOrDefaultAsync(m => m.ID == id);
@@ -82,7 +85,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
                 else
                 {
-                    throw;
+                    return Conflict();
                 }
             }
             
@@ -95,6 +98,8 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
         public async Task<ActionResult<NirStageDto>> PostNirStage(NirStageCreateDto itemDto)
         {
             var nirStage = ConvertToSource(itemDto);
@@ -115,6 +120,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/NirStage/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<NirStageDeleteDto>> DeleteNirStage(int id)
         {
             var nirStage = await _nirStages.FirstOrDefaultAsync(m => m.ID == id);

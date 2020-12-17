@@ -9,6 +9,7 @@ using LaborVolumeCalculator.DTO;
 using AutoMapper;
 using LaborVolumeCalculator.Repositories.Contracts;
 using LaborVolumeCalculator.Repositories.Extentions;
+using Microsoft.AspNetCore.Http;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -26,6 +27,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/Nir
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<NirDto>>> GetNirs()
         {
             var nirs = await _context.GetAll().ToListAsync();
@@ -36,6 +38,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/Nir/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<NirDto>> GetNir(int id)
         {
             var nir = await _context.FindAsync(id);
@@ -53,6 +57,10 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> PutNir(int id, NirChangeDto nirDto)
         {
             if (id != nirDto.ID)
@@ -75,7 +83,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
                 else
                 {
-                    throw;
+                    return Conflict();
                 }
             }
 
@@ -86,6 +94,8 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
         public async Task<ActionResult<NirDto>> PostNir(NirCreateDto nirDto)
         {
             var nir = ConvertToSource(nirDto);
@@ -99,6 +109,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/Nir/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<NirChangeDto>> DeleteNir(int id)
         {
             var nir = await _context.FindAsync(id);

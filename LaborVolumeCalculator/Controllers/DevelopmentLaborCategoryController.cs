@@ -27,6 +27,7 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/DevelopmentLaborCategory
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<DevelopmentLaborCategoryFullDto>>> GetLaborCategories()
         {
             var items = await _laborCategories.WithIncludes.ToListAsync();
@@ -39,6 +40,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // GET: api/DevelopmentLaborCategory/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<DevelopmentLaborCategoryFullDto>> GetDevelopmentLaborCategory(int id)
         {
             var developmentLaborCategory = await _laborCategories.WithIncludes.FindAsync(id);
@@ -55,6 +58,10 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> PutDevelopmentLaborCategory(int id, DevelopmentLaborCategoryDto developmentLaborCategoryDto)
         {
             var developmentLaborCategory = ConvertToSource(developmentLaborCategoryDto);
@@ -78,7 +85,7 @@ namespace LaborVolumeCalculator.Controllers
                 }
                 else
                 {
-                    throw;
+                    return Conflict();
                 }
             }
 
@@ -90,6 +97,8 @@ namespace LaborVolumeCalculator.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] // validation errors
         public async Task<ActionResult<DevelopmentLaborCategoryFullDto>> PostDevelopmentLaborCategory(DevelopmentLaborCategoryCreateDto developmentLaborCategoryDto)
         {
             var developmentLaborCategory = ConvertToSource(developmentLaborCategoryDto);
@@ -102,6 +111,8 @@ namespace LaborVolumeCalculator.Controllers
 
         // DELETE: api/DevelopmentLaborCategory/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<DevelopmentLaborCategoryFullDto>> DeleteDevelopmentLaborCategory(int id)
         {
             var developmentLaborCategory = await _laborCategories.WithIncludes.FindAsync(id);
