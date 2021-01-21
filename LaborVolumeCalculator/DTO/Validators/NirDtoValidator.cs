@@ -8,8 +8,7 @@ namespace LaborVolumeCalculator.DTO.Validators
         public NirCreateDtoValidator()
         {
             RuleFor(m => m.Name).NotEmpty().WithName("Название");
-            RuleFor(m => m.DateFrom).GreaterThanOrEqualTo(DateTime.Now.Date).WithName("Дата начала");
-            RuleFor(m => m.DateTo).GreaterThanOrEqualTo(m => m.DateFrom.Date.AddDays(1)).WithMessage("'Дата окончания' должна быть позже даты начала");
+            RuleFor(m => m.DateTo).GreaterThanOrEqualTo(m => m.DateFrom.Date.AddDays(1)).WithMessage("Дата окончания должна быть позже даты начала");
             RuleFor(m => m.AnalogDurationMonthes).GreaterThan(0D).WithName("Время продолжительности");
             RuleFor(m => m.IntensiveRateValue).GreaterThan(0D).WithName("Коэффициент интенсивности");
         }
