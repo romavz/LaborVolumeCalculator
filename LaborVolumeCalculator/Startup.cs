@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Xml;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using LaborVolumeCalculator.Data;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
+using LaborVolumeCalculator.Localization;
 
 namespace LaborVolumeCalculator
 {
@@ -28,7 +30,11 @@ namespace LaborVolumeCalculator
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
-                .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
+                .AddFluentValidation(fvc => 
+                { 
+                    fvc.RegisterValidatorsFromAssemblyContaining<Startup>();
+                    fvc.ValidatorOptions.LanguageManager = new FluentValidationLanguageManager();
+                });
             
             services.AddAutoMapper(typeof(Startup));    // для конвертации объектов EF в DTO и обратно
             services.AddControllers().AddNewtonsoftJson(options =>
