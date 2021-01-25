@@ -64,9 +64,6 @@ namespace LaborVolumeCalculator
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                // Register the Swagger generator and the Swagger UI middlewares
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "LaborVolumeCalculator v1"));
             }
             else
             {
@@ -84,6 +81,10 @@ namespace LaborVolumeCalculator
             );
 
             app.UseAuthorization();
+
+            // Register the Swagger generator and the Swagger UI middlewares
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "LaborVolumeCalculator v1"));
 
             app.UseEndpoints(endpoints =>
             {
