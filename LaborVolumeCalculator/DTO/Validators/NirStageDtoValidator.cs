@@ -10,7 +10,6 @@ namespace LaborVolumeCalculator.DTO.Validators
             RuleFor(m => m.NirID).GreaterThan(0).WithName("Идентификатор НИР");
             RuleFor(m => m.Code).IsGroupOfDidgitsSeparatedByDot().WithName("Код");
             RuleFor(m => m.Name).NotEmpty().WithName("Название");
-            RuleFor(m => m.DateFrom).GreaterThanOrEqualTo(DateTime.Now.Date).WithName("Дата начала");
             RuleFor(m => m.DateTo).GreaterThanOrEqualTo(m => m.DateFrom.Date.AddDays(1)).WithMessage("'Дата окончания' должна быть позже даты начала");
             RuleFor(m => m.NirInnovationRateID).GreaterThan(0).WithName("Идентификатор коэффициента новизны");
             RuleFor(m => m.Volume).GreaterThanOrEqualTo(0).WithName("Объем");
