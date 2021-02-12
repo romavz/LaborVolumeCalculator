@@ -10,12 +10,12 @@ namespace LaborVolumeCalculator.DTO
         public DateTime DateTo { get; set; }
         public double AnalogDurationMonthes { get; set; }
         public double IntensiveRateValue { get; set; }
+        public double Volume { get; set; }
     }
 
     public class NirChangeDto : NirCreateDto
     {
         public int ID { get; set; }
-        public double Volume { get; set; }
     }
 
     public class NirDto : NirChangeDto
