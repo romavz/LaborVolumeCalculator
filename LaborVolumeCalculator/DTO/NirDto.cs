@@ -16,6 +16,7 @@ namespace LaborVolumeCalculator.DTO
     public class NirChangeDto : NirCreateDto
     {
         public int ID { get; set; }
+        public bool IsFinished { get; set; }
     }
 
     public class NirDto : NirChangeDto
