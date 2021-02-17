@@ -19,5 +19,7 @@ namespace LaborVolumeCalculator.Models.Dictionary
         public double IntensiveRateValue { get; set; }
         public double Volume { get; set; }
         public IEnumerable<NirStage> Stages { get; set; }
+
+        public bool IsFinished { get; set; }
     }
 }
