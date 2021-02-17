@@ -11,6 +11,7 @@ using LaborVolumeCalculator.DTO;
 using AutoMapper;
 using LaborVolumeCalculator.Repositories.Contracts;
 using LaborVolumeCalculator.Repositories.Extentions;
+using LaborVolumeCalculator.Utils;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -30,8 +31,15 @@ namespace LaborVolumeCalculator.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ArchitectureComplexityRateDto>>> GetArchitectureComplexityRates()
         {
-            var items = await _rates.WithIncludes.ToListAsync();
-            return ConvertToDto(items);
+            var items = await _rates.WithIncludes
+                .ToListAsync();
+            
+            var orderedItems = items
+                .OrderBy(m => m.ComponentsMakroArchitecture.Code, CodeComparer.Instance)
+                .ThenBy(m => m.ComponentsInteractionArchitecture.Code, CodeComparer.Instance)
+                .ToList();
+                
+            return ConvertToDto(orderedItems);
         }
 
         // GET: api/ArchitectureComplexityRate/5

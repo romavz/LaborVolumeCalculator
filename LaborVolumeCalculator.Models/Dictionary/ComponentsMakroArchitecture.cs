@@ -9,8 +9,12 @@ namespace LaborVolumeCalculator.Models.Dictionary
         {
         }
 
-        public ComponentsMakroArchitecture(string name) : base(name)
+        public ComponentsMakroArchitecture(string name, string code) : base(name)
         {
+            this.Code = code;
         }
+
+        [Required]
+        public string Code { get; set; }
     }
 }
