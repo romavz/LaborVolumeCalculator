@@ -278,6 +278,7 @@ namespace LaborVolumeCalculator.Data
             {
                 e.ToTable("ComponentsInteractionArchitecture", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
+                e.Property(p => p.Code).IsRequired();
             });
             modelBuilder.Entity<ComponentsMakroArchitecture>(e =>
             {

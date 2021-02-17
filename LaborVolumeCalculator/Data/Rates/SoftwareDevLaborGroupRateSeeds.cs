@@ -59,10 +59,10 @@ namespace LaborVolumeCalculator.Data.Rates
             dbContext.AddRange(makroArch);
 
             ComponentsInteractionArchitecture[] interactArch = {
-                new ComponentsInteractionArchitecture("Монолитная"),
-                new ComponentsInteractionArchitecture("N-звенная(в том числе клиент-серверная)"),
-                new ComponentsInteractionArchitecture("Микросервисная"),
-                new ComponentsInteractionArchitecture("С общей распределенной памятью")
+                new ComponentsInteractionArchitecture("Монолитная", "1"),
+                new ComponentsInteractionArchitecture("N-звенная(в том числе клиент-серверная)", "2"),
+                new ComponentsInteractionArchitecture("Микросервисная", "3"),
+                new ComponentsInteractionArchitecture("С общей распределенной памятью", "4")
             };
             dbContext.AddRange(interactArch);
 
