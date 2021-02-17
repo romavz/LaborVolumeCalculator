@@ -11,6 +11,7 @@ using LaborVolumeCalculator.Repositories.Contracts;
 using LaborVolumeCalculator.Repositories.Extentions;
 using LaborVolumeCalculator.DTO;
 using AutoMapper;
+using LaborVolumeCalculator.Utils;
 
 namespace LaborVolumeCalculator.Controllers
 {
@@ -32,7 +33,7 @@ namespace LaborVolumeCalculator.Controllers
         {
             var items = await _architectures.ToListAsync();
             return ConvertToDto(items)
-                        .OrderBy(m => m.Name)
+                        .OrderBy(m => m.Code, CodeComparer.Instance)
                         .ToList();
         }
 

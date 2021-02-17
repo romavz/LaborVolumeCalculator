@@ -52,9 +52,9 @@ namespace LaborVolumeCalculator.Data.Rates
             InfrastructureComplexityRates = infraRates;
 
             ComponentsMakroArchitecture[] makroArch = {
-                new ComponentsMakroArchitecture("Процедурная"),
-                new ComponentsMakroArchitecture("Асинхронная"),
-                new ComponentsMakroArchitecture("Микроядерная")
+                new ComponentsMakroArchitecture("Процедурная", "1"),
+                new ComponentsMakroArchitecture("Асинхронная", "2"),
+                new ComponentsMakroArchitecture("Микроядерная", "3")
             };
             dbContext.AddRange(makroArch);
 

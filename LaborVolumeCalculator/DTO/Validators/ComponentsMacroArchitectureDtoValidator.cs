@@ -8,6 +8,7 @@ namespace LaborVolumeCalculator.DTO.Validators
         {
             RuleFor(m => m.ID).GreaterThan(0).WithName("Идентификатор");
             RuleFor(m => m.Name).NotEmpty().WithName("Название");
+            RuleFor(m => m.Code).IsGroupOfDidgitsSeparatedByDot();
         }
     }
 
@@ -16,6 +17,7 @@ namespace LaborVolumeCalculator.DTO.Validators
         public ComponentsMacroArchitectureCreateDtoValidator()
         {
             RuleFor(m => m.Name).NotEmpty().WithName("Название");
+            RuleFor(m => m.Code).IsGroupOfDidgitsSeparatedByDot();
         }
     }
 }
