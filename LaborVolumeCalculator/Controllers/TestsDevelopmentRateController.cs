@@ -30,7 +30,12 @@ namespace LaborVolumeCalculator.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<TestsDevelopmentRateDto>>> GetTestsDevelopmentRate()
         {
-            var items = await _rates.WithIncludes.ToListAsync();
+            var items = await _rates.WithIncludes
+                .OrderBy(m => m.ComponentsMicroArchitecture.Code)
+                .ThenBy(m => m.TestsScale.Code)
+                .ThenBy(m => m.TestsCoverageLevel.Code)
+                .ToListAsync();
+                
             return ConvertToDto(items);
         }
 
