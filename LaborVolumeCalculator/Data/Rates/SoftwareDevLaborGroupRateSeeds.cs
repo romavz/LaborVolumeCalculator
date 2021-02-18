@@ -84,10 +84,10 @@ namespace LaborVolumeCalculator.Data.Rates
             ArchitectureComplexityRates = arcRates;
 
             ComponentsMicroArchitecture[] microArch = {
-                new ComponentsMicroArchitecture("Процедурная"),
-                new ComponentsMicroArchitecture("Объектно-ориентированная"),
-                new ComponentsMicroArchitecture("Функциональная"),
-                new ComponentsMicroArchitecture("Смешанная")
+                new ComponentsMicroArchitecture("Процедурная", 1),
+                new ComponentsMicroArchitecture("Объектно-ориентированная", 2),
+                new ComponentsMicroArchitecture("Функциональная", 3),
+                new ComponentsMicroArchitecture("Смешанная", 4)
             };
             dbContext.AddRange(microArch);
 

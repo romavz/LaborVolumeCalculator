@@ -291,6 +291,7 @@ namespace LaborVolumeCalculator.Data
             {
                 e.ToTable("ComponentsMicroArchitecture", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
+                e.Property(p => p.Code).IsRequired();
             });
             modelBuilder.Entity<InfrastructureComplexityRate>(e =>
             {
