@@ -99,9 +99,9 @@ namespace LaborVolumeCalculator.Data.Rates
             dbContext.AddRange(testsScales);
 
             TestsCoverageLevel[] testCovers = {
-                new TestsCoverageLevel("0-40%"),
-                new TestsCoverageLevel("40-60%"),
-                new TestsCoverageLevel("60-80%")
+                new TestsCoverageLevel("0-40%", 1),
+                new TestsCoverageLevel("40-60%", 2),
+                new TestsCoverageLevel("60-80%", 3)
             };
             dbContext.AddRange(testCovers);
 

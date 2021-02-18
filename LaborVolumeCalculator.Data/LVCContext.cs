@@ -312,6 +312,7 @@ namespace LaborVolumeCalculator.Data
             {
                 e.ToTable("TestsCoverageLevel", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
+                e.Property(p => p.Code).IsRequired();
             });
             modelBuilder.Entity<TestsScale>(e =>
             {
