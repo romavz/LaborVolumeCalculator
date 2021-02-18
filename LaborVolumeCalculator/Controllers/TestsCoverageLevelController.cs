@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -27,7 +28,9 @@ namespace LaborVolumeCalculator.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<TestsCoverageLevelDto>>> GetTestsCoverageLevels()
         {
-            var items = await _levels.ToListAsync();
+            var items = await _levels.GetAll()
+                .OrderBy(m => m.Code)
+                .ToListAsync();
             return ConvertToDto(items);
         }
 

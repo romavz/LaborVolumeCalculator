@@ -291,6 +291,7 @@ namespace LaborVolumeCalculator.Data
             {
                 e.ToTable("ComponentsMicroArchitecture", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
+                e.Property(p => p.Code).IsRequired();
             });
             modelBuilder.Entity<InfrastructureComplexityRate>(e =>
             {
@@ -311,11 +312,13 @@ namespace LaborVolumeCalculator.Data
             {
                 e.ToTable("TestsCoverageLevel", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
+                e.Property(p => p.Code).IsRequired();
             });
             modelBuilder.Entity<TestsScale>(e =>
             {
                 e.ToTable("TestsScale", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
+                e.Property(p => p.Code).IsRequired();
             });
 
             modelBuilder.Entity<NirStageSoftwareDevLaborGroup>(e =>

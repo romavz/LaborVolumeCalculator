@@ -9,8 +9,11 @@ namespace LaborVolumeCalculator.Models.Dictionary
         {
         }
 
-        public TestsCoverageLevel(string name) : base(name)
+        public TestsCoverageLevel(string name, int code) : base(name)
         {
+            this.Code = code;
         }
+
+        public int Code { get; set; }
     }
 }

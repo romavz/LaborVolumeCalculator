@@ -9,8 +9,11 @@ namespace LaborVolumeCalculator.Models.Dictionary
         {
         }
 
-        public TestsScale(string name) : base(name)
+        public TestsScale(string name, int code) : base(name)
         {
+            this.Code = code;
         }
+
+        public int Code { get; set; }
     }
 }

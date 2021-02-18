@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,9 @@ namespace LaborVolumeCalculator.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ComponentsMicroArchitectureDto>>> GetComponentsMicroArchitectures()
         {
-            var items = await _architectures.ToListAsync();
+            var items = await _architectures.GetAll()
+                .OrderBy(m => m.Code)
+                .ToListAsync();
             return ConvertToDto(items);
         }
 

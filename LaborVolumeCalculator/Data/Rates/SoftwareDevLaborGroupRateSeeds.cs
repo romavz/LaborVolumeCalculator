@@ -84,24 +84,24 @@ namespace LaborVolumeCalculator.Data.Rates
             ArchitectureComplexityRates = arcRates;
 
             ComponentsMicroArchitecture[] microArch = {
-                new ComponentsMicroArchitecture("Процедурная"),
-                new ComponentsMicroArchitecture("Объектно-ориентированная"),
-                new ComponentsMicroArchitecture("Функциональная"),
-                new ComponentsMicroArchitecture("Смешанная")
+                new ComponentsMicroArchitecture("Процедурная", 1),
+                new ComponentsMicroArchitecture("Объектно-ориентированная", 2),
+                new ComponentsMicroArchitecture("Функциональная", 3),
+                new ComponentsMicroArchitecture("Смешанная", 4)
             };
             dbContext.AddRange(microArch);
 
             TestsScale[] testsScales = {
-                new TestsScale("Модульное"),
-                new TestsScale("Функциональное"),
-                new TestsScale("Интеграционное")
+                new TestsScale("Модульное", 1),
+                new TestsScale("Функциональное", 2),
+                new TestsScale("Интеграционное", 3)
             };
             dbContext.AddRange(testsScales);
 
             TestsCoverageLevel[] testCovers = {
-                new TestsCoverageLevel("0-40%"),
-                new TestsCoverageLevel("40-60%"),
-                new TestsCoverageLevel("60-80%")
+                new TestsCoverageLevel("0-40%", 1),
+                new TestsCoverageLevel("40-60%", 2),
+                new TestsCoverageLevel("60-80%", 3)
             };
             dbContext.AddRange(testCovers);
 
