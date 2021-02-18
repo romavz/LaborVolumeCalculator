@@ -6,10 +6,10 @@ namespace LaborVolumeCalculator.DTO
         public double Value { get; set; }
         public int ComponentsMakroArchitectureID { get; set; }
         public string ComponentsMakroArchitectureName { get; set; }
-        public string ComponentsMakroArchitectureCode { get; set; }
+        public int ComponentsMakroArchitectureCode { get; set; }
         public int ComponentsInteractionArchitectureID { get; set; }
         public string ComponentsInteractionArchitectureName { get; set; }
-        public string ComponentsInteractionArchitectureCode { get; set; }
+        public int ComponentsInteractionArchitectureCode { get; set; }
     }
 
     public class ArchitectureComplexityRateCreateDto
