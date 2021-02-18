@@ -92,9 +92,9 @@ namespace LaborVolumeCalculator.Data.Rates
             dbContext.AddRange(microArch);
 
             TestsScale[] testsScales = {
-                new TestsScale("Модульное"),
-                new TestsScale("Функциональное"),
-                new TestsScale("Интеграционное")
+                new TestsScale("Модульное", 1),
+                new TestsScale("Функциональное", 2),
+                new TestsScale("Интеграционное", 3)
             };
             dbContext.AddRange(testsScales);
 

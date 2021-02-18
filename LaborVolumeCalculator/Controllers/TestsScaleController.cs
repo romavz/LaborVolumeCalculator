@@ -31,7 +31,9 @@ namespace LaborVolumeCalculator.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<TestsScaleDto>>> GetTestsScales()
         {
-            var items = await _scales.ToListAsync();
+            var items = await _scales.GetAll()
+                .OrderBy(m => m.Code)
+                .ToListAsync();
             return ConvertToDto(items);
         }
 

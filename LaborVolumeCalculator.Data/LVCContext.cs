@@ -318,6 +318,7 @@ namespace LaborVolumeCalculator.Data
             {
                 e.ToTable("TestsScale", Schema.Dictionary);
                 e.Property(p => p.Name).IsRequired();
+                e.Property(p => p.Code).IsRequired();
             });
 
             modelBuilder.Entity<NirStageSoftwareDevLaborGroup>(e =>
