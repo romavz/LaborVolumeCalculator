@@ -32,13 +32,12 @@ namespace LaborVolumeCalculator.Controllers
         public async Task<ActionResult<IEnumerable<ArchitectureComplexityRateDto>>> GetArchitectureComplexityRates()
         {
             var items = await _rates.WithIncludes
+                .OrderBy(m => m.ComponentsMakroArchitecture.Code)
+                .ThenBy(m => m.ComponentsInteractionArchitecture.Code)
                 .ToListAsync();
             
-            var orderedItems = items
-                .OrderBy(m => m.ComponentsMakroArchitecture.Code, CodeComparer.Instance)
-                .ThenBy(m => m.ComponentsInteractionArchitecture.Code, CodeComparer.Instance)
-                .ToList();
-                
+            var orderedItems = items.ToList();
+            
             return ConvertToDto(orderedItems);
         }
 

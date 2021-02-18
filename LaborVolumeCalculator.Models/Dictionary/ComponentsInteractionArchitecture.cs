@@ -9,11 +9,11 @@ namespace LaborVolumeCalculator.Models.Dictionary
         {
         }
 
-        public ComponentsInteractionArchitecture(string name, string code) : base(name)
+        public ComponentsInteractionArchitecture(string name, int code) : base(name)
         {
             this.Code = code;
         }
 
-        public string Code { get; set; }
+        public int Code { get; set; }
     }
 }

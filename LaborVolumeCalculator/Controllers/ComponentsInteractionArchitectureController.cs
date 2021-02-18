@@ -31,10 +31,11 @@ namespace LaborVolumeCalculator.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ComponentsInteractionArchitectureDto>>> GetComponentsInteractionArchitectures()
         {
-            var items = await _architectures.ToListAsync();
-            return ConvertToDto(items)
-                    .OrderBy(m => m.Code, CodeComparer.Instance)
-                    .ToList();
+            var items = await _architectures.GetAll()
+                .OrderBy(m => m.Code)
+                .ToListAsync();
+
+            return ConvertToDto(items).ToList();
         }
 
         // GET: api/ComponentsInteractionArchitecture/5

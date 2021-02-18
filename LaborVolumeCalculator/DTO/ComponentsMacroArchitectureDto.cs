@@ -4,12 +4,12 @@ namespace LaborVolumeCalculator.DTO
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public string Code { get; set; }
+        public int Code { get; set; }
     }
 
     public class ComponentsMacroArchitectureCreateDto
     {
         public string Name { get; set; }
-        public string Code { get; set; }
+        public int Code { get; set; }
     }
 }
